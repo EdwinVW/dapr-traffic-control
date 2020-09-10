@@ -13,6 +13,6 @@ In the background, information about the vehicle  is retrieved from the Departme
 When the car passes an exit-camera, this is registered by the system. The system then calculates the average speed of the car based on the entry- and exit-timestamp. If a speeding violation is detected, a message is sent to the Central Judicial Collection Agency - CJCA (or CJIB in Dutch) will send a speeding-ticket to the driver of the vehicle.
 
 ### Disclaimer
-The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several Actor Model concepts and not being a full fledged application that can be put into production as is.
+The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several dapr concepts and not being a full fledged application that can be put into production as is.
 
 The author can in no way be held liable for damage caused directly or indirectly by using this code.
