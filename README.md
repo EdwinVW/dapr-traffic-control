@@ -1,5 +1,5 @@
 # dapr Traffic Control Sample
-Sample code of a traffic-control system using dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
+This repository contains a sample applicaton that simulates a traffic-control system using dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
 
 ### Overview
 This is an overview of the fictitious setup I'm simulating in this sample:
