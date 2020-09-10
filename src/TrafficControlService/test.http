@@ -1,0 +1,13 @@
+// Register entry
+POST http://127.0.0.1:5000/trafficcontrol/entrycam
+Content-Type: application/json
+
+{ "licenseNumber": "RK-546-V", "timestamp": "2020-09-10T10:38:47" }
+
+###
+
+// Register exit
+POST http://127.0.0.1:5000/trafficcontrol/exitcam
+Content-Type: application/json
+
+{ "licenseNumber": "RK-546-V", "timestamp": "2020-09-10T10:38:52" }
