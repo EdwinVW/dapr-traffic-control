@@ -37,10 +37,9 @@ namespace TrafficControlService.Controllers
             // TODO: fix serialization issue
             // For some reason the reponse of the service-invocation is not deserialized correctly. When calling
             // await InvokeMethodAsync<VehicleInfo>(...), the result is a VehicleInfo instance, but all properties
-            // are empty.
-            // The Json in the response is correct (checked by calling the service) using HTTP. As a temporary
-            // workaround, I cast the result to dynamic and then deserialize the Json in the response to a VehicleInfo
-            // instance. This yields a correctly filled VehicleInfo instance.
+            // are empty. The Json in the response is correct (checked by calling the service) using HTTP.
+            // As a temporary workaround, I cast the result to dynamic and then deserialize the Json in the response
+            // to a VehicleInfo instance. This yields a correctly filled VehicleInfo instance.
 
             var vehicleInfoResponse = await daprClient.InvokeMethodAsync<dynamic>(
                 "governmentservice",
