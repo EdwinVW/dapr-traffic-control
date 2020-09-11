@@ -17,12 +17,12 @@ namespace GovernmentService.Controllers
             _vehicleInfoRepository = vehicleInfoRepository;
         }
 
-        [Route("rdw")]
         [HttpGet("rdw/vehicle/{licenseNumber}")]
-        public ActionResult GetVehicleDetails(string licenseNumber)
+        public ActionResult<VehicleInfo> GetVehicleDetails(string licenseNumber)
         {
+            _logger.LogInformation($"RDW: Retrieving vehicle-info for licensenumber {licenseNumber}");
             VehicleInfo info = _vehicleInfoRepository.GetVehicleInfo(licenseNumber);
-            return Ok(info);
+            return info;
         }
     }
 }

@@ -7,7 +7,7 @@
 			"path": "./GovernmentService"
 		},
 		{
-			"path": "./TestClient"
+			"path": "./Simulation"
 		}
 	],
 	"settings": {},

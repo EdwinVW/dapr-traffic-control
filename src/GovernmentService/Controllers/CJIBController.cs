@@ -18,7 +18,7 @@ namespace GovernmentService.Controllers
             _fineCalculator = fineCalculator;
         }
 
-        [Topic("pubsub-nats", "cjib.speedingviolation")]
+        [Topic("pubsub", "cjib.speedingviolation")]
         [Route("cjib/speedingviolation")]
         [HttpPost()]
         public ActionResult HandleSpeedingViolation(SpeedingViolationDetected @event)
@@ -26,8 +26,9 @@ namespace GovernmentService.Controllers
             decimal fine = _fineCalculator.CalculateFine(@event.ViolationInKmh);
 
             string fineString = fine == 0 ? "tbd by the prosecutor" : $"{fine} Euro";
-            _logger.LogInformation($"Sent speeding ticket. Road: {@event.RoadId}, Licensenumber: {@event.VehicleId}" +
-                $", Violation: {@event.ViolationInKmh} Km/h, Fine: {fineString}");
+            _logger.LogInformation($"CJIB: Sent speeding ticket. Road: {@event.RoadId}, Licensenumber: {@event.VehicleId}, " +
+                $"Violation: {@event.ViolationInKmh} Km/h, Fine: {fineString}, On: {@event.Timestamp.ToString("dd-MM-yyyy")} " +
+                $"at {@event.Timestamp.ToString("hh:mm:ss")}.");
 
             return Ok();
         }

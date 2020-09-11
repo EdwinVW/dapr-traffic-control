@@ -9,3 +9,7 @@ Content-Type: application/json
 
 // Get vehicle info by license-number
 GET http://127.0.0.1:6000/rdw/vehicle/KT-49-VV
+
+###
+
+GET http://127.0.0.1:64138/v1.0/invoke/governmentservice/method/rdw/vehicle/KT-49-VV

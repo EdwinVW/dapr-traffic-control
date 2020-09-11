@@ -1,6 +1,6 @@
 using System;
 
-namespace TrafficControlService.Events
+namespace Simulation.Events
 {
     public class VehicleRegistered
     {
