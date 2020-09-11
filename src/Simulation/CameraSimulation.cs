@@ -37,7 +37,7 @@ namespace Simulation
                         Timestamp = entryTimestamp
                     };
                     daprClient.PublishEventAsync("pubsub", "trafficcontrol.entrycam", @event).Wait();
-                    Console.WriteLine($"Simulated entry of car {@event.LicenseNumber} in lane {@event.Lane}");
+                    Console.WriteLine($"Simulated ENTRY of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
 
                     // simulate exit
                     TimeSpan exitDelay = TimeSpan.FromSeconds(_rnd.Next(_minExitDelayInS, _maxExitDelayInS) + _rnd.NextDouble());
@@ -45,7 +45,7 @@ namespace Simulation
                     @event.Timestamp = DateTime.Now;
                     @event.Lane = _rnd.Next(1, 4);
                     daprClient.PublishEventAsync("pubsub", "trafficcontrol.exitcam", @event).Wait();
-                    Console.WriteLine($"Simulated exit of car {@event.LicenseNumber} in lane {@event.Lane}");
+                    Console.WriteLine($"Simulated EXIT of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
                 });
             }
         }
