@@ -50,11 +50,11 @@ Execute the following steps to run the sample application:
 2. Open three separate command-shells.
 3. In the first shell, execute the following command (using the dapr cli) to run the **TrafficControlService**:
   ```
-  dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 dotnet run
+  dapr run --app-id trafficcontrolservice --app-port 5000 dotnet run
   ```
 4. In the second shell, execute the following command (using the dapr cli) to run the **GovernmentService**:
   ```
-  dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 dotnet run
+  dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50001 dotnet run
   ```
 5. In the third shell, execute the following command to run the **Simulation**:
 ```

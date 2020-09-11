@@ -33,27 +33,10 @@ namespace TrafficControlService.Controllers
         public async Task<ActionResult> VehicleEntry(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
             // get vehicle details
-
-            // TODO: fix serialization issue
-            // For some reason the reponse of the service-invocation is not deserialized correctly. When calling
-            // await InvokeMethodAsync<VehicleInfo>(...), the result is a VehicleInfo instance, but all properties
-            // are empty. The Json in the response is correct (checked by calling the service using HTTP).
-            // As a temporary workaround, I cast the result to dynamic and then deserialize the Json in the response
-            // to a VehicleInfo instance. This yields a correctly filled VehicleInfo instance.
-
-            var vehicleInfoResponse = await daprClient.InvokeMethodAsync<dynamic>(
+            var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
                 "governmentservice",
                 $"rdw/vehicle/{msg.LicenseNumber}",
                 new HTTPExtension { Verb = HTTPVerb.Get });
-
-            // deserialize response
-            string vehicleInfoJson = vehicleInfoResponse.ToString();
-            //_logger.LogInformation(vehicleInfoJson);
-            VehicleInfo vehicleInfo = JsonSerializer.Deserialize<VehicleInfo>(vehicleInfoJson, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            });
 
             // log entry
             _logger.LogInformation($"ENTRY detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")}: " +

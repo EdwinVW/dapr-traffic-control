@@ -23,19 +23,13 @@ namespace TrafficControlService
         {
             services.AddSingleton<ISpeedingViolationCalculator>(new DefaultSpeedingViolationCalculator("A2", 10, 100, 5));
 
+            services.AddControllers().AddDapr();
+
             services.AddDaprClient(builder => builder.UseJsonSerializationOptions(new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNameCaseInsensitive = true
             }));
-
-            // services.AddSingleton(new JsonSerializerOptions()
-            // {
-            //     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            //     PropertyNameCaseInsensitive = true
-            // });
-
-            services.AddControllers().AddDapr();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
