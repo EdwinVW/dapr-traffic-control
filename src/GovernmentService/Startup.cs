@@ -25,11 +25,11 @@ namespace GovernmentService
 
             services.AddSingleton<IFineCalculator, HardCodedFineCalculator>();
 
-            services.AddSingleton(new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            });
+            // services.AddSingleton(new JsonSerializerOptions()
+            // {
+            //     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            //     PropertyNameCaseInsensitive = true
+            // });
 
             services.AddControllers().AddDapr();
         }
