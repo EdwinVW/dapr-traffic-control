@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trafficcontrolservice
+  labels:
+    app: trafficcontrolservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trafficcontrolservice
+  template:
+    metadata:
+      labels:
+        app: trafficcontrolservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "trafficcontrolservice"
+        dapr.io/app-port: "5000"
+    spec:
+      containers:
+      - name: trafficcontrolservice
+        image: dapr-trafficcontrol/trafficcontrolservice:1.0
+        ports:
+        - containerPort: 5000

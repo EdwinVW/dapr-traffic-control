@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "./Simulation"
+		},
+		{
+			"path": "./k8s"
 		}
 	],
 	"settings": {},

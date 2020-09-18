@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: governmentservice
+  labels:
+    app: governmentservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: governmentservice
+  template:
+    metadata:
+      labels:
+        app: governmentservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "governmentservice"
+        dapr.io/app-port: "6000"
+    spec:
+      containers:
+      - name: governmentservice
+        image: dapr-trafficcontrol/governmentservice:1.0
+        ports:
+        - containerPort: 6000
+
