@@ -14,9 +14,9 @@ namespace Simulation
         private int _minExitDelayInS = 4;
         private int _maxExitDelayInS = 8;
 
-        public void Start()
+        public void Start(int camNumber)
         {
-            Console.WriteLine("Start camera simulation.");
+            Console.WriteLine($"Start camera {camNumber} simulation.");
 
             // initialize state
             _rnd = new Random();
