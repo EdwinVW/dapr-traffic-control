@@ -3,13 +3,13 @@
 POST http://127.0.0.1:6000/cjib/speedingviolation
 Content-Type: application/json
 
-{ "vehicleId": "RK-546-V", "roadId": "A12", "violationInKmh": 15 }
+{ "vehicleId": "RK-546-V", "roadId": "A12", "violationInKmh": 15, "timestamp": "2020-09-20T08:33:41" }
 
 ###
 
 // Get vehicle info by license-number
-GET http://127.0.0.1:6000/rdw/vehicle/KT-49-VV
+GET http://127.0.0.1:6000/rdw/vehicle/KT-49-VX
 
 ###
 
-GET http://127.0.0.1:64138/v1.0/invoke/governmentservice/method/rdw/vehicle/KT-49-VV
+GET http://127.0.0.1:62204/v1.0/invoke/governmentservice/method/rdw/vehicle/XS-51-BG
