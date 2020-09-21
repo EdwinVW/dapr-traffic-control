@@ -12,4 +12,4 @@ GET http://127.0.0.1:6000/rdw/vehicle/KT-49-VX
 
 ###
 
-GET http://127.0.0.1:62204/v1.0/invoke/governmentservice/method/rdw/vehicle/XS-51-BG
+GET http://127.0.0.1:<TrafficControlService HTTP port>/v1.0/invoke/governmentservice/method/rdw/vehicle/XS-51-BG
