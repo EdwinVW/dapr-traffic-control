@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "./k8s"
+		},
+		{
+			"path": "components"
 		}
 	],
 	"settings": {},

@@ -33,9 +33,11 @@ namespace TrafficControlService.Controllers
         public async Task<ActionResult> VehicleEntry(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
             // get vehicle details
+            var apiKeySecret = await daprClient.GetSecretAsync("local-secret-store", "rdw-api-key");
+            var apiKey = apiKeySecret["rdw-api-key"];
             var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
                 "governmentservice",
-                $"rdw/vehicle/{msg.LicenseNumber}",
+                $"rdw/{apiKey}/vehicle/{msg.LicenseNumber}",
                 new HTTPExtension { Verb = HTTPVerb.Get });
 
             // log entry
