@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
 using System.Text.Json;
-using Dapr.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using TrafficControlService.Helpers;
 
 namespace TrafficControlService

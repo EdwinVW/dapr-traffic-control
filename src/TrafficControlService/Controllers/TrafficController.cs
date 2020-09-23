@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
 using Dapr.Client.Http;
