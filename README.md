@@ -47,19 +47,26 @@ In this sample, the Reddis component is used for both state management as well a
 Execute the following steps to run the sample application:
 
 1. Make sure you have installed dapr on your machine as described in the [dapr documentation](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md).
+
 2. Open three separate command-shells.
-3. In the first shell, change the current folder to the *src/TrafficControlService* folder of this repo and execute the following command (using the dapr cli) to run the **TrafficControlService**:
+
+3. In the first shell, change the current folder to the *src/GovernmentService* folder of this repo and execute the following command (using the dapr cli) to run the **GovernmentService**:
+
   ```
-  dapr run --app-id trafficcontrolservice --app-port 5000 --components-path ../components dotnet run
+  dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 --components-path ../components dotnet run
   ```
-4. In the second shell, change the current folder to the *src/GovernmentService* folder of this repo and execute the following command (using the dapr cli) to run the **GovernmentService**:
+
+4. In the second shell, change the current folder to the *src/TrafficControlService* folder of this repo and execute the following command (using the dapr cli) to run the **TrafficControlService**:
+
   ```
-  dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50001 --components-path ../components dotnet run
+  dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 --components-path ../components dotnet run
   ```
+
 5. In the third shell, change the current folder to the *src/Simulation* folder of this repo and execute the following command to run the **Simulation**:
-```
-dotnet run
-```
+
+  ```
+  dapr run --app-id simulation --dapr-grpc-port 50003 --components-path ../components dotnet run
+  ```
 
 You should now see logging in each of the shells, similar to the logging shown below:
 
