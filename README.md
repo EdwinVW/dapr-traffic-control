@@ -43,6 +43,8 @@ This sample uses dapr for implementing several aspects of the application. For c
 
 In this sample, the Reddis component is used for both state management as well as for pub/sub.
 
+> The sample code targets and is tested with Dapr release 0.11.0.  
+
 ## Running the sample (using dapr self-hosted mode)
 Execute the following steps to run the sample application:
 
