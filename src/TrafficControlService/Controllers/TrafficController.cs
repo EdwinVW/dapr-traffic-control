@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
 using Dapr.Client.Http;
@@ -18,12 +20,17 @@ namespace TrafficControlService.Controllers
         private readonly ILogger<TrafficController> _logger;
         private readonly ISpeedingViolationCalculator _speedingViolationCalculator;
         private readonly string _roadId;
+        private readonly string _secretStoreName;
 
         public TrafficController(ILogger<TrafficController> logger, ISpeedingViolationCalculator speedingViolationCalculator)
         {
             _logger = logger;
             _speedingViolationCalculator = speedingViolationCalculator;
             _roadId = speedingViolationCalculator.GetRoadId();
+
+            // specify secret-store to use based on hosting environment
+            string runningInK8s = (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false").ToLowerInvariant();
+            _secretStoreName = runningInK8s == "true" ? "kubernetes" : "secret-store-file";
         }
 
         [Topic("pubsub", "trafficcontrol.entrycam")]
@@ -31,7 +38,8 @@ namespace TrafficControlService.Controllers
         public async Task<ActionResult> VehicleEntry(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
             // get vehicle details
-            var apiKeySecret = await daprClient.GetSecretAsync("local-secret-store", "rdw-api-key");
+            var apiKeySecret = await daprClient.GetSecretAsync(_secretStoreName, "rdw-api-key",
+                new Dictionary<string,string>{ { "namespace", "dapr-trafficcontrol" } });
             var apiKey = apiKeySecret["rdw-api-key"];
             var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
                 "governmentservice",
