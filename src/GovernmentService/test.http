@@ -8,7 +8,7 @@ Content-Type: application/json
 ###
 
 // Get vehicle info by license-number
-GET http://127.0.0.1:6000/rdw/vehicle/KT-49-VX
+GET http://127.0.0.1:6000/rdw/A6k9D42L061Fx4Rm2K8/vehicle/KT-49-VX
 
 ###
 
