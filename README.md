@@ -1,4 +1,11 @@
 # dapr Traffic Control Sample
+
+| Attribute            | Details             |
+| -------------------- | ------------------- |
+| Dapr runtime version | v0.11.2             |
+| Language             | C# (.NET Core)      |
+| Environment          | Local or Kubernetes |
+
 This repository contains a sample application that simulates a traffic-control system using dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
 
 ## Overview
@@ -43,7 +50,7 @@ This sample uses dapr for implementing several aspects of the application. For c
 
 In this sample, the Reddis component is used for both state management as well as for pub/sub.
 
-> The sample code targets and is tested with Dapr release 0.11.0.  
+> The sample code targets and is tested with Dapr release 0.11.0.
 
 ## Running the sample (using dapr self-hosted mode)
 Execute the following steps to run the sample application:
