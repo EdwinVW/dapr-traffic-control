@@ -1,12 +1,12 @@
-# dapr Traffic Control Sample
+# Dapr Traffic Control Sample
 
 | Attribute            | Details             |
 | -------------------- | ------------------- |
-| Dapr runtime version | v0.11.2             |
+| Dapr runtime version | v0.11.3             |
 | Language             | C# (.NET Core)      |
 | Environment          | Local or Kubernetes |
 
-This repository contains a sample application that simulates a traffic-control system using dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
+This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
 
 ## Overview
 This is an overview of the fictitious setup I'm simulating in this sample:
@@ -43,8 +43,8 @@ The way the simulation works is depicted in the sequence diagram below:
 
 All actions described in this sequence are logged to the console during execution so you can follow the flow.
 
-## dapr
-This sample uses dapr for implementing several aspects of the application. For communicating messages, the **publish and subscribe** building-block is used. For doing request/response type communication with a service, the  **service-to-service invocation** building-block is used. And for storing the state of a vehicle, the **state management** building-block is used.
+## Dapr
+This sample uses Dapr for implementing several aspects of the application. For communicating messages, the **publish and subscribe** building-block is used. For doing request/response type communication with a service, the  **service-to-service invocation** building-block is used. And for storing the state of a vehicle, the **state management** building-block is used.
 
 ![](img/dapr-setup.png)
 
@@ -52,43 +52,107 @@ In this sample, the Reddis component is used for both state management as well a
 
 > The sample code targets and is tested with Dapr release 0.11.0.
 
-## Running the sample (using dapr self-hosted mode)
-Execute the following steps to run the sample application:
+## Running the sample in Dapr self-hosted mode
+Execute the following steps to run the sample application in self hosted mode:
 
-1. Make sure you have installed dapr on your machine as described in the [dapr documentation](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md).
+1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
 
 2. Open three separate command-shells.
 
-3. In the first shell, change the current folder to the *src/GovernmentService* folder of this repo and execute the following command (using the dapr cli) to run the **GovernmentService**:
+3. In the first shell, change the current folder to the *src/GovernmentService* folder of this repo and execute the following command (using the Dapr cli) to run the **GovernmentService**:
 
-  ```
-  dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 --components-path ../components dotnet run
-  ```
+    ```
+    dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 --components-path ../components dotnet run
+    ```
 
-4. In the second shell, change the current folder to the *src/TrafficControlService* folder of this repo and execute the following command (using the dapr cli) to run the **TrafficControlService**:
+4. In the second shell, change the current folder to the *src/TrafficControlService* folder of this repo and execute the following command (using the Dapr cli) to run the **TrafficControlService**:
 
-  ```
-  dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 --components-path ../components dotnet run
-  ```
+    ```
+    dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 --components-path ../components dotnet run
+    ```
 
 5. In the third shell, change the current folder to the *src/Simulation* folder of this repo and execute the following command to run the **Simulation**:
 
-  ```
-  dapr run --app-id simulation --dapr-grpc-port 50003 --components-path ../components dotnet run
-  ```
+    ```
+    dapr run --app-id simulation --dapr-grpc-port 50003 --components-path ../components dotnet run
+    ```
 
 You should now see logging in each of the shells, similar to the logging shown below:
 
-**Simulation:**
+**Simulation:**  
+
 ![](img/logging-simulation.png)
 
-**TrafficControlService:**
+**TrafficControlService:**  
+
 ![](img/logging-trafficcontrolservice.png)
 
-**GovernmentService:**
+**GovernmentService:**  
+
 ![](img/logging-governmentservice.png)
 
+## Running the sample on Kubernetes
+Execute the following steps to run the sample application on Kubernetes:
+
+First you need to build the Docker images for the three services:
+
+1. Open a command-shell.
+
+2. Change the current folder to the *src/GovernmentService* folder of this repo.
+
+3. Build the Docker image:
+
+    ```
+    docker build -t dapr-trafficcontrol/governmentservice .
+    ```
+
+4. Change the current folder to the *src/TrafficControlService* folder of this repo.
+
+5. Build the Docker image:
+
+    ```
+    docker build -t dapr-trafficcontrol/trafficcontrolservice .
+    ```
+
+6. Change the current folder to the *src/Simulation* folder of this repo.
+
+7. Build the Docker image:
+
+    ```
+    docker build -t dapr-trafficcontrol/simulation .
+    ```
+
+Now you're ready to run the application on Kubernetes:
+
+1. Make sure you have installed Dapr on your machine on a Kubernetes cluster as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
+
+2. Make sure you have built the Docker images for the 3 separate services so they are available on your machine.
+
+3. Open a command-shell.
+
+4. Change the current folder to the *src/k8s* folder of this repo.
+
+5. Execute the `start.ps1` or `start.sh` script.
+
+You can examine the logging for the 3 individual services in several different ways. Let's do it using the Docker CLI:
+
+1. Find out the container Id of the services:
+
+    ```
+    docker ps
+    ```
+
+  > Make sure you pick the Id of a container running the .NET service and not the Dapr sidecar (the command will start with `/daprd`). If you do pick the Id of a dapr sidecar container, you can check out the Dapr logging emitted by the sidecar.
+
+2. View the log for each of the services (replace the Id with the Id of one of your services):
+
+    ```
+    docker logs e2ed262f836e
+    ```
+
+To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` or `stop.sh` script.
+
 ## Disclaimer
-The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several dapr concepts and not being a full fledged application that can be put into production as is.
+The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several Dapr concepts and not being a full fledged application that can be put into production as is.
 
 The author can in no way be held liable for damage caused directly or indirectly by using this code.
