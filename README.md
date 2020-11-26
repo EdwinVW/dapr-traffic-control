@@ -132,7 +132,15 @@ Now you're ready to run the application on Kubernetes:
 
 4. Change the current folder to the *src/k8s* folder of this repo.
 
-5. Execute the `start.ps1` or `start.sh` script.
+5. Install Redis in your Kubernetes cluster by executing the `install-redis.ps1` script.
+
+6. After the script has executed, a password is shown. Copy this password to your clipboard:
+
+    ![Redis password](img/redis-password.png)
+
+7. Open the files `state-redis.yaml` and `pubsub-redis.yaml` and paste the password as the value for the `redisPassword` metadata setting. Save the files.
+
+8.  Execute the `start.ps1` script.
 
 You can examine the logging for the 3 individual services in several different ways. Let's do it using the Docker CLI:
 
@@ -150,7 +158,7 @@ You can examine the logging for the 3 individual services in several different w
     docker logs e2ed262f836e
     ```
 
-To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` or `stop.sh` script.
+To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` script.
 
 ## Disclaimer
 The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several Dapr concepts and not being a full fledged application that can be put into production as is.

@@ -1,8 +1,6 @@
-# kubectl create secret generic rdw-api-key --from-file ./rdw-api-key
-
-kubectl apply -n dapr-trafficcontrol `
-    -f secret.yaml `
+kubectl apply `
     -f namespace.yaml `
+    -f secret.yaml `
     -f pubsub-redis.yaml `
     -f state-redis.yaml `
     -f trafficcontrolservice.yaml `

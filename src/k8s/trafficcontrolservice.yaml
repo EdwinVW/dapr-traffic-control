@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: trafficcontrolservice
+  namespace: dapr-trafficcontrol
   labels:
     app: trafficcontrolservice
 spec:
