@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Client" Version="0.11.0-preview02" />
+    <PackageReference Include="Dapr.Client" Version="0.12.0-preview01" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 | Attribute            | Details             |
 | -------------------- | ------------------- |
-| Dapr runtime version | v0.11.3             |
+| Dapr runtime version | v1.0.0-rc1          |
 | Language             | C# (.NET Core)      |
 | Environment          | Local or Kubernetes |
 
