@@ -2,7 +2,9 @@
 
 | Attribute            | Details             |
 | -------------------- | ------------------- |
-| Dapr runtime version | v1.0.0-rc1          |
+| Dapr runtime version | v1.0.0-rc.2         |
+| .NET SDK version     | v1.0.0-rc02         |
+| Dapr CLI version     | v1.0.0-rc.2         |
 | Language             | C# (.NET Core)      |
 | Environment          | Local or Kubernetes |
 
@@ -62,19 +64,19 @@ Execute the following steps to run the sample application in self hosted mode:
 3. In the first shell, change the current folder to the *src/GovernmentService* folder of this repo and execute the following command (using the Dapr cli) to run the **GovernmentService**:
 
     ```
-    dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 --components-path ../components dotnet run
+    dapr run --app-id governmentservice --app-port 6000 --dapr-grpc-port 50002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
 4. In the second shell, change the current folder to the *src/TrafficControlService* folder of this repo and execute the following command (using the Dapr cli) to run the **TrafficControlService**:
 
     ```
-    dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 --components-path ../components dotnet run
+    dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-grpc-port 50001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
 5. In the third shell, change the current folder to the *src/Simulation* folder of this repo and execute the following command to run the **Simulation**:
 
     ```
-    dapr run --app-id simulation --dapr-grpc-port 50003 --components-path ../components dotnet run
+    dapr run --app-id simulation --dapr-grpc-port 50003 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
 You should now see logging in each of the shells, similar to the logging shown below:
