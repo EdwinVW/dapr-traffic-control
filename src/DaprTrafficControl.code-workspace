@@ -13,7 +13,7 @@
 			"path": "./k8s"
 		},
 		{
-			"path": "components"
+			"path": "./dapr"
 		}
 	],
 	"settings": {},

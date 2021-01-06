@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
-using Dapr.Client.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TrafficControlService.Events;
@@ -44,7 +44,7 @@ namespace TrafficControlService.Controllers
             var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
                 "governmentservice",
                 $"rdw/{apiKey}/vehicle/{msg.LicenseNumber}",
-                new HTTPExtension { Verb = HTTPVerb.Get });
+                new HttpInvocationOptions { Method = HttpMethod.Get });
 
             // log entry
             _logger.LogInformation($"ENTRY detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")}: " +
