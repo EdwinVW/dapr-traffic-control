@@ -18,6 +18,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "governmentservice"
         dapr.io/app-port: "6000"
+        dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: governmentservice
