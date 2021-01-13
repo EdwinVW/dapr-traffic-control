@@ -17,6 +17,7 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "simulation"
+        dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: simulation

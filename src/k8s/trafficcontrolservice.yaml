@@ -18,6 +18,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "trafficcontrolservice"
         dapr.io/app-port: "5000"
+        dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: trafficcontrolservice
