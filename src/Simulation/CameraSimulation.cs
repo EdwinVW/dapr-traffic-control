@@ -8,15 +8,20 @@ namespace Simulation
     public class CameraSimulation
     {
         private Random _rnd;
-
+        private int _camNumber;
         private int _minEntryDelayInMS = 50;
         private int _maxEntryDelayInMS = 5000;
         private int _minExitDelayInS = 4;
         private int _maxExitDelayInS = 8;
 
-        public void Start(int camNumber)
+        public CameraSimulation(int camNumber)
         {
-            Console.WriteLine($"Start camera {camNumber} simulation.");
+            _camNumber = camNumber;
+        }
+
+        public void Start()
+        {
+            Console.WriteLine($"Start camera {_camNumber} simulation.");
 
             // initialize state
             _rnd = new Random();
@@ -39,7 +44,7 @@ namespace Simulation
                     DateTime entryTimestamp = DateTime.Now;
                         var @event = new VehicleRegistered
                         {
-                            Lane = _rnd.Next(1, 4),
+                            Lane = _camNumber,
                             LicenseNumber = GenerateRandomLicenseNumber(),
                             Timestamp = entryTimestamp
                         };
