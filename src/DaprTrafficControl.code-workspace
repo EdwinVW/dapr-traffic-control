@@ -1,19 +1,19 @@
 {
 	"folders": [
 		{
-			"path": "./TrafficControlService"
-		},
-		{
 			"path": "./GovernmentService"
 		},
 		{
 			"path": "./Simulation"
 		},
 		{
-			"path": "./k8s"
+			"path": "./TrafficControlService"
 		},
 		{
 			"path": "./dapr"
+		},		
+		{
+			"path": "./k8s"
 		}
 	],
 	"settings": {},

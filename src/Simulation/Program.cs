@@ -8,13 +8,13 @@ namespace Simulation
     {
         static void Main(string[] args)
         {
-            var cam1 = new CameraSimulation();
-            var cam2 = new CameraSimulation();
-            var cam3 = new CameraSimulation();
-
-            Task.Run(() => cam1.Start(1));
-            Task.Run(() => cam2.Start(2));
-            Task.Run(() => cam3.Start(3));
+            int lanes = 3;
+            CameraSimulation[] cameras = new CameraSimulation[lanes];
+            for (var i = 0; i < lanes; i++)
+            {
+                cameras[i] = new CameraSimulation(i + 1);
+            }
+            Parallel.ForEach(cameras, cam => cam.Start());
 
             Task.Run(() => Thread.Sleep(Timeout.Infinite)).Wait();
         }
