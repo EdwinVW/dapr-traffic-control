@@ -4,5 +4,4 @@ dapr run `
     --dapr-grpc-port 50001 `
     --config ../dapr/config/config.yaml `
     --components-path ../dapr/components `
-    --app-max-concurrency 1 `
     dotnet run
