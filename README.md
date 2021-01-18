@@ -10,8 +10,6 @@
 
 This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
 
-> If you would like to learn how you can add Dapr to this sample application, go to [this repository](https://github.com/EdwinVW/dapr-hands-on). It contains a workshop with several assignments. You will start with the traffic-control sample application in which all services communicate using simple HTTP requests. In each assignment, you will change a part of the application so it works with Dapr (or "rub some Dapr on it" as Donovan Brown would say). You can follow the step-by-step instructions in each assignment and learn about leveraging Dapr.
-
 ## Overview
 This is an overview of the fictitious setup I'm simulating in this sample:
 
