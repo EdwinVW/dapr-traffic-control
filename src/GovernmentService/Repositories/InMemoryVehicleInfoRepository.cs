@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using GovernmentService.Models;
 
 namespace GovernmentService.Repositories
@@ -24,6 +25,9 @@ namespace GovernmentService.Repositories
 
         public VehicleInfo GetVehicleInfo(string licenseNumber)
         {
+            // simulate slow IO
+            Thread.Sleep(_rnd.Next(5, 200));
+
             string brand = GetRandomBrand();
             string model = GetRandomModel(brand);
             return new VehicleInfo

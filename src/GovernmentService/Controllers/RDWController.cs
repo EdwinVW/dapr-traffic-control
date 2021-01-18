@@ -13,21 +13,22 @@ namespace GovernmentService.Controllers
     {
         private readonly ILogger<RDWController> _logger;
         private readonly IVehicleInfoRepository _vehicleInfoRepository;
-        private readonly string _secretStoreName;
         private string _expectedAPIKey;
+        private Random _rnd;
 
         public RDWController(ILogger<RDWController> logger,
             IVehicleInfoRepository vehicleInfoRepository, DaprClient daprClient)
         {
             _logger = logger;
             _vehicleInfoRepository = vehicleInfoRepository;
+            _rnd = new Random();
 
             // specify secret-store to use based on hosting environment
             string runningInK8s = (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false").ToLowerInvariant();
-            _secretStoreName = runningInK8s == "true" ? "kubernetes" : "secret-store-file";
+            string secretStoreName = runningInK8s == "true" ? "kubernetes" : "secret-store-file";
 
             // get API key
-            var apiKeySecret = daprClient.GetSecretAsync(_secretStoreName, "rdw-api-key",
+            var apiKeySecret = daprClient.GetSecretAsync(secretStoreName, "rdw-api-key",
                 new Dictionary<string,string>{ { "namespace", "dapr-trafficcontrol" } }).Result;
             _expectedAPIKey = apiKeySecret["rdw-api-key"];
         }
