@@ -46,11 +46,14 @@ The way the simulation works is depicted in the sequence diagram below:
 All actions described in this sequence are logged to the console during execution so you can follow the flow.
 
 ## Dapr
-This sample uses Dapr for implementing several aspects of the application. For communicating messages, the **publish and subscribe** building-block is used. For doing request/response type communication with a service, the  **service-to-service invocation** building-block is used. And for storing the state of a vehicle, the **state management** building-block is used. The RDW controller in the GovernmentService has an operation `GetVehicleInfo` that must be called with an API key in the URI. The TrafficControlService uses the **secrets management** building block to get the API key. The GovernmentService also gets the API key from the secrets management building block in order to check the key.
-
-In the diagram below you see a schematic overview of the setup:
+This sample uses Dapr for implementing several aspects of the application. In the diagram below you see a schematic overview of the setup:
 
 ![](img/dapr-setup.png)
+
+1. For communicating messages, the **publish and subscribe** building-block is used. 
+1. For doing request/response type communication with a service, the  **service-to-service invocation** building-block is used. 
+1. For storing the state of a vehicle, the **state management** building-block is used. 
+1. The RDW controller in the GovernmentService has an operation `GetVehicleInfo` that uses a `VehicleInfoRepository` to retrieve vehicle data. The constructor of this repository expects a connection-string as argument. This connection-string is stored in a secrets file. The GovernmentService uses the **secrets management** building block with the local file component to get the connection-string.
 
 In this sample, the Reddis component is used for both state management as well as for pub/sub.
 

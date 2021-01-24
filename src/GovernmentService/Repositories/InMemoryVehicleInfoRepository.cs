@@ -7,9 +7,11 @@ namespace GovernmentService.Repositories
 {
     public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
     {
-        private Random _rnd = new Random();
-
-        private string[] _vehicleBrands = new string[] { "Mercedes", "Toyota", "Audi", "Volkswagen", "Seat", "Renault", "Skoda", "Kia" };
+        private readonly string _connectionString;
+        private readonly Random _rnd = new Random();
+        private readonly string[] _vehicleBrands = new string[] {
+            "Mercedes", "Toyota", "Audi", "Volkswagen", "Seat", "Renault", "Skoda", 
+            "Kia", "Citroën", "Suzuki", "Mitsubishi", "Fiat", "Opel" };
 
         private Dictionary<string, string[]> _models = new Dictionary<string, string[]>
         {
@@ -21,7 +23,19 @@ namespace GovernmentService.Repositories
             { "Renault", new string[] { "Megane", "Clio", "Twingo", "Scenic", "Captur" } },
             { "Skoda", new string[] { "Octavia", "Fabia", "Superb", "Karoq", "Kodiaq" } },
             { "Kia", new string[] { "Picanto", "Rio", "Ceed", "XCeed", "Niro", "Sportage" } },
+            { "Citroën", new string[] { "C1", "C2", "C3", "C4", "C4 Cactus", "Berlingo" } },
+            { "Suzuki", new string[] { "Ignis", "Swift", "Vitara", "S-Cross", "Swace", "Jimny" } },
+            { "Mitsubishi", new string[] { "Space Star", "ASX", "Eclipse Cross", "Outlander PHEV" } },
+            { "Ford", new string[] { "Focus", "Ka", "C-Max", "Fusion", "Fiesta", "Mondeo", "Kuga" } },
+            { "BMW", new string[] { "1 Serie", "2 Serie", "3 Serie", "5 Serie", "7 Serie", "X5" } },
+            { "Fiat", new string[] { "500", "Panda", "Punto", "Tipo", "Multipla" } },
+            { "Opel", new string[] { "Karl", "Corsa", "Astra", "Crossland X", "Insignia" } }
         };
+
+        public InMemoryVehicleInfoRepository(string connectionString)
+        {
+            _connectionString = connectionString; // not used in the in-memory implementation
+        }
 
         public VehicleInfo GetVehicleInfo(string licenseNumber)
         {

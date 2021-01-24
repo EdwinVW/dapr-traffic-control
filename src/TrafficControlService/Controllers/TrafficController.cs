@@ -20,30 +20,21 @@ namespace TrafficControlService.Controllers
         private readonly ILogger<TrafficController> _logger;
         private readonly ISpeedingViolationCalculator _speedingViolationCalculator;
         private readonly string _roadId;
-        private readonly string _secretStoreName;
 
         public TrafficController(ILogger<TrafficController> logger, ISpeedingViolationCalculator speedingViolationCalculator)
         {
             _logger = logger;
             _speedingViolationCalculator = speedingViolationCalculator;
             _roadId = speedingViolationCalculator.GetRoadId();
-
-            // specify secret-store to use based on hosting environment
-            string runningInK8s = (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false").ToLowerInvariant();
-            _secretStoreName = runningInK8s == "true" ? "kubernetes" : "secret-store-file";
         }
 
         [Topic("pubsub", "trafficcontrol.entrycam")]
         [HttpPost("entrycam")]
         public async Task<ActionResult> VehicleEntry(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
-            // get vehicle details
-            var apiKeySecret = await daprClient.GetSecretAsync(_secretStoreName, "rdw-api-key",
-                new Dictionary<string,string>{ { "namespace", "dapr-trafficcontrol" } });
-            var apiKey = apiKeySecret["rdw-api-key"];
             var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
                 "governmentservice",
-                $"rdw/{apiKey}/vehicle/{msg.LicenseNumber}",
+                $"rdw/vehicle/{msg.LicenseNumber}",
                 new HttpInvocationOptions { Method = HttpMethod.Get });
 
             // log entry

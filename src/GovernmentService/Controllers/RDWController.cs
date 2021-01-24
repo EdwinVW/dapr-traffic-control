@@ -13,8 +13,7 @@ namespace GovernmentService.Controllers
     {
         private readonly ILogger<RDWController> _logger;
         private readonly IVehicleInfoRepository _vehicleInfoRepository;
-        private string _expectedAPIKey;
-        private Random _rnd;
+        private readonly Random _rnd;
 
         public RDWController(ILogger<RDWController> logger,
             IVehicleInfoRepository vehicleInfoRepository, DaprClient daprClient)
@@ -22,25 +21,11 @@ namespace GovernmentService.Controllers
             _logger = logger;
             _vehicleInfoRepository = vehicleInfoRepository;
             _rnd = new Random();
-
-            // specify secret-store to use based on hosting environment
-            string runningInK8s = (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false").ToLowerInvariant();
-            string secretStoreName = runningInK8s == "true" ? "kubernetes" : "secret-store-file";
-
-            // get API key
-            var apiKeySecret = daprClient.GetSecretAsync(secretStoreName, "rdw-api-key",
-                new Dictionary<string,string>{ { "namespace", "dapr-trafficcontrol" } }).Result;
-            _expectedAPIKey = apiKeySecret["rdw-api-key"];
         }
 
-        [HttpGet("rdw/{apikey}/vehicle/{licenseNumber}")]
-        public ActionResult<VehicleInfo> GetVehicleDetails(string apiKey, string licenseNumber)
+        [HttpGet("rdw/vehicle/{licenseNumber}")]
+        public ActionResult<VehicleInfo> GetVehicleDetails(string licenseNumber)
         {
-            if (apiKey != _expectedAPIKey)
-            {
-                return Unauthorized();
-            }
-
             _logger.LogInformation($"RDW: Retrieving vehicle-info for licensenumber {licenseNumber}");
             VehicleInfo info = _vehicleInfoRepository.GetVehicleInfo(licenseNumber);
             return info;
