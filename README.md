@@ -127,6 +127,8 @@ First you need to build the Docker images for the three services:
     docker build -t dapr-trafficcontrol/simulation:1.0 .
     ```
 
+> You can also use the `src/k8s/build-docker-images.ps1` script to build all the images.
+
 Now you're ready to run the application on Kubernetes:
 
 1. Make sure you have installed Dapr on your machine on a Kubernetes cluster as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
