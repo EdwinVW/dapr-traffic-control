@@ -108,7 +108,7 @@ First you need to build the Docker images for the three services:
 3. Build the Docker image:
 
     ```
-    docker build -t dapr-trafficcontrol/governmentservice .
+    docker build -t dapr-trafficcontrol/governmentservice:1.0 .
     ```
 
 4. Change the current folder to the *src/TrafficControlService* folder of this repo.
@@ -116,7 +116,7 @@ First you need to build the Docker images for the three services:
 5. Build the Docker image:
 
     ```
-    docker build -t dapr-trafficcontrol/trafficcontrolservice .
+    docker build -t dapr-trafficcontrol/trafficcontrolservice:1.0 .
     ```
 
 6. Change the current folder to the *src/Simulation* folder of this repo.
@@ -124,7 +124,7 @@ First you need to build the Docker images for the three services:
 7. Build the Docker image:
 
     ```
-    docker build -t dapr-trafficcontrol/simulation .
+    docker build -t dapr-trafficcontrol/simulation:1.0 .
     ```
 
 Now you're ready to run the application on Kubernetes:
