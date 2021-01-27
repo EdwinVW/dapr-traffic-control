@@ -139,15 +139,9 @@ Now you're ready to run the application on Kubernetes:
 
 4. Change the current folder to the *src/k8s* folder of this repo.
 
-5. Install Redis in your Kubernetes cluster by executing the `install-redis.ps1` script.
+5. Install Redis in your Kubernetes cluster by executing the `install-redis.ps1` script. This script will also create a namespace `dapr-trafficcontrol` and install Redis in that folder. 
 
-6. After the script has executed, a password is shown. Copy this password to your clipboard:
-
-    ![Redis password](img/redis-password.png)
-
-7. Open the files `state-redis.yaml` and `pubsub-redis.yaml` and paste the password as the value for the `redisPassword` metadata setting. Save the files.
-
-8.  Execute the `start.ps1` script.
+8.  Execute the `start.ps1` script. All services will be created in the `dapr-trafficcontrol` namespace.
 
 You can examine the logging for the 3 individual services in several different ways. Let's do it using the Docker CLI:
 
