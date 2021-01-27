@@ -7,6 +7,6 @@ spec:
   type: state.redis
   metadata:
   - name: "redisHost"
-    value: "redis-master.default.svc.cluster.local:6379"
+    value: "redis-master.dapr-trafficcontrol.svc.cluster.local:6379"
   - name: "redisPassword"
     value: "JOhCGe6Eau"
