@@ -9,4 +9,6 @@ spec:
   - name: "redisHost"
     value: "redis-master.dapr-trafficcontrol.svc.cluster.local:6379"
   - name: "redisPassword"
-    value: "JOhCGe6Eau"
+    secretKeyRef:
+      name: redis
+      key: redis-password
