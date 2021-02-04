@@ -13,14 +13,11 @@ namespace GovernmentService.Controllers
     {
         private readonly ILogger<RDWController> _logger;
         private readonly IVehicleInfoRepository _vehicleInfoRepository;
-        private readonly Random _rnd;
 
-        public RDWController(ILogger<RDWController> logger,
-            IVehicleInfoRepository vehicleInfoRepository, DaprClient daprClient)
+        public RDWController(ILogger<RDWController> logger, IVehicleInfoRepository vehicleInfoRepository)
         {
             _logger = logger;
             _vehicleInfoRepository = vehicleInfoRepository;
-            _rnd = new Random();
         }
 
         [HttpGet("rdw/vehicle/{licenseNumber}")]
