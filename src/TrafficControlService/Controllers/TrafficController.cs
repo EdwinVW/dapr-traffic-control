@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using TrafficControlService.Events;
 using TrafficControlService.Helpers;
 using TrafficControlService.Models;
+using TrafficControlService.Proxies;
 
 namespace TrafficControlService.Controllers
 {
@@ -30,14 +32,15 @@ namespace TrafficControlService.Controllers
 
         [Topic("pubsub", "trafficcontrol.entrycam")]
         [HttpPost("entrycam")]
-        public async Task<ActionResult> VehicleEntry(VehicleRegistered msg, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult> VehicleEntry(
+            VehicleRegistered msg, 
+            [FromServices] GovernmentService governmentService,
+            [FromServices] DaprClient daprClient)
         {
             try
             {
-                var vehicleInfo = await daprClient.InvokeMethodAsync<VehicleInfo>(
-                    "governmentservice",
-                    $"rdw/vehicle/{msg.LicenseNumber}",
-                    HttpInvocationOptions.UsingGet());
+                // use service-invocation to get vehicle info
+                var vehicleInfo = await governmentService.GetVehicleInfo(msg.LicenseNumber);
 
                 // log entry
                 _logger.LogInformation($"ENTRY detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")}: " +

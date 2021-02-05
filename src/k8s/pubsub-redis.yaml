@@ -5,6 +5,7 @@ metadata:
   namespace: dapr-trafficcontrol
 spec:
   type: pubsub.redis
+  version: v1  
   metadata:
   - name: "redisHost"
     value: "redis-master.dapr-trafficcontrol.svc.cluster.local:6379"

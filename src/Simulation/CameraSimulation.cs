@@ -27,7 +27,7 @@ namespace Simulation
             _rnd = new Random();
             var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50003";
             var daprClient = new DaprClientBuilder()
-                .UseEndpoint($"http://localhost:{daprGrpcPort}")
+                .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}")
                 .Build();
 
             while (true)

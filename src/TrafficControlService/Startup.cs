@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrafficControlService.Helpers;
+using Dapr.Client;
+using System.Net.Http;
+using TrafficControlService.Proxies;
 
 namespace TrafficControlService
 {
@@ -20,15 +23,13 @@ namespace TrafficControlService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ISpeedingViolationCalculator>(new DefaultSpeedingViolationCalculator("A2", 10, 100, 5));
+            services.AddSingleton<ISpeedingViolationCalculator>(
+                new DefaultSpeedingViolationCalculator("A2", 10, 100, 5));
+
+            services.AddSingleton<GovernmentService>(
+                _ => new GovernmentService(DaprClient.CreateInvokeHttpClient("governmentservice")));
 
             services.AddControllers().AddDapr();
-
-            services.AddDaprClient(builder => builder.UseJsonSerializationOptions(new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
