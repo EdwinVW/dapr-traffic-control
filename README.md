@@ -2,9 +2,9 @@
 
 | Attribute            | Details             |
 | -------------------- | ------------------- |
-| Dapr runtime version | v1.0.0-rc.2         |
-| .NET SDK version     | v1.0.0-rc02         |
-| Dapr CLI version     | v1.0.0-rc.2         |
+| Dapr runtime version | v1.0.0-rc.3         |
+| .NET SDK version     | v1.0.0-rc05         |
+| Dapr CLI version     | v1.0.0-rc.4         |
 | Language             | C# (.NET Core)      |
 | Environment          | Local or Kubernetes |
 
@@ -28,19 +28,19 @@ In order to simulate this in code, I created several services as shown below:
 
 - The **Simulation** is a .NET Core console application that will simulate passing cars.
 - The **TrafficControlService** is an ASP.NET Core WebAPI application that offers 2 endpoints: *Entrycam* and *ExitCam*.
-- The **Government** service is an ASP.NET Core WebAPI application that offers 2 endpoints: *RDW* (for retrieving vehicle information) and *CJIB* (for sending speeding tickets).
+- The **Government** service is an ASP.NET Core WebAPI application that offers 2 endpoints: *VehicleInfo* (for retrieving vehicle information) and *Collection* (for sending fines for speeding violations).
 
 The way the simulation works is depicted in the sequence diagram below:
 
 ![](img/sequence.png)
 
 1. The **Simulation** generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the *EntryCam* endpoint of the **TrafficControlService**.
-2. The **TrafficControlService** calls the *RDW* endpoint of the **GovernmentService** to retrieve the brand and model of the vehicle corresponding to the license-number.
+2. The **TrafficControlService** calls the *VehicleInfo* endpoint of the **GovernmentService** to retrieve the brand and model of the vehicle corresponding to the license-number.
 3. The **TrafficControlService** stores the VehicleState (vehicle information and entry-timestamp) in the state-store.
 4. After some random interval, the **Simulation** sends a *VehicleRegistered* message to the *ExitCam* endpoint of the **TrafficControlService** (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
 5. The **TrafficControlService** retrieves the VehicleState from the state-store.
 6. The **TrafficControlService** calculates the average speed of the vehicle using the entry- and exit-timestamp.
-7. If the average speed is above the speed-limit, the **TrafficControlService** will sent a *SpeedingViolationDetected* message (containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation) to the *CJIB* endpoint of the **GovernmentService**.
+7. If the average speed is above the speed-limit, the **TrafficControlService** calls the *Collection* endpoint of the **GovernmentService**. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
 8. The **GovernmentService** calculates the fine for the speeding-violation and simulates sending a speeding-ticket to the owner of the vehicle.
 
 All actions described in this sequence are logged to the console during execution so you can follow the flow.
@@ -53,7 +53,7 @@ This sample uses Dapr for implementing several aspects of the application. In th
 1. For communicating messages, the **publish and subscribe** building-block is used. 
 1. For doing request/response type communication with a service, the  **service-to-service invocation** building-block is used. 
 1. For storing the state of a vehicle, the **state management** building-block is used. 
-1. The RDW controller in the GovernmentService has an operation `GetVehicleInfo` that uses a `VehicleInfoRepository` to retrieve vehicle data. The constructor of this repository expects a connection-string as argument. This connection-string is stored in a secrets file. The GovernmentService uses the **secrets management** building block with the local file component to get the connection-string.
+1. The `VehicleInfoController` in the GovernmentService has an operation `GetVehicleInfo` that uses a `VehicleInfoRepository` to retrieve vehicle data. The constructor of this repository expects a connection-string as argument. This connection-string is stored in a secrets file. The GovernmentService uses the **secrets management** building block with the local file component to get the connection-string.
 
 In this sample, the Reddis component is used for both state management as well as for pub/sub.
 

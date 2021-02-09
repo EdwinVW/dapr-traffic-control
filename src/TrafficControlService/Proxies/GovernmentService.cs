@@ -24,7 +24,13 @@ namespace TrafficControlService.Proxies
         public async Task<VehicleInfo> GetVehicleInfo(string licenseNumber)
         {
             return await _httpClient.GetFromJsonAsync<VehicleInfo>(
-                $"rdw/vehicle/{licenseNumber}", _serializerOptions);
+                $"vehicleinfo/{licenseNumber}", _serializerOptions);
         }
+
+        public async Task SendFine(SpeedingViolation speedingViolation)
+        {
+            await _httpClient.PostAsJsonAsync<SpeedingViolation>(
+                $"collection/sendfine", speedingViolation, _serializerOptions);
+        }        
     }
 }

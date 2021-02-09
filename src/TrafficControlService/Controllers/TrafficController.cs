@@ -21,12 +21,17 @@ namespace TrafficControlService.Controllers
         private const string DAPR_STORE_NAME = "statestore";
         private readonly ILogger<TrafficController> _logger;
         private readonly ISpeedingViolationCalculator _speedingViolationCalculator;
+        private readonly GovernmentService _governmentService;
         private readonly string _roadId;
 
-        public TrafficController(ILogger<TrafficController> logger, ISpeedingViolationCalculator speedingViolationCalculator)
+        public TrafficController(
+            ILogger<TrafficController> logger, 
+            ISpeedingViolationCalculator speedingViolationCalculator,
+            GovernmentService governmentService)
         {
             _logger = logger;
             _speedingViolationCalculator = speedingViolationCalculator;
+            _governmentService = governmentService;
             _roadId = speedingViolationCalculator.GetRoadId();
         }
 
@@ -34,13 +39,12 @@ namespace TrafficControlService.Controllers
         [HttpPost("entrycam")]
         public async Task<ActionResult> VehicleEntry(
             VehicleRegistered msg, 
-            [FromServices] GovernmentService governmentService,
             [FromServices] DaprClient daprClient)
         {
             try
             {
                 // use service-invocation to get vehicle info
-                var vehicleInfo = await governmentService.GetVehicleInfo(msg.LicenseNumber);
+                var vehicleInfo = await _governmentService.GetVehicleInfo(msg.LicenseNumber);
 
                 // log entry
                 _logger.LogInformation($"ENTRY detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")}: " +
@@ -95,14 +99,14 @@ namespace TrafficControlService.Controllers
                     _logger.LogInformation($"Speeding violation detected ({violation} KMh) of {state.Value.Brand} {state.Value.Model} " +
                         $"with license-number {state.Value.LicenseNumber}.");
 
-                    var @event = new SpeedingViolationDetected
+                    var speedingViolation = new SpeedingViolation
                     {
                         VehicleId = msg.LicenseNumber,
                         RoadId = _roadId,
                         ViolationInKmh = violation,
                         Timestamp = msg.Timestamp
                     };
-                    await daprClient.PublishEventAsync<SpeedingViolationDetected>("pubsub", "cjib.speedingviolation", @event);
+                    await _governmentService.SendFine(speedingViolation);
                 }
 
                 return Ok();

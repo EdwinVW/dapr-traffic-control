@@ -1,8 +1,8 @@
 using System;
 
-namespace GovernmentService.Events
+namespace GovernmentService.Models
 {
-    public class SpeedingViolationDetected
+    public class SpeedingViolation
     {
         public string VehicleId { get; set; }
         public string RoadId { get; set; }

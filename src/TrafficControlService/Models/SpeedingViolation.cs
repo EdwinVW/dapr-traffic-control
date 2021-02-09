@@ -1,8 +1,8 @@
 using System;
 
-namespace TrafficControlService.Events
+namespace TrafficControlService.Models
 {
-    public class SpeedingViolationDetected
+    public class SpeedingViolation
     {
         public string VehicleId { get; set; }
         public string RoadId { get; set; }

@@ -50,6 +50,7 @@ namespace GovernmentService
                 endpoints.MapControllers();
             });
         }
+        
         private void RegisterVehicleInfoRepository(IServiceCollection services)
         {
             // specify secret-store to use based on hosting environment
