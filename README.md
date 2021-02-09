@@ -19,7 +19,7 @@ There's 1 entry-camera and 1 exit-camera per lane. When a car passes an entry-ca
 
 In the background, information about the vehicle  is retrieved from the Department Of Motor-vehicles - DMV (or RDW in Dutch) by calling their web-service.
 
-When the car passes an exit-camera, this is registered by the system. The system then calculates the average speed of the car based on the entry- and exit-timestamp. If a speeding violation is detected, a message is sent to the Central Judicial Collection Agency - CJCA (or CJIB in Dutch) will send a speeding-ticket to the driver of the vehicle.
+When the car passes an exit-camera, this is registered by the system. The system then calculates the average speed of the car based on the entry- and exit-timestamp. If a speeding violation is detected, a message is sent to the Central Judicial Collection Agency - CJCA (or CJIB in Dutch). They will send a speeding-ticket to the driver of the vehicle.
 
 ## Simulation
 In order to simulate this in code, I created several services as shown below:
@@ -28,7 +28,7 @@ In order to simulate this in code, I created several services as shown below:
 
 - The **Simulation** is a .NET Core console application that will simulate passing cars.
 - The **TrafficControlService** is an ASP.NET Core WebAPI application that offers 2 endpoints: *Entrycam* and *ExitCam*.
-- The **Government** service is an ASP.NET Core WebAPI application that offers 2 endpoints: *VehicleInfo* (for retrieving vehicle information) and *Collection* (for sending fines for speeding violations).
+- The **Government** service is an ASP.NET Core WebAPI application that offers 2 endpoints: *VehicleInfo* (for retrieving vehicle information) and *Collection* (for sending fines).
 
 The way the simulation works is depicted in the sequence diagram below:
 
