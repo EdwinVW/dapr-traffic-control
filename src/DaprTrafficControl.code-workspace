@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "./GovernmentService"
+			"path": "./FineCollectionService"
 		},
 		{
 			"path": "./Simulation"
@@ -10,10 +10,16 @@
 			"path": "./TrafficControlService"
 		},
 		{
+			"path": "./VehicleRegistrationService"
+		},
+		{
 			"path": "./dapr"
-		},		
+		},
 		{
 			"path": "./k8s"
+		},
+		{
+			"path": "Infrastructure"
 		}
 	],
 	"settings": {},

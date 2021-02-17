@@ -1,13 +1,9 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrafficControlService.Helpers;
-using Dapr.Client;
-using System.Net.Http;
-using TrafficControlService.Proxies;
+using TrafficControlService.DomainServices;
 
 namespace TrafficControlService
 {
@@ -24,10 +20,7 @@ namespace TrafficControlService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ISpeedingViolationCalculator>(
-                new DefaultSpeedingViolationCalculator("A2", 10, 100, 5));
-
-            services.AddSingleton<GovernmentService>(
-                _ => new GovernmentService(DaprClient.CreateInvokeHttpClient("governmentservice")));
+                new DefaultSpeedingViolationCalculator("A12", 10, 100, 5));
 
             services.AddControllers().AddDapr();
         }
@@ -48,7 +41,6 @@ namespace TrafficControlService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapSubscribeHandler();
                 endpoints.MapControllers();
             });
         }

@@ -5,11 +5,7 @@ metadata:
   namespace: dapr-trafficcontrol
 spec:
   type: state.redis
-  version: v1  
+  version: v1
   metadata:
   - name: "redisHost"
-    value: "redis-master.dapr-trafficcontrol.svc.cluster.local:6379"
-  - name: "redisPassword"
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: "redis:6379"

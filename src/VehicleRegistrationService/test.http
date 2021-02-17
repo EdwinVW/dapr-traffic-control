@@ -1,0 +1,6 @@
+// Get vehicle info by license-number
+GET http://127.0.0.1:5002/vehicleinfo/KZ-49-VX
+
+###
+
+GET http://127.0.0.1:3502/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/XS-51-BG

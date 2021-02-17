@@ -1,6 +1,8 @@
 using System;
+using System.Net.Mqtt;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Dapr.Client;
 using Simulation.Events;
 
 namespace Simulation
@@ -12,7 +14,7 @@ namespace Simulation
         private int _minEntryDelayInMS = 50;
         private int _maxEntryDelayInMS = 5000;
         private int _minExitDelayInS = 4;
-        private int _maxExitDelayInS = 8;
+        private int _maxExitDelayInS = 10;
 
         public CameraSimulation(int camNumber)
         {
@@ -25,10 +27,12 @@ namespace Simulation
 
             // initialize state
             _rnd = new Random();
-            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50003";
-            var daprClient = new DaprClientBuilder()
-                .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}")
-                .Build();
+
+            // connect to mqtt broker
+            var mqttHost = Environment.GetEnvironmentVariable("MQTT_HOST") ?? "localhost";
+            var client = MqttClient.CreateAsync(mqttHost, 1883).Result;
+            var sessionState = client.ConnectAsync(
+                new MqttClientCredentials(clientId: $"camerasim{_camNumber}")).Result;
 
             while (true)
             {
@@ -40,23 +44,27 @@ namespace Simulation
 
                     Task.Run(() =>
                     {
-                    // simulate entry
-                    DateTime entryTimestamp = DateTime.Now;
+                        // simulate entry
+                        DateTime entryTimestamp = DateTime.Now;
                         var @event = new VehicleRegistered
                         {
                             Lane = _camNumber,
                             LicenseNumber = GenerateRandomLicenseNumber(),
                             Timestamp = entryTimestamp
                         };
-                        daprClient.PublishEventAsync("pubsub", "trafficcontrol.entrycam", @event).Wait();
+                        var eventJson = JsonSerializer.Serialize(@event);
+                        var message = new MqttApplicationMessage("trafficcontrol/entrycam", Encoding.UTF8.GetBytes(eventJson));
+                        client.PublishAsync(message, MqttQualityOfService.AtMostOnce).Wait();
                         Console.WriteLine($"Simulated ENTRY of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
 
-                    // simulate exit
-                    TimeSpan exitDelay = TimeSpan.FromSeconds(_rnd.Next(_minExitDelayInS, _maxExitDelayInS) + _rnd.NextDouble());
+                        // simulate exit
+                        TimeSpan exitDelay = TimeSpan.FromSeconds(_rnd.Next(_minExitDelayInS, _maxExitDelayInS) + _rnd.NextDouble());
                         Task.Delay(exitDelay).Wait();
                         @event.Timestamp = DateTime.Now;
                         @event.Lane = _rnd.Next(1, 4);
-                        daprClient.PublishEventAsync("pubsub", "trafficcontrol.exitcam", @event).Wait();
+                        eventJson = JsonSerializer.Serialize(@event);
+                        message = new MqttApplicationMessage("trafficcontrol/exitcam", Encoding.UTF8.GetBytes(eventJson));
+                        client.PublishAsync(message, MqttQualityOfService.AtMostOnce).Wait();
                         Console.WriteLine($"Simulated EXIT of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
                     });
                 }

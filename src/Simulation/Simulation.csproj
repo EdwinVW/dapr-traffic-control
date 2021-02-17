@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Client" Version="1.0.0-rc05" />
+    <PackageReference Include="System.Net.Mqtt" Version="0.6.7-beta" />
   </ItemGroup>
 
 </Project>

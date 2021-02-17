@@ -14,11 +14,10 @@ spec:
     metadata:
       labels:
         app: simulation
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/app-id: "simulation"
-        dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: simulation
         image: dapr-trafficcontrol/simulation:1.0
+        env:
+          - name: MQTT_HOST
+            value: mosquitto.dapr-trafficcontrol.svc.cluster.local
