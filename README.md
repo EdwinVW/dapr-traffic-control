@@ -8,7 +8,7 @@
 | Language             | C# (.NET Core)      |
 | Environment          | Local or Kubernetes |
 
-This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. Over the entire stretch the average speed of a vehicle is measured and if it is above the speeding limit on this highway, the driver of the vehicle receives a speeding ticket.
+This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. A set of cameras are placed at the beginning and the end of a stretch of highway. Using data from these cameras, the average speed of a vehicle is measured. If this average speed is above the speeding limit on this highway, the driver of the vehicle receives a fine.
 
 ## Overview
 
@@ -16,15 +16,13 @@ This is an overview of the fictitious setup I'm simulating in this sample:
 
 ![Speed trap overview](img/speed-trap-overview.png)
 
-There's 1 entry-camera and 1 exit-camera per lane. When a car passes an entry-camera, the license-number of the car is registered.
+There's 1 entry-camera and 1 exit-camera per lane. When a car passes an entry-camera, the license-number of the car and the timestamp is registered.
 
-In the background, information about the vehicle  is retrieved from the Department Of Motor-vehicles - DMV (or RDW in Dutch) by calling their web-service.
-
-When the car passes an exit-camera, this is registered by the system. The system then calculates the average speed of the car based on the entry- and exit-timestamp. If a speeding violation is detected, a message is sent to the Central Judicial Collection Agency - CJCA (or CJIB in Dutch). They will send a speeding-ticket to the driver of the vehicle.
+When the car passes an exit-camera, this timestamp is also registered by the system. The system then calculates the average speed of the car based on the entry- and exit-timestamp. If a speeding violation is detected, a message is sent to the Central Fine Collection Agency (or CJIB in Dutch). They will retrieve the information of the owner of the vehicle and send him or her a fine.
 
 ## Simulation
 
-In order to simulate this in code, I created several services as shown below:
+In order to simulate this in code, I created the following services:
 
 ![Services](img/services.png)
 
@@ -38,7 +36,7 @@ The way the simulation works is depicted in the sequence diagram below:
 ![Sequence diagram](img/sequence.png)
 
 1. The **Camera Simulation** generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the *EntryCam* endpoint of the **TCS**.
-1. The **TCS** stores the VehicleState (vehicle information and entry-timestamp).
+1. The **TCS** stores the VehicleState (license-number and entry-timestamp).
 1. After some random interval, the **Camera Simulation** sends a *VehicleRegistered* message to the *ExitCam* endpoint of the **TCS** (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
 1. The **TCS** retrieves the VehicleState that was stored at vehicle entry.
 1. The **TCS** calculates the average speed of the vehicle using the entry- and exit-timestamp.
@@ -74,16 +72,16 @@ Start infrastructure components:
 
 1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
 2. Open a new command-shell.
-3. Go to the folder `src/infrastructure` folder.
-4. Start the infrastructure services by executing `start-all.ps1` script. This script will start Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually sends out emails (by default). But it offers a web frontend for inspecting the emails that were sent to it.
+3. Change the current folder to the `src/infrastructure` folder of this repo.
+4. Start the infrastructure services by executing `start-all.ps1` script. This script will start Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually send out emails (by default). Instead, it offers a web frontend that will act as an email in-box showing the emails that were sent to the SMTP server. This is very convenient for demos of testscenarios.
 
 Start the services:
 
-1. Open new command-shell.
+1. Open a new command-shell.
 
-2. Change the current folder to the `src/VehicleRegistrationService` folder of this repo.
+1. Change the current folder to the `src/VehicleRegistrationService` folder of this repo.
 
-3. Execute the following command (using the Dapr cli) to run the **VRS**:
+1. Execute the following command (using the Dapr cli) to run the **VRS**:
 
     ```console
     dapr run --app-id vehicleregistrationservice --app-port 5002 --dapr-http-port 3502 --dapr-grpc-port 50002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -91,11 +89,11 @@ Start the services:
 
     >  Alternatively you can also run the `start-selfhosted.ps1` script.
 
-4. Open new command-shell.
+1. Open a new command-shell.
 
-5. Change the current folder to the `src/FineCollectionService` folder of this repo.
+1. Change the current folder to the `src/FineCollectionService` folder of this repo.
 
-6. Execute the following command (using the Dapr cli) to run the **FCS**:
+1. Execute the following command (using the Dapr cli) to run the **FCS**:
 
     ```console
     dapr run --app-id finecollectionservice --app-port 5001 --dapr-http-port 3501 --dapr-grpc-port 50001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -103,11 +101,11 @@ Start the services:
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.
 
-7. Open new command-shell.
+1. Open a new command-shell.
 
-8. Change the current folder to the `src/TrafficControlService` folder of this repo.
+1. Change the current folder to the `src/TrafficControlService` folder of this repo.
 
-9. Execute the following command (using the Dapr cli) to run the **TCS**:
+1. Execute the following command (using the Dapr cli) to run the **TCS**:
 
     ```console
     dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-http-port 3500 --dapr-grpc-port 50000 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -115,11 +113,11 @@ Start the services:
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.
 
-10. Open new command-shell.
+1. Open a new command-shell.
 
-11. Change the current folder to the `src/Simulation` folder of this repo.
+1. Change the current folder to the `src/Simulation` folder of this repo.
 
-12. Execute the following command to run the **Simulation**:
+1. Execute the following command to run the **Simulation**:
 
      ```console
      dotnet run
@@ -143,7 +141,7 @@ You should now see logging in each of the shells, similar to the logging shown b
 
 ![VehicleRegistrationService logging](img/logging-vehicleregistrationservice.png)
 
-To see the email that are sent by the FCS, open a browser and browse to [http://localhost:4000](http://localhost:4000). You should see the emails coming in:
+To see the emails that are sent by the FCS, open a browser and browse to [http://localhost:4000](http://localhost:4000). You should see the emails coming in:
 
 ![Mailbox](img/mailbox.png)
 
@@ -151,27 +149,17 @@ To see the email that are sent by the FCS, open a browser and browse to [http://
 
 Execute the following steps to run the sample application on Kubernetes:
 
-First you need to build the Docker images used when running in Kubernetes:
-
-1. Open a command-shell.
-
-2. Change the current folder to the *src/k8s* folder of this repo.
-
-3. Run the `build-docker-images.ps1` script to build all the Docker images.
-
-Now you're ready to run the application on Kubernetes.
-
 1. Make sure you have installed Dapr on your machine on a Kubernetes cluster as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
 
-1. Make sure you have built the Docker images for the services so they are available on your machine.
+1. Open a new command-shell.
 
-1. Open a command-shell.
+1. Change the current folder to the `src/k8s` folder of this repo.
 
-1. Change the current folder to the *src/k8s* folder of this repo.
+1. Run the `build-docker-images.ps1` script. This script will build Docker images for all the services and a custom Mosquitto image used when running on Kubernetes.
 
 1. Execute the `start.ps1` script. All services will be created in the `dapr-trafficcontrol` namespace.
 
-You can examine the logging for the services in several different ways. Let's do it using the Docker CLI:
+You can check whether everything is running correctly by examining the container logs. There are several ways of doing that. Let's do it using the Docker CLI:
 
 1. Find out the container Id of the services:
 
@@ -179,7 +167,7 @@ You can examine the logging for the services in several different ways. Let's do
     docker ps
     ```
 
-  > Make sure you pick the Id of a container running the .NET service and not the Dapr sidecar (the command will start with `/daprd`). If you do pick the Id of a Dapr sidecar container, you can check out the Dapr logging emitted by the sidecar.
+  > For every service, 2 containers will be running: the service and the Dapr sidecar. Make sure you pick the Id of a container running the .NET service and not the Dapr sidecar. 
 
 1. View the log for each of the services (replace the Id with the Id of one of your services):
 
