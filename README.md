@@ -3,9 +3,10 @@
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
 | Dapr runtime version | v1.0.0                    |
-| .NET SDK version     | v1.0.0                    |
+| Dapr.NET SDK version | v1.0.0                    |
 | Dapr CLI version     | v1.0.0                    |
-| Language             | C# (.NET 5   )            |
+| Language             | C#                        |
+| Platform             | .NET 5                    |
 | Environment          | Self hosted or Kubernetes |
 
 This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. A set of cameras are placed at the beginning and the end of a stretch of highway. Using data from these cameras, the average speed of a vehicle is measured. If this average speed is above the speeding limit on this highway, the driver of the vehicle receives a fine.
@@ -181,11 +182,13 @@ To stop the application and remove everything from the Kubernetes cluster, execu
 
 ## Dapr for .NET Developers
 
-If you want to learn more about Dapr, read this book that was co-authored by the creator of this sample application.
+If you want to learn more about Dapr, read this book that was co-authored by the creator of this sample application:
 
 ![Dapr for .NET Developers](img/dapr-for-net-devs-cover-thumb.png)
 
 [Dowload the PDF](https://aka.ms/dapr-ebook)  |  [Read it online](https://docs.microsoft.com/dotnet/architecture/dapr-for-net-developers/)
+
+Although the book is targeted at .NET developers, it covers all the concepts and generic APIs of Dapr. So it should also be useful for developers that use a different technology stack.
 
 ## Disclaimer
 
