@@ -1,14 +1,13 @@
 using System;
-using System.Net.Mqtt;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Simulation.Events;
+using Simulation.Proxies;
 
 namespace Simulation
 {
     public class CameraSimulation
     {
+        private readonly ITrafficControlService _trafficControlService;
         private Random _rnd;
         private int _camNumber;
         private int _minEntryDelayInMS = 50;
@@ -16,9 +15,10 @@ namespace Simulation
         private int _minExitDelayInS = 4;
         private int _maxExitDelayInS = 10;
 
-        public CameraSimulation(int camNumber)
+        public CameraSimulation(int camNumber, ITrafficControlService trafficControlService)
         {
             _camNumber = camNumber;
+            _trafficControlService = trafficControlService;
         }
 
         public void Start()
@@ -27,12 +27,6 @@ namespace Simulation
 
             // initialize state
             _rnd = new Random();
-
-            // connect to mqtt broker
-            var mqttHost = Environment.GetEnvironmentVariable("MQTT_HOST") ?? "localhost";
-            var client = MqttClient.CreateAsync(mqttHost, 1883).Result;
-            var sessionState = client.ConnectAsync(
-                new MqttClientCredentials(clientId: $"camerasim{_camNumber}")).Result;
 
             while (true)
             {
@@ -46,26 +40,22 @@ namespace Simulation
                     {
                         // simulate entry
                         DateTime entryTimestamp = DateTime.Now;
-                        var @event = new VehicleRegistered
+                        var vehicleRegistered = new VehicleRegistered
                         {
                             Lane = _camNumber,
                             LicenseNumber = GenerateRandomLicenseNumber(),
                             Timestamp = entryTimestamp
                         };
-                        var eventJson = JsonSerializer.Serialize(@event);
-                        var message = new MqttApplicationMessage("trafficcontrol/entrycam", Encoding.UTF8.GetBytes(eventJson));
-                        client.PublishAsync(message, MqttQualityOfService.AtMostOnce).Wait();
-                        Console.WriteLine($"Simulated ENTRY of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
+                        _trafficControlService.SendVehicleEntry(vehicleRegistered);
+                        Console.WriteLine($"Simulated ENTRY of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
 
                         // simulate exit
                         TimeSpan exitDelay = TimeSpan.FromSeconds(_rnd.Next(_minExitDelayInS, _maxExitDelayInS) + _rnd.NextDouble());
                         Task.Delay(exitDelay).Wait();
-                        @event.Timestamp = DateTime.Now;
-                        @event.Lane = _rnd.Next(1, 4);
-                        eventJson = JsonSerializer.Serialize(@event);
-                        message = new MqttApplicationMessage("trafficcontrol/exitcam", Encoding.UTF8.GetBytes(eventJson));
-                        client.PublishAsync(message, MqttQualityOfService.AtMostOnce).Wait();
-                        Console.WriteLine($"Simulated EXIT of vehicle with license-number {@event.LicenseNumber} in lane {@event.Lane}");
+                        vehicleRegistered.Timestamp = DateTime.Now;
+                        vehicleRegistered.Lane = _rnd.Next(1, 4);
+                        _trafficControlService.SendVehicleExit(vehicleRegistered);
+                        Console.WriteLine($"Simulated EXIT of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
                     });
                 }
                 catch (Exception ex)
