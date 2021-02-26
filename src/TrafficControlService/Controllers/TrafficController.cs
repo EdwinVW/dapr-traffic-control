@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using TrafficControlService.Events;
 using TrafficControlService.DomainServices;
 using TrafficControlService.Models;
+using TrafficControlService.Repositories;
 
 namespace TrafficControlService.Controllers
 {
@@ -12,24 +13,24 @@ namespace TrafficControlService.Controllers
     [Route("")]
     public class TrafficController : ControllerBase
     {
-        private const string DAPR_STORE_NAME = "statestore";
         private readonly ILogger<TrafficController> _logger;
+        private readonly IVehicleStateRepository _vehicleStateRepository;
         private readonly ISpeedingViolationCalculator _speedingViolationCalculator;
         private readonly string _roadId;
 
         public TrafficController(
             ILogger<TrafficController> logger, 
+            IVehicleStateRepository vehicleStateRepository,
             ISpeedingViolationCalculator speedingViolationCalculator)
         {
             _logger = logger;
+            _vehicleStateRepository = vehicleStateRepository;
             _speedingViolationCalculator = speedingViolationCalculator;
             _roadId = speedingViolationCalculator.GetRoadId();
         }
 
         [HttpPost("entrycam")]
-        public async Task<ActionResult> VehicleEntry(
-            VehicleRegistered msg, 
-            [FromServices] DaprClient daprClient)
+        public async Task<ActionResult> VehicleEntry(VehicleRegistered msg)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace TrafficControlService.Controllers
                     LicenseNumber = msg.LicenseNumber,
                     EntryTimestamp = msg.Timestamp
                 };
-                await daprClient.SaveStateAsync<VehicleState>(DAPR_STORE_NAME, msg.LicenseNumber, vehicleState);
+                await _vehicleStateRepository.SaveVehicleStateAsync(vehicleState);
 
                 return Ok();
             }
@@ -54,15 +55,13 @@ namespace TrafficControlService.Controllers
         }
 
         [HttpPost("exitcam")]
-        public async Task<ActionResult> VehicleExit(
-            VehicleRegistered msg,
-            [FromServices] DaprClient daprClient)
+        public async Task<ActionResult> VehicleExit(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
             try
             {
                 // get vehicle state
-                var state = await daprClient.GetStateEntryAsync<VehicleState>(DAPR_STORE_NAME, msg.LicenseNumber);
-                if (state.Value == null)
+                var state = await _vehicleStateRepository.GetVehicleStateAsync(msg.LicenseNumber);
+                if (state == null)
                 {
                     return NotFound();
                 }
@@ -72,15 +71,15 @@ namespace TrafficControlService.Controllers
                     $"of vehicle with license-number {msg.LicenseNumber}.");
 
                 // update state
-                state.Value.ExitTimestamp = msg.Timestamp;
-                await state.SaveAsync();
+                state.ExitTimestamp = msg.Timestamp;
+                await _vehicleStateRepository.SaveVehicleStateAsync(state);
 
                 // handle possible speeding violation
-                int violation = _speedingViolationCalculator.DetermineSpeedingViolationInKmh(state.Value.EntryTimestamp, state.Value.ExitTimestamp);
+                int violation = _speedingViolationCalculator.DetermineSpeedingViolationInKmh(state.EntryTimestamp, state.ExitTimestamp);
                 if (violation > 0)
                 {
                     _logger.LogInformation($"Speeding violation detected ({violation} KMh) of vehicle" +
-                        $"with license-number {state.Value.LicenseNumber}.");
+                        $"with license-number {state.LicenseNumber}.");
 
                     var speedingViolation = new SpeedingViolation
                     {

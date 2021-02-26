@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrafficControlService.DomainServices;
+using TrafficControlService.Repositories;
 
 namespace TrafficControlService
 {
@@ -21,6 +22,8 @@ namespace TrafficControlService
         {
             services.AddSingleton<ISpeedingViolationCalculator>(
                 new DefaultSpeedingViolationCalculator("A12", 10, 100, 5));
+
+            services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
             services.AddControllers().AddDapr();
         }
