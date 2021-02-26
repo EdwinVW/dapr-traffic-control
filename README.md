@@ -28,22 +28,22 @@ In order to simulate this in code, I created the following services:
 ![Services](img/services.png)
 
 - The **Camera Simulation** is a .NET Core console application that will simulate passing cars.
-- The **Traffic Control Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: */entrycam* and */exitcam*.
-- The **Fine Collection Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: */collectfine* for for collecting fines.
-- The **Vehicle Registration Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: */getvehicleinfo/{license-number}* for getting the vehicle- and owner-information of speeding vehicle.
+- The **Traffic Control Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: `/entrycam` and `/exitcam`.
+- The **Fine Collection Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: `/collectfine` for for collecting fines.
+- The **Vehicle Registration Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: `/vehicleinfo/{license-number}` for getting the vehicle- and owner-information of speeding vehicle.
 
 The way the simulation works is depicted in the sequence diagram below:
 
 ![Sequence diagram](img/sequence.png)
 
-1. The Camera Simulation generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the */entrycam* endpoint of the TrafficControlService.
+1. The Camera Simulation generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the `/entrycam` endpoint of the TrafficControlService.
 1. The TrafficControlService stores the VehicleState (license-number and entry-timestamp).
-1. After some random interval, the Camera Simulation sends a *VehicleRegistered* message to the */exitcam* endpoint of the TrafficControlService (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
+1. After some random interval, the Camera Simulation sends a *VehicleRegistered* message to the `/exitcam` endpoint of the TrafficControlService (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
 1. The TrafficControlService retrieves the VehicleState that was stored at vehicle entry.
 1. The TrafficControlService calculates the average speed of the vehicle using the entry- and exit-timestamp.
-1. If the average speed is above the speed-limit, the TrafficControlService calls the */collectfine* endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
+1. If the average speed is above the speed-limit, the TrafficControlService calls the `/collectfine` endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
 1. The FineCollectionService calculates the fine for the speeding-violation.
-1. The FineCollectionSerivice calls the */getvehicleinfo/{license-number}* endpoint of the VehicleRegistrationService with the license-number of the speeding vehicle to retrieve its vehicle- and owner-information.
+1. The FineCollectionSerivice calls the `/vehicleinfo/{license-number}` endpoint of the VehicleRegistrationService with the license-number of the speeding vehicle to retrieve its vehicle- and owner-information.
 1. The FineCollectionService sends a fine to the owner of the vehicle by email.
 
 All actions described in this sequence are logged to the console during execution so you can follow the flow.
