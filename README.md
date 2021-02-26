@@ -28,23 +28,23 @@ In order to simulate this in code, I created the following services:
 ![Services](img/services.png)
 
 - The **Camera Simulation** is a .NET Core console application that will simulate passing cars.
-- The **Traffic Control Service** (or **TCS**) is an ASP.NET Core WebAPI application that offers 2 endpoints: *Entrycam* and *ExitCam*.
-- The **Fine Collection Service** (or **FCS**) is an ASP.NET Core WebAPI application that offers 1 endpoint: *CollectFine* for for collecting fines.
-- The **Vehicle Registration Service** (or **VRS**) is an ASP.NET Core WebAPI application that offers 2 endpoints: *GetOwnerInfo* for for getting the contact information of the driver of a speeding vehicle.
+- The **Traffic Control Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: */entrycam* and */exitcam*.
+- The **Fine Collection Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: */collectfine* for for collecting fines.
+- The **Vehicle Registration Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: */getvehicleinfo/{license-number}* for getting the vehicle- and owner-information of speeding vehicle.
 
 The way the simulation works is depicted in the sequence diagram below:
 
 ![Sequence diagram](img/sequence.png)
 
-1. The **Camera Simulation** generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the *EntryCam* endpoint of the **TCS**.
-1. The **TCS** stores the VehicleState (license-number and entry-timestamp).
-1. After some random interval, the **Camera Simulation** sends a *VehicleRegistered* message to the *ExitCam* endpoint of the **TCS** (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
-1. The **TCS** retrieves the VehicleState that was stored at vehicle entry.
-1. The **TCS** calculates the average speed of the vehicle using the entry- and exit-timestamp.
-1. If the average speed is above the speed-limit, the **TCS** calls the *CollectFine* endpoint of the **FCS**. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
-1. The **FCS** calculates the fine for the speeding-violation.
-1. The **FCS** calls the *GetOwnerInfo* endpoint of the **VRS** to get the contact information of the driver of the speeding vehicle.
-1. The **FCS** sends a fine to the owner of the vehicle by email.
+1. The Camera Simulation generates a random license-number and sends a *VehicleRegistered* message (containing this license-number, a random entry-lane (1-3) and the timestamp) to the */entrycam* endpoint of the TrafficControlService.
+1. The TrafficControlService stores the VehicleState (license-number and entry-timestamp).
+1. After some random interval, the Camera Simulation sends a *VehicleRegistered* message to the */exitcam* endpoint of the TrafficControlService (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
+1. The TrafficControlService retrieves the VehicleState that was stored at vehicle entry.
+1. The TrafficControlService calculates the average speed of the vehicle using the entry- and exit-timestamp.
+1. If the average speed is above the speed-limit, the TrafficControlService calls the */collectfine* endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
+1. The FineCollectionService calculates the fine for the speeding-violation.
+1. The FineCollectionSerivice calls the */getvehicleinfo/{license-number}* endpoint of the VehicleRegistrationService with the license-number of the speeding vehicle to retrieve its vehicle- and owner-information.
+1. The FineCollectionService sends a fine to the owner of the vehicle by email.
 
 All actions described in this sequence are logged to the console during execution so you can follow the flow.
 
@@ -54,12 +54,12 @@ This sample uses Dapr for implementing several aspects of the application. In th
 
 ![Dapr setup](img/dapr-setup.png)
 
-1. For doing request/response type communication with a service, the  **service invocation** building-block is used.
+1. For doing request/response type communication between the FineCollectionService and the VehicleRegistrationService, the **service invocation** building-block is used.
 1. For communicating messages, the **publish and subscribe** building-block is used. RabbitMQ is used as message broker.
 1. For storing the state of a vehicle, the **state management** building-block is used. Redis is used as state store.
 1. Fines are sent to the owner of a speeding vehicle by email. For sending the email, the Dapr SMTP **output binding** is used.
-1. A Dapr **input binding** for MQTT is used to send simulated car info to the TCS. Mosquitto is used as MQTT broker.
-1. The FCS needs credentials for connecting to the smtp server. It uses the **secrets management** building block with the local file component to get the credentials.
+1. A Dapr **input binding** for MQTT is used to send simulated car info to the TrafficControlService. Mosquitto is used as MQTT broker.
+1. The FineCollectionService needs credentials for connecting to the smtp server. It uses the **secrets management** building block with the local file component to get the credentials.
 
 Here is the sequence diagram again, but now with all the Dapr building-blocks and components:
 
@@ -82,7 +82,7 @@ Start the services:
 
 1. Change the current folder to the `src/VehicleRegistrationService` folder of this repo.
 
-1. Execute the following command (using the Dapr cli) to run the **VRS**:
+1. Execute the following command (using the Dapr cli) to run the VehicleRegistrationService:
 
     ```console
     dapr run --app-id vehicleregistrationservice --app-port 5002 --dapr-http-port 3502 --dapr-grpc-port 50002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -94,7 +94,7 @@ Start the services:
 
 1. Change the current folder to the `src/FineCollectionService` folder of this repo.
 
-1. Execute the following command (using the Dapr cli) to run the **FCS**:
+1. Execute the following command (using the Dapr cli) to run the FineCollectionService:
 
     ```console
     dapr run --app-id finecollectionservice --app-port 5001 --dapr-http-port 3501 --dapr-grpc-port 50001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -106,7 +106,7 @@ Start the services:
 
 1. Change the current folder to the `src/TrafficControlService` folder of this repo.
 
-1. Execute the following command (using the Dapr cli) to run the **TCS**:
+1. Execute the following command (using the Dapr cli) to run the TrafficControlService:
 
     ```console
     dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-http-port 3500 --dapr-grpc-port 50000 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
@@ -118,7 +118,7 @@ Start the services:
 
 1. Change the current folder to the `src/Simulation` folder of this repo.
 
-1. Execute the following command to run the **Simulation**:
+1. Execute the following command to run the Camera Simulation:
 
      ```console
      dotnet run
@@ -126,7 +126,7 @@ Start the services:
 
 You should now see logging in each of the shells, similar to the logging shown below:
 
-**Simulation:**  
+**Camera Simulation:**  
 
 ![Simulation logging](img/logging-simulation.png)
 
@@ -142,7 +142,7 @@ You should now see logging in each of the shells, similar to the logging shown b
 
 ![VehicleRegistrationService logging](img/logging-vehicleregistrationservice.png)
 
-To see the emails that are sent by the FCS, open a browser and browse to [http://localhost:4000](http://localhost:4000). You should see the emails coming in:
+To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:4000](http://localhost:4000). You should see the emails coming in:
 
 ![Mailbox](img/mailbox.png)
 
@@ -176,7 +176,7 @@ You can check whether everything is running correctly by examining the container
     docker logs e2ed262f836e
     ```
 
-To see the emails that are sent by the FCS, open a browser and browse to [http://localhost:30000](http://localhost:30000).
+To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:30000](http://localhost:30000).
 
 To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` script.
 

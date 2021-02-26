@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace FineCollectionService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class CollectionController : ControllerBase
     {
         private readonly ILogger<CollectionController> _logger;

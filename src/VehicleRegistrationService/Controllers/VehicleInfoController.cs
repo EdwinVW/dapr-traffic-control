@@ -22,7 +22,7 @@ namespace VehicleRegistrationService.Controllers
         }
 
         [HttpGet("{licenseNumber}")]
-        public ActionResult<VehicleInfo> GetVehicleDetails(string licenseNumber)
+        public ActionResult<VehicleInfo> GetVehicleInfo(string licenseNumber)
         {
             _logger.LogInformation($"Retrieving vehicle-info for licensenumber {licenseNumber}");
             VehicleInfo info = _vehicleInfoRepository.GetVehicleInfo(licenseNumber);
