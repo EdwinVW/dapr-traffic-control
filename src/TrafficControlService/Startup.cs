@@ -25,7 +25,9 @@ namespace TrafficControlService
 
             services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
-            services.AddControllers().AddDapr();
+            services.AddDaprClient();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,8 +39,6 @@ namespace TrafficControlService
             }
 
             app.UseRouting();
-
-            app.UseCloudEvents();
 
             app.UseAuthorization();
 
