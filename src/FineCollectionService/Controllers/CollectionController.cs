@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
 using FineCollectionService.DomainServices;
@@ -30,7 +31,7 @@ namespace FineCollectionService.Controllers
         [Topic("pubsub", "collectfine")]
         [Route("collectfine")]
         [HttpPost()]
-        public ActionResult CollectFine(SpeedingViolation speedingViolation, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult> CollectFine(SpeedingViolation speedingViolation, [FromServices] DaprClient daprClient)
         {
             decimal fine = _fineCalculator.CalculateFine(speedingViolation.ViolationInKmh);
 
@@ -54,7 +55,7 @@ namespace FineCollectionService.Controllers
                 ["emailTo"] = vehicleInfo.OwnerEmail,
                 ["subject"] = $"Speeding violation on the {speedingViolation.RoadId}"
             };
-            daprClient.InvokeBindingAsync("sendmail", "create", body, metadata).Wait();
+            await daprClient.InvokeBindingAsync("sendmail", "create", body, metadata);
 
             return Ok();
         }
