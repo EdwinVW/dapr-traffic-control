@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
@@ -15,20 +16,37 @@ namespace FineCollectionService.Controllers
     [Route("")]
     public class CollectionController : ControllerBase
     {
-        private readonly string _fineCalculatorLicenseKey;
+        private static string _fineCalculatorLicenseKey = null;
         private readonly ILogger<CollectionController> _logger;
         private readonly IFineCalculator _fineCalculator;
         private readonly VehicleRegistrationService _vehicleRegistrationService;
 
-        public CollectionController(ILogger<CollectionController> logger, 
-            IFineCalculator fineCalculator, VehicleRegistrationService vehicleRegistrationService)
+        public CollectionController(ILogger<CollectionController> logger,
+            IFineCalculator fineCalculator, VehicleRegistrationService vehicleRegistrationService,
+            DaprClient daprClient)
         {
             _logger = logger;
             _fineCalculator = fineCalculator;
             _vehicleRegistrationService = vehicleRegistrationService;
 
             // set finecalculator component license-key
-            _fineCalculatorLicenseKey = "HX783-K2L7V-CRJ4A-5PN1G";
+            if (_fineCalculatorLicenseKey == null)
+            {
+                bool runningInK8s = Convert.ToBoolean(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false");
+                var metadata = new Dictionary<string, string> { { "namespace", "dapr-trafficcontrol" } };
+                if (runningInK8s)
+                {
+                    var k8sSecrets = daprClient.GetSecretAsync(
+                        "kubernetes", "trafficcontrol-secrets", metadata).Result;
+                    _fineCalculatorLicenseKey = k8sSecrets["finecalculator.licensekey"];
+                }
+                else
+                {
+                    var secrets = daprClient.GetSecretAsync(
+                        "trafficcontrol-secrets", "finecalculator.licensekey", metadata).Result;
+                    _fineCalculatorLicenseKey = secrets["finecalculator.licensekey"];
+                }
+            }
         }
 
         [Topic("pubsub", "collectfine")]

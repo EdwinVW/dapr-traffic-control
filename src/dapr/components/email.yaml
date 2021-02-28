@@ -22,4 +22,4 @@ spec:
   - name: skipTLSVerify
     value: true
 auth:
-  secretStore: secret-store-file
+  secretStore: trafficcontrol-secrets

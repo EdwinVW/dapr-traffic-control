@@ -6,11 +6,9 @@ namespace FineCollectionService.DomainServices
     {
         public int CalculateFine(string licenseKey, int violationInKmh)
         {
-            if (string.IsNullOrEmpty(licenseKey) || 
-                string.IsNullOrWhiteSpace(licenseKey) || 
-                licenseKey != "HX783-K2L7V-CRJ4A-5PN1G")
+            if (licenseKey != "HX783-K2L7V-CRJ4A-5PN1G")
             {
-                throw new InvalidOperationException("Invalid or no license-key specified.");
+                throw new InvalidOperationException("Invalid license-key specified.");
             }
 
             int fine = 9; // default administration fee
