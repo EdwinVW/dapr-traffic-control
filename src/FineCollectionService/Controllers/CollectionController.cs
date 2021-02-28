@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
@@ -16,6 +15,7 @@ namespace FineCollectionService.Controllers
     [Route("")]
     public class CollectionController : ControllerBase
     {
+        private readonly string _fineCalculatorLicenseKey;
         private readonly ILogger<CollectionController> _logger;
         private readonly IFineCalculator _fineCalculator;
         private readonly VehicleRegistrationService _vehicleRegistrationService;
@@ -26,6 +26,9 @@ namespace FineCollectionService.Controllers
             _logger = logger;
             _fineCalculator = fineCalculator;
             _vehicleRegistrationService = vehicleRegistrationService;
+
+            // set finecalculator component license-key
+            _fineCalculatorLicenseKey = "HX783-K2L7V-CRJ4A-5PN1G";
         }
 
         [Topic("pubsub", "collectfine")]
@@ -33,7 +36,7 @@ namespace FineCollectionService.Controllers
         [HttpPost()]
         public async Task<ActionResult> CollectFine(SpeedingViolation speedingViolation, [FromServices] DaprClient daprClient)
         {
-            decimal fine = _fineCalculator.CalculateFine(speedingViolation.ViolationInKmh);
+            decimal fine = _fineCalculator.CalculateFine(_fineCalculatorLicenseKey, speedingViolation.ViolationInKmh);
 
             // get owner info (Dapr service invocation)
             var vehicleInfo = _vehicleRegistrationService.GetVehicleInfo(speedingViolation.VehicleId).Result;
