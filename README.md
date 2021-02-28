@@ -59,7 +59,7 @@ This sample uses Dapr for implementing several aspects of the application. In th
 1. For storing the state of a vehicle, the **state management** building-block is used. Redis is used as state store.
 1. Fines are sent to the owner of a speeding vehicle by email. For sending the email, the Dapr SMTP **output binding** is used.
 1. A Dapr **input binding** for MQTT is used to send simulated car info to the TrafficControlService. Mosquitto is used as MQTT broker.
-1. The FineCollectionService needs credentials for connecting to the smtp server. It uses the **secrets management** building block with the local file component to get the credentials.
+1. The FineCollectionService needs credentials for connecting to the smtp server. It uses the **secrets management** building block with the local file component to get the credentials. It also uses secrets management to retrieve a license-key for the FineCollectionCalculator component it uses.
 
 Here is the sequence diagram again, but now with all the Dapr building-blocks and components:
 
