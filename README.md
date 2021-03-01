@@ -29,7 +29,7 @@ In order to simulate this in code, I created the following services:
 
 - The **Camera Simulation** is a .NET Core console application that will simulate passing cars.
 - The **Traffic Control Service** is an ASP.NET Core WebAPI application that offers 2 endpoints: `/entrycam` and `/exitcam`.
-- The **Fine Collection Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: `/collectfine` for for collecting fines.
+- The **Fine Collection Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: `/collectfine` for collecting fines.
 - The **Vehicle Registration Service** is an ASP.NET Core WebAPI application that offers 1 endpoint: `/vehicleinfo/{license-number}` for getting the vehicle- and owner-information of speeding vehicle.
 
 The way the simulation works is depicted in the sequence diagram below:
@@ -40,7 +40,7 @@ The way the simulation works is depicted in the sequence diagram below:
 1. The TrafficControlService stores the VehicleState (license-number and entry-timestamp).
 1. After some random interval, the Camera Simulation sends a *VehicleRegistered* message to the `/exitcam` endpoint of the TrafficControlService (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
 1. The TrafficControlService retrieves the VehicleState that was stored at vehicle entry.
-1. The TrafficControlService calculates the average speed of the vehicle using the entry- and exit-timestamp.
+1. The TrafficControlService calculates the average speed of the vehicle using the entry- and exit-timestamp. It also stores the VehicleState with the exit timestamp for audit purposes, but this is left out of the sequence diagram for clarity.
 1. If the average speed is above the speed-limit, the TrafficControlService calls the `/collectfine` endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
 1. The FineCollectionService calculates the fine for the speeding-violation.
 1. The FineCollectionSerivice calls the `/vehicleinfo/{license-number}` endpoint of the VehicleRegistrationService with the license-number of the speeding vehicle to retrieve its vehicle- and owner-information.
@@ -55,11 +55,11 @@ This sample uses Dapr for implementing several aspects of the application. In th
 ![Dapr setup](img/dapr-setup.png)
 
 1. For doing request/response type communication between the FineCollectionService and the VehicleRegistrationService, the **service invocation** building-block is used.
-1. For communicating messages, the **publish and subscribe** building-block is used. RabbitMQ is used as message broker.
+1. For sending speeding violations to the FineCollectionService, the **publish and subscribe** building-block is used. RabbitMQ is used as message broker.
 1. For storing the state of a vehicle, the **state management** building-block is used. Redis is used as state store.
 1. Fines are sent to the owner of a speeding vehicle by email. For sending the email, the Dapr SMTP **output binding** is used.
-1. A Dapr **input binding** for MQTT is used to send simulated car info to the TrafficControlService. Mosquitto is used as MQTT broker.
-1. The FineCollectionService needs credentials for connecting to the smtp server. It uses the **secrets management** building block with the local file component to get the credentials. It also uses secrets management to retrieve a license-key for the FineCollectionCalculator component it uses.
+1. The Dapr **input binding** for MQTT is used to send simulated car info to the TrafficControlService. Mosquitto is used as MQTT broker.
+1. The FineCollectionService needs credentials for connecting to the smtp server and a license-key for a fine calculator component. It uses the **secrets management** building block with the local file component to get the credentials and the license-key.
 
 Here is the sequence diagram again, but now with all the Dapr building-blocks and components:
 
