@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿//#define USE_ACTORMODEL
+
+using System.Threading.Tasks;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,6 +8,8 @@ using TrafficControlService.Events;
 using TrafficControlService.DomainServices;
 using TrafficControlService.Models;
 using TrafficControlService.Repositories;
+using Dapr.Actors;
+using Dapr.Actors.Client;
 
 namespace TrafficControlService.Controllers
 {
@@ -19,7 +23,7 @@ namespace TrafficControlService.Controllers
         private readonly string _roadId;
 
         public TrafficController(
-            ILogger<TrafficController> logger, 
+            ILogger<TrafficController> logger,
             IVehicleStateRepository vehicleStateRepository,
             ISpeedingViolationCalculator speedingViolationCalculator)
         {
@@ -28,6 +32,8 @@ namespace TrafficControlService.Controllers
             _speedingViolationCalculator = speedingViolationCalculator;
             _roadId = speedingViolationCalculator.GetRoadId();
         }
+
+#if !USE_ACTORMODEL
 
         [HttpPost("entrycam")]
         public async Task<ActionResult> VehicleEntry(VehicleRegistered msg)
@@ -100,5 +106,42 @@ namespace TrafficControlService.Controllers
                 return StatusCode(500);
             }
         }
+
+#else
+
+        [HttpPost("entrycam")]
+        public async Task<ActionResult> VehicleEntry(VehicleRegistered msg)
+        {
+            try
+            {
+                var actorId = new ActorId(msg.LicenseNumber);
+                var proxy = ActorProxy.Create(actorId, "VehicleActor");
+                await proxy.InvokeMethodAsync("RegisterEntry", msg);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost("exitcam")]
+        public async Task<ActionResult> VehicleExit(VehicleRegistered msg)
+        {
+            try
+            {
+                var actorId = new ActorId(msg.LicenseNumber);
+                var proxy = ActorProxy.Create(actorId, "VehicleActor");
+                await proxy.InvokeMethodAsync("RegisterExit", msg);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
+
+#endif
+
     }
 }

@@ -1,8 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TrafficControlService.Actors;
 using TrafficControlService.DomainServices;
 using TrafficControlService.Repositories;
 
@@ -25,9 +27,19 @@ namespace TrafficControlService
 
             services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
-            services.AddDaprClient();
+            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50001";
+            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500";
+            services.AddDaprClient(
+                builder => builder
+                    .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}")
+                    .UseHttpEndpoint($"http://localhost:{daprHttpPort}"));
 
             services.AddControllers();
+
+            services.AddActors(options =>
+            {
+                options.Actors.RegisterActor<VehicleActor>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +57,7 @@ namespace TrafficControlService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapActorsHandlers();
             });
         }
     }
