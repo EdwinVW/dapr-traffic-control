@@ -25,9 +25,10 @@ namespace FineCollectionService
         {
             services.AddSingleton<IFineCalculator, HardCodedFineCalculator>();
 
+            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500";
             services.AddSingleton<VehicleRegistrationService>(
                 _ => new VehicleRegistrationService(
-                    DaprClient.CreateInvokeHttpClient("vehicleregistrationservice")));
+                    DaprClient.CreateInvokeHttpClient("vehicleregistrationservice", $"http://localhost:{daprHttpPort}")));
 
             services.AddControllers().AddDapr();
         }
