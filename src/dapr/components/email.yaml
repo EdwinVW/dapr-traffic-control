@@ -23,3 +23,5 @@ spec:
     value: true
 auth:
   secretStore: trafficcontrol-secrets
+scopes:
+  - finecollectionservice
