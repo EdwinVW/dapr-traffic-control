@@ -11,3 +11,5 @@ spec:
     value: mqtt://mosquitto:1883
   - name: topic
     value: trafficcontrol/entrycam
+scopes:
+  - trafficcontrolservice

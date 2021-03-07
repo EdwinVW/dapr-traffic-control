@@ -19,3 +19,6 @@ spec:
     value: "0"
   - name: concurrency
     value: parallel
+scopes:
+  - trafficcontrolservice
+  - finecollectionservice

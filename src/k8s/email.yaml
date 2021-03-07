@@ -21,4 +21,5 @@ spec:
       key: smtp.password
   - name: skipTLSVerify
     value: true
-
+scopes:
+  - finecollectionservice
