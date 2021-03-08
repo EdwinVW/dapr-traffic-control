@@ -27,12 +27,11 @@ namespace TrafficControlService
 
             services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
-            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50001";
             var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500";
-            services.AddDaprClient(
-                builder => builder
-                    .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}")
-                    .UseHttpEndpoint($"http://localhost:{daprHttpPort}"));
+            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50000";
+            services.AddDaprClient(builder => builder
+                .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+                .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
 
             services.AddControllers();
 
