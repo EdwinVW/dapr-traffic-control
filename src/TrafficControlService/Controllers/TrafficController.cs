@@ -1,5 +1,17 @@
 ﻿//#define USE_ACTORMODEL
 
+/* 
+This controller contains 2 implementations of the TrafficControl functionality: a basic 
+implementation and an actor-model based implementation.
+
+The code for the basic implementation is in this controller. The actor-model implementation 
+resides in the Vehicle actor (./Actors/VehicleActor.cs).
+
+To switch between the two implementatons, you need to use the USE_ACTORMODEL symbol at
+the top of this file. If you comment the #define USE_ACTORMODEL statement, the basic 
+implementation is used. Uncomment this statement to use the Actormodel implementation.
+*/
+
 using System.Threading.Tasks;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
