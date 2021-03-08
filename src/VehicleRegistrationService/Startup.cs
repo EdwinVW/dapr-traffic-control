@@ -1,3 +1,4 @@
+using System;
 using VehicleRegistrationService.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
