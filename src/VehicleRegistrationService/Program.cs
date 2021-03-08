@@ -21,7 +21,7 @@ namespace VehicleRegistrationService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                        .UseUrls("http://localhost:5002")
+                        .UseUrls("http://localhost:6002")
                         .UseStartup<Startup>();
                 });
     }

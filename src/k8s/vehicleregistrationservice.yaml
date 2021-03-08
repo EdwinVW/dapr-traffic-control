@@ -17,12 +17,12 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "vehicleregistrationservice"
-        dapr.io/app-port: "5002"
+        dapr.io/app-port: "6002"
         dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: vehicleregistrationservice
         image: dapr-trafficcontrol/vehicleregistrationservice:1.0
         ports:
-        - containerPort: 5002
+        - containerPort: 6002
 

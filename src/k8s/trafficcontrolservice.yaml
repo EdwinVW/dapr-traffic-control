@@ -17,11 +17,11 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "trafficcontrolservice"
-        dapr.io/app-port: "5000"
+        dapr.io/app-port: "6000"
         dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: trafficcontrolservice
         image: dapr-trafficcontrol/trafficcontrolservice:1.0
         ports:
-        - containerPort: 5000
+        - containerPort: 6000

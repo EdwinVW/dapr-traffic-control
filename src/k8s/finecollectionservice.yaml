@@ -17,12 +17,12 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "finecollectionservice"
-        dapr.io/app-port: "5001"
+        dapr.io/app-port: "6001"
         dapr.io/config: "dapr-config"
     spec:
       containers:
       - name: finecollectionservice
         image: dapr-trafficcontrol/finecollectionservice:1.0
         ports:
-        - containerPort: 5001
+        - containerPort: 6001
 

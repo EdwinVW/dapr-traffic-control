@@ -14,8 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 COPY --from=build-env /app/out .
 
 # Expose ports
-EXPOSE 5002/tcp
-ENV ASPNETCORE_URLS http://*:5002
+EXPOSE 6002/tcp
+ENV ASPNETCORE_URLS http://*:6002
 
 # Start
 ENTRYPOINT ["dotnet", "VehicleRegistrationService.dll"]

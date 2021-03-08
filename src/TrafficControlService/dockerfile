@@ -14,8 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
 COPY --from=build-env /app/out .
 
 # Expose ports
-EXPOSE 5000/tcp
-ENV ASPNETCORE_URLS http://*:5000
+EXPOSE 6000/tcp
+ENV ASPNETCORE_URLS http://*:6000
 
 # Start
 ENTRYPOINT ["dotnet", "TrafficControlService.dll"]

@@ -21,7 +21,7 @@ namespace FineCollectionService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                        .UseUrls("http://localhost:5001")
+                        .UseUrls("http://localhost:6001")
                         .UseStartup<Startup>();
                 });
     }

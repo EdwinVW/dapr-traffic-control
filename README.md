@@ -67,6 +67,20 @@ Here is the sequence diagram again, but now with all the Dapr building-blocks an
 
 ## Running the sample in Dapr self-hosted mode
 
+In self-hosted mode everything will run on your local machine. To prevent port-collisions, all services listen on a different HTTP port. When running the services with Dapr, you need additional ports voor HTTP and gRPC communication with the sidecars. By default these ports are `3500` and `50001`. But to prevent confusion, you'll use totally different port numbers in the assignments. The services will use the following ports:
+
+| Service                    | Application Port | Dapr sidecar HTTP port | Dapr sidecar gRPC port |
+| -------------------------- | ---------------- | ---------------------- | ---------------------- |
+| TrafficControlService      | 6000             | 3600                   | 60000                  |
+| FineCollectionService      | 6001             | 3601                   | 60001                  |
+| VehicleRegistrationService | 6002             | 3602                   | 60002                  |
+
+The ports can be specified on the command-line when starting a service with the Dapr CLI. The following command-line flags can be used:
+
+- `--app-port`
+- `--dapr-http-port`
+- `--dapr-grpc-port`
+
 Execute the following steps to run the sample application in self hosted mode:
 
 Start infrastructure components:
@@ -85,7 +99,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the VehicleRegistrationService:
 
     ```console
-    dapr run --app-id vehicleregistrationservice --app-port 5002 --dapr-http-port 3502 --dapr-grpc-port 50002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     >  Alternatively you can also run the `start-selfhosted.ps1` script.
@@ -97,7 +111,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the FineCollectionService:
 
     ```console
-    dapr run --app-id finecollectionservice --app-port 5001 --dapr-http-port 3501 --dapr-grpc-port 50001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id finecollectionservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.
@@ -109,7 +123,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the TrafficControlService:
 
     ```console
-    dapr run --app-id trafficcontrolservice --app-port 5000 --dapr-http-port 3500 --dapr-grpc-port 50000 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id trafficcontrolservice --app-port 6000 --dapr-http-port 3600 --dapr-grpc-port 60000 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.

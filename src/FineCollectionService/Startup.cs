@@ -24,8 +24,8 @@ namespace FineCollectionService
         {
             services.AddSingleton<IFineCalculator, HardCodedFineCalculator>();
 
-            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3501";
-            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "50001";
+            var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3601";
+            var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60001";
             services.AddDaprClient(builder => builder
                 .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
                 .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
