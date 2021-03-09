@@ -54,18 +54,19 @@ This sample uses Dapr for implementing several aspects of the application. In th
 
 ![Dapr setup](img/dapr-setup.png)
 
-1. For doing request/response type communication between the FineCollectionService and the VehicleRegistrationService, the **service invocation** building-block is used.
-1. For sending speeding violations to the FineCollectionService, the **publish and subscribe** building-block is used. RabbitMQ is used as message broker.
-1. For storing the state of a vehicle, the **state management** building-block is used. Redis is used as state store.
+1. For doing request/response type communication between the FineCollectionService and the VehicleRegistrationService, the **service invocation** building block is used.
+1. For sending speeding violations to the FineCollectionService, the **publish and subscribe** building block is used. RabbitMQ is used as message broker.
+1. For storing the state of a vehicle, the **state management** building block is used. Redis is used as state store.
 1. Fines are sent to the owner of a speeding vehicle by email. For sending the email, the Dapr SMTP **output binding** is used.
 1. The Dapr **input binding** for MQTT is used to send simulated car info to the TrafficControlService. Mosquitto is used as MQTT broker.
 1. The FineCollectionService needs credentials for connecting to the smtp server and a license-key for a fine calculator component. It uses the **secrets management** building block with the local file component to get the credentials and the license-key.
+1. The TrafficControlService has an alternative implementation based on Dapr **actors**. See [Run the application with actors](#run-the-application-with-dapr-actors) for instructions on how to run this.
 
-Here is the sequence diagram again, but now with all the Dapr building-blocks and components:
+Here is the sequence diagram again, but now with all the Dapr building blocks and components:
 
 ![Sequence diagram with Dapr building blocks](img/sequence-dapr.png)
 
-## Running the sample in Dapr self-hosted mode
+## Run the application in Dapr self-hosted mode
 
 In self-hosted mode everything will run on your local machine. To prevent port-collisions, all services listen on a different HTTP port. When running the services with Dapr, you need additional ports voor HTTP and gRPC communication with the sidecars. By default these ports are `3500` and `50001`. But to prevent confusion, you'll use totally different port numbers in the assignments. The services will use the following ports:
 
@@ -160,7 +161,23 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 ![Mailbox](img/mailbox.png)
 
-## Running the sample on Kubernetes
+## Run the application with Dapr actors
+
+The TrafficControlService has an alternative implementation based on Dapr actors. If you want to run the application with Dapr actors, you need to change something in the TrafficControlService.
+
+The `TrafficController` in the TrafficControlService has 2 implementations of the `VehicleEntry` and `VehicleExit` methods. The first implementations contain all the code for handling vehicle registrations. The second implementations use a `VehicleActor` that does all the work. A new instance of the `VehicleActor` is created for each registered vehicle. You can find the code of the actor in the file `src/TrafficControlService/Actors/VehicleActor.cs`.
+
+To use the actor based implementation, uncomment the statement that defines the USE_ACTORMODEL symbol at the top of the controller:
+
+```csharp
+#define USE_ACTORMODEL
+```
+
+Now you can restart the application just as before. The behavior is exactly the same, but this time the logging of the TrafficControlService, will be emitted by the `VehicleActor`:  
+
+![](img/logging-trafficcontrolservice-actors.png)
+
+## Run the application on Kubernetes
 
 Execute the following steps to run the sample application on Kubernetes:
 
@@ -209,3 +226,5 @@ Although the book is targeted at .NET developers, it covers all the concepts and
 The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several Dapr concepts and not being a full fledged application that can be put into production as is.
 
 The author can in no way be held liable for damage caused directly or indirectly by using this code.
+
+[#run-the-application-with-dapr-actors]: 
