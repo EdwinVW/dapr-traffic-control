@@ -163,17 +163,19 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 ## Run the application with Dapr actors
 
-The TrafficControlService has an alternative implementation based on Dapr actors. If you want to run the application with Dapr actors, you need to change something in the TrafficControlService.
+The TrafficControlService has an alternative implementation based on Dapr actors. 
 
-The `TrafficController` in the TrafficControlService has 2 implementations of the `VehicleEntry` and `VehicleExit` methods. The first implementations contain all the code for handling vehicle registrations. The second implementations use a `VehicleActor` that does all the work. A new instance of the `VehicleActor` is created for each registered vehicle. You can find the code of the actor in the file `src/TrafficControlService/Actors/VehicleActor.cs`.
+The `TrafficController` in the TrafficControlService has 2 implementations of the `VehicleEntry` and `VehicleExit` methods. The top two methods contain all the code for handling vehicle registrations and storing vehicle state using the state management building block. The bottom two methods use a `VehicleActor` that does all the work. A new instance of the `VehicleActor` is created for each registered vehicle. In stead of using the state management building block, the actor uses its built-in `StateManager `.
 
-To use the actor based implementation, uncomment the statement that defines the USE_ACTORMODEL symbol at the top of the controller:
+You can find the code of the actor in the file `src/TrafficControlService/Actors/VehicleActor.cs`.
+
+To use the actor based implementation, uncomment the statement that defines the `USE_ACTORMODEL` symbol at the top of the controller:
 
 ```csharp
 #define USE_ACTORMODEL
 ```
 
-Now you can restart the application just as before. The behavior is exactly the same, but this time the logging of the TrafficControlService, will be emitted by the `VehicleActor`:  
+Now you can restart the application just as before. The behavior is exactly the same, but you will see that the logging of the TrafficControlService will be emitted by the `VehicleActor`:  
 
 ![](img/logging-trafficcontrolservice-actors.png)
 
