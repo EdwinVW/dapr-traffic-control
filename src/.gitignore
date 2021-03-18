@@ -361,9 +361,10 @@ autom4te.cache/
 tarballs/
 test-results/
 
-# Mac bundle stuff
+# Mac stuff
 *.dmg
 *.app
+.DS_Store
 
 # content below from: https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
 # General
