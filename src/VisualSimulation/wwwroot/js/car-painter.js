@@ -19,8 +19,6 @@ export class CarPainter {
     // See: https://github.com/Colbydude/phaser-3-palette-swapping-example
     paintCarImage(sourceImage, imageKeys) {
 
-//        this.scene.load.image(sourceImage.key, 'assets/' + sourceImage.key + '.png');
-
         if (sourceImage.paintKey) {
 
             // Create color lookup from palette image.

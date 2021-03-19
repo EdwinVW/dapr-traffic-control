@@ -1,9 +1,11 @@
 import { AggressiveMergeBehavior } from './merge-aggressive.js';
-import { HttpTrafficControlService } from './trafficcontrolsvc-http.js';
 import { MqttTrafficControlService } from './trafficcontrolsvc-mqtt.js';
+import { HttpTrafficControlService } from './trafficcontrolsvc-http.js';
 
 export const Settings =
 {
+    trafficControlService: new MqttTrafficControlService('127.0.0.1', 9001),
+    //trafficControlService: new HttpTrafficControlService('http://127.0.0.1:5000'),
     laneCount: 5,
     carCount: 15,
     carTypes:
@@ -25,7 +27,7 @@ export const Settings =
                 sourceImages: [
                     { key: 'hummer', paintKey: 'paint-general' }
                 ],
-                selectionWeight: 1
+                selectionWeight: 5
             },
             // Regular cars
             {
@@ -68,7 +70,5 @@ export const Settings =
                 selectionWeight: 10
             }
         ],
-    maximumSpeedIncrementForLeftLanes: 5,
-    //trafficControlService: new HttpTrafficControlService('http://127.0.0.1:5000'),
-    //trafficControlService: new MqttTrafficControlService('127.0.0.1', 9001)
+    maximumSpeedIncrementForLeftLanes: 5
 }

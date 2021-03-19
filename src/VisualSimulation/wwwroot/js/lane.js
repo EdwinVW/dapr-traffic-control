@@ -8,7 +8,7 @@ export class Lane extends Phaser.GameObjects.TileSprite {
 
     constructor(scene, number, lanes) {
         super(scene,
-            0,//(scene.physics.world.bounds.width / 2) - (number * 20),
+            -(number * 20),
             laneMarginTop + (number * laneHeight),
             scene.physics.world.bounds.width + (number * 40),
             laneHeight,
