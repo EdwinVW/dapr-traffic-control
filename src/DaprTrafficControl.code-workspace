@@ -20,7 +20,10 @@
 		},
 		{
 			"path": "Infrastructure"
-		}
+		},
+		{
+			"path": "VisualSimulation"
+		}		
 	],
 	"settings": {},
 	"launch": {
