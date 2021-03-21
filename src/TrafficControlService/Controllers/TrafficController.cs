@@ -12,6 +12,7 @@ the top of this file. If you comment the #define USE_ACTORMODEL statement, the b
 implementation is used. Uncomment this statement to use the Actormodel implementation.
 */
 
+using System;
 using System.Threading.Tasks;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
@@ -66,8 +67,9 @@ namespace TrafficControlService.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while processing ENTRY");
                 return StatusCode(500);
             }
         }
@@ -113,8 +115,9 @@ namespace TrafficControlService.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occurred while processing EXIT");
                 return StatusCode(500);
             }
         }
