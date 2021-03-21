@@ -1,18 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "./FineCollectionService"
-		},
-		{
-			"path": "./Simulation"
-		},
-		{
-			"path": "./TrafficControlService"
-		},
-		{
-			"path": "./VehicleRegistrationService"
-		},
-		{
 			"path": "./dapr"
 		},
 		{
@@ -20,6 +8,18 @@
 		},
 		{
 			"path": "Infrastructure"
+		},
+		{
+			"path": "./VehicleRegistrationService"
+		},
+		{
+			"path": "./FineCollectionService"
+		},
+		{
+			"path": "./TrafficControlService"
+		},
+		{
+			"path": "./Simulation"
 		},
 		{
 			"path": "VisualSimulation"
