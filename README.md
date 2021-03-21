@@ -161,6 +161,26 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 ![Mailbox](img/mailbox.png)
 
+## Visual Camera Simulation
+
+This repository also contains a graphical version of the Camera Simulation:
+
+![Visual simulation](img/visualsim.png)
+
+1. Open a new command-shell.
+
+1. Change the current folder to the `src/VisualSimulation` folder of this repo.
+
+1. Execute the following command to run the Visual Camera Simulation:
+
+     ```console
+     dotnet run
+     ```
+
+1. Open a browser window and navigate to [http://localhost:5000](http://localhost:5000).
+
+1. Use the arrow keys to scroll and zoom in/out.
+
 ## Run the application with Dapr actors
 
 The TrafficControlService has an alternative implementation based on Dapr actors. 
