@@ -5,4 +5,4 @@
 ab -k -l -d -S `
 -c 10 `
 -n 100 `
-http://localhost:3602/v1.0/invoke/vehicleregistrationservice/method/rdw/vehicle/21-KTG-4
+http://localhost:3602/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/21-KTG-4
