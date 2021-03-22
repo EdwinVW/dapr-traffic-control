@@ -1,12 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "./dapr"
-		},
-		{
-			"path": "./k8s"
-		},
-		{
 			"path": "Infrastructure"
 		},
 		{
@@ -22,7 +16,13 @@
 			"path": "./Simulation"
 		},
 		{
-			"path": "VisualSimulation"
+			"path": "./VisualSimulation"
+		},
+		{
+			"path": "./dapr"
+		},
+		{
+			"path": "./k8s"
 		}		
 	],
 	"settings": {},
