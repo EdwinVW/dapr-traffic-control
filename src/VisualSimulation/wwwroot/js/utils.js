@@ -1,5 +1,7 @@
 export const Utils =
 {
+    tzoffset: (new Date()).getTimezoneOffset() * 60000, // timezone offset in milliseconds
+
     getRandomInteger: function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
@@ -28,5 +30,9 @@ export const Utils =
 
     kilometersPerHourToVelocity: function (kmPerHour) {
         return Utils.kilometersToPixels(kmPerHour) / 3600;
+    },
+
+    localTime: function () {
+        return (new Date(Date.now() - this.tzoffset)).toISOString().slice(0, -1);
     }
 }

@@ -1,3 +1,5 @@
+import { Utils } from "./utils.js";
+
 export class MqttTrafficControlService {
 
     constructor(host, port) {
@@ -23,7 +25,7 @@ export class MqttTrafficControlService {
         return JSON.stringify({
             lane: car.lane.number,
             licenseNumber: car.id,
-            timestamp: (new Date()).toISOString()
+            timestamp: Utils.localTime()
         });
     }
 }

@@ -1,3 +1,5 @@
+import { Utils } from "./utils.js";
+
 export class HttpTrafficControlService {
     
     constructor(baseUrl) {
@@ -20,7 +22,7 @@ export class HttpTrafficControlService {
         const body = {
             lane: car.lane.number,
             licenseNumber: car.id,
-            timestamp: (new Date()).toISOString()
+            timestamp: Utils.localTime()
         };
 
         return {
