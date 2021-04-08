@@ -2,9 +2,9 @@
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
-| Dapr runtime version | v1.0.0                    |
-| Dapr.NET SDK version | v1.0.0                    |
-| Dapr CLI version     | v1.0.0                    |
+| Dapr runtime version | v1.1.1                    |
+| Dapr.NET SDK version | v1.1.0                    |
+| Dapr CLI version     | v1.1.0                    |
 | Language             | C#                        |
 | Platform             | .NET 5                    |
 | Environment          | Self hosted or Kubernetes |
@@ -166,6 +166,10 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 This repository also contains a graphical version of the Camera Simulation:
 
 ![Visual simulation](img/visualsim.png)
+
+The cars are all driving at different speeds and the simulation uses different "personas" to simulate drivers that tend to drive faster than others. They will also try to overtake where possible. These drivers are most likely to get a speeding ticket.
+
+The simulation runs in a web-browser. In order to start the web-application host and run the simulation, execute the following steps:
 
 1. Open a new command-shell.
 
