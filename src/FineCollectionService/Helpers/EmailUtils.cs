@@ -107,7 +107,7 @@ namespace FineCollectionService.Helpers
                         <p>
                             <b>Sanction:</b>
                             <table>
-                                <tr><th>Maxiumum speed violation</th><td>{speedingViolation.ViolationInKmh} KMh</td></tr>
+                                <tr><th>Maximum speed violation</th><td>{speedingViolation.ViolationInKmh} KMh</td></tr>
                                 <tr><th>Sanction amount</th><td><div class='fine'>{fine}</div></td></tr>
                             </table>							
                         </p>		
