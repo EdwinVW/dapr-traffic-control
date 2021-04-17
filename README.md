@@ -252,5 +252,3 @@ Although the book is targeted at .NET developers, it covers all the concepts and
 The code in this repo is NOT production grade and lacks any automated testing. It is intentionally kept as simple as possible (KISS). Its primary purpose is demonstrating several Dapr concepts and not being a full fledged application that can be put into production as is.
 
 The author can in no way be held liable for damage caused directly or indirectly by using this code.
-
-[#run-the-application-with-dapr-actors]: 
