@@ -13,18 +13,17 @@ namespace TrafficControlService.Repositories
         {
             _daprClient = daprClient;
         }
-        public async Task<VehicleState> GetVehicleStateAsync(string licenseNumber)
-        {
-            var stateEntry = await _daprClient.GetStateEntryAsync<VehicleState>(
-                DAPR_STORE_NAME, licenseNumber);
-                
-            return stateEntry.Value;
-        }
 
         public async Task SaveVehicleStateAsync(VehicleState vehicleState)
         {
             await _daprClient.SaveStateAsync<VehicleState>(
                 DAPR_STORE_NAME, vehicleState.LicenseNumber, vehicleState);
+        }
+
+        public async Task<VehicleState> GetVehicleStateAsync(string licenseNumber)
+        {
+            return await _daprClient.GetStateAsync<VehicleState>(
+                DAPR_STORE_NAME, licenseNumber);
         }
     }
 }
