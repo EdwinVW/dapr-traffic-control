@@ -110,7 +110,7 @@ namespace TrafficControlService.Controllers
                     };
 
                     // publish speedingviolation (Dapr publish / subscribe)
-                    await daprClient.PublishEventAsync("pubsub", "collectfine", speedingViolation);
+                    await daprClient.PublishEventAsync("pubsub", "speedingviolations", speedingViolation);
                 }
 
                 return Ok();

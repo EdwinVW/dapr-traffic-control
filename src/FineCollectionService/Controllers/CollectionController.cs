@@ -49,7 +49,7 @@ namespace FineCollectionService.Controllers
             }
         }
 
-        [Topic("pubsub", "collectfine")]
+        [Topic("pubsub", "speedingviolations")]
         [Route("collectfine")]
         [HttpPost()]
         public async Task<ActionResult> CollectFine(SpeedingViolation speedingViolation, [FromServices] DaprClient daprClient)
