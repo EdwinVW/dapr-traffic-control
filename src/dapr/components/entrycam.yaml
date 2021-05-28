@@ -11,5 +11,7 @@ spec:
     value: mqtt://localhost:1883
   - name: topic
     value: trafficcontrol/entrycam
+  - name: consumerID
+    value: "{uuid}"
 scopes:
   - trafficcontrolservice
