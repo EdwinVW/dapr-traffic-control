@@ -5,7 +5,7 @@ namespace Simulation.Proxies
 {
     public interface ITrafficControlService
     {
-        public Task SendVehicleEntry(VehicleRegistered vehicleRegistered);
-        public Task SendVehicleExit(VehicleRegistered vehicleRegistered);
+        public Task SendVehicleEntryAsync(VehicleRegistered vehicleRegistered);
+        public Task SendVehicleExitAsync(VehicleRegistered vehicleRegistered);
     }
 }

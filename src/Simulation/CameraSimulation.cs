@@ -21,7 +21,7 @@ namespace Simulation
             _trafficControlService = trafficControlService;
         }
 
-        public void Start()
+        public Task Start()
         {
             Console.WriteLine($"Start camera {_camNumber} simulation.");
 
@@ -36,7 +36,7 @@ namespace Simulation
                     TimeSpan entryDelay = TimeSpan.FromMilliseconds(_rnd.Next(_minEntryDelayInMS, _maxEntryDelayInMS) + _rnd.NextDouble());
                     Task.Delay(entryDelay).Wait();
 
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
                         // simulate entry
                         DateTime entryTimestamp = DateTime.Now;
@@ -46,7 +46,7 @@ namespace Simulation
                             LicenseNumber = GenerateRandomLicenseNumber(),
                             Timestamp = entryTimestamp
                         };
-                        _trafficControlService.SendVehicleEntry(vehicleRegistered);
+                        await _trafficControlService.SendVehicleEntryAsync(vehicleRegistered);
                         Console.WriteLine($"Simulated ENTRY of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
 
                         // simulate exit
@@ -54,7 +54,7 @@ namespace Simulation
                         Task.Delay(exitDelay).Wait();
                         vehicleRegistered.Timestamp = DateTime.Now;
                         vehicleRegistered.Lane = _rnd.Next(1, 4);
-                        _trafficControlService.SendVehicleExit(vehicleRegistered);
+                        await _trafficControlService.SendVehicleExitAsync(vehicleRegistered);
                         Console.WriteLine($"Simulated EXIT of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
                     });
                 }

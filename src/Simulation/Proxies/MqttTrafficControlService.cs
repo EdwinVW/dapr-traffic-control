@@ -21,14 +21,14 @@ namespace Simulation.Proxies
                 new MqttClientCredentials(clientId: $"camerasim{camNumber}")).Result;
         }
 
-        public async Task SendVehicleEntry(VehicleRegistered vehicleRegistered)
+        public async Task SendVehicleEntryAsync(VehicleRegistered vehicleRegistered)
         {
             var eventJson = JsonSerializer.Serialize(vehicleRegistered);
             var message = new MqttApplicationMessage("trafficcontrol/entrycam", Encoding.UTF8.GetBytes(eventJson));
             await _client.PublishAsync(message, MqttQualityOfService.AtMostOnce);
         }
 
-        public async Task SendVehicleExit(VehicleRegistered vehicleRegistered)
+        public async Task SendVehicleExitAsync(VehicleRegistered vehicleRegistered)
         {
             var eventJson = JsonSerializer.Serialize(vehicleRegistered);
             var message = new MqttApplicationMessage("trafficcontrol/exitcam", Encoding.UTF8.GetBytes(eventJson));
