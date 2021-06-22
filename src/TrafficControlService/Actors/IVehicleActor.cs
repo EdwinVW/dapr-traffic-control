@@ -6,7 +6,7 @@ namespace TrafficControlService.Actors
 {
     public interface IVehicleActor : IActor
     {
-        public Task RegisterEntry(VehicleRegistered msg);
-        public Task RegisterExit(VehicleRegistered msg);
+        public Task RegisterEntryAsync(VehicleRegistered msg);
+        public Task RegisterExitAsync(VehicleRegistered msg);
     }
 }

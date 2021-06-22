@@ -7,7 +7,7 @@ implementation and an actor-model based implementation.
 The code for the basic implementation is in this controller. The actor-model implementation 
 resides in the Vehicle actor (./Actors/VehicleActor.cs).
 
-To switch between the two implementatons, you need to use the USE_ACTORMODEL symbol at
+To switch between the two implementations, you need to use the USE_ACTORMODEL symbol at
 the top of this file. If you comment the #define USE_ACTORMODEL statement, the basic 
 implementation is used. Uncomment this statement to use the Actormodel implementation.
 */
@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TrafficControlService.Actors;
 using TrafficControlService.Events;
 using TrafficControlService.DomainServices;
 using TrafficControlService.Models;
@@ -49,7 +50,7 @@ namespace TrafficControlService.Controllers
 #if !USE_ACTORMODEL
 
         [HttpPost("entrycam")]
-        public async Task<ActionResult> VehicleEntry(VehicleRegistered msg)
+        public async Task<ActionResult> VehicleEntryAsync(VehicleRegistered msg)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace TrafficControlService.Controllers
         }
 
         [HttpPost("exitcam")]
-        public async Task<ActionResult> VehicleExit(VehicleRegistered msg, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult> VehicleExitAsync(VehicleRegistered msg, [FromServices] DaprClient daprClient)
         {
             try
             {
@@ -125,13 +126,13 @@ namespace TrafficControlService.Controllers
 #else
 
         [HttpPost("entrycam")]
-        public async Task<ActionResult> VehicleEntry(VehicleRegistered msg)
+        public async Task<ActionResult> VehicleEntryAsync(VehicleRegistered msg)
         {
             try
             {
                 var actorId = new ActorId(msg.LicenseNumber);
-                var proxy = ActorProxy.Create(actorId, "VehicleActor");
-                await proxy.InvokeMethodAsync("RegisterEntry", msg);
+                var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
+                await proxy.RegisterEntryAsync(msg);
                 return Ok();
             }
             catch
@@ -141,13 +142,13 @@ namespace TrafficControlService.Controllers
         }
 
         [HttpPost("exitcam")]
-        public async Task<ActionResult> VehicleExit(VehicleRegistered msg)
+        public async Task<ActionResult> VehicleExitAsync(VehicleRegistered msg)
         {
             try
             {
                 var actorId = new ActorId(msg.LicenseNumber);
-                var proxy = ActorProxy.Create(actorId, "VehicleActor");
-                await proxy.InvokeMethodAsync("RegisterExit", msg);
+                var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
+                await proxy.RegisterExitAsync(msg);
                 return Ok();
             }
             catch

@@ -22,7 +22,7 @@ namespace TrafficControlService.Actors
             _roadId = _speedingViolationCalculator.GetRoadId();
         }
 
-        public async Task RegisterEntry(VehicleRegistered msg)
+        public async Task RegisterEntryAsync(VehicleRegistered msg)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace TrafficControlService.Actors
             }
         }
 
-        public async Task RegisterExit(VehicleRegistered msg)
+        public async Task RegisterExitAsync(VehicleRegistered msg)
         {
             try
             {
