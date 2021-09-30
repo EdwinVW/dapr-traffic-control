@@ -1,12 +1,9 @@
-using System;
+namespace FineCollectionService.Models;
 
-namespace FineCollectionService.Models
+public record struct SpeedingViolation
 {
-    public class SpeedingViolation
-    {
-        public string VehicleId { get; set; }
-        public string RoadId { get; set; }
-        public int ViolationInKmh { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
+    public string VehicleId { get; init; }
+    public string RoadId { get; init; }
+    public int ViolationInKmh { get; init; }
+    public DateTime Timestamp { get; init; }
 }

@@ -1,11 +1,8 @@
-using System;
+namespace TrafficControlService.Events;
 
-namespace TrafficControlService.Events
+public record struct VehicleRegistered
 {
-    public class VehicleRegistered
-    {
-        public int Lane { get; set; }
-        public string LicenseNumber { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
+    public int Lane { get; init; }
+    public string LicenseNumber { get; init; }
+    public DateTime Timestamp { get; init; }
 }

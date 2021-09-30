@@ -1,11 +1,10 @@
-namespace VehicleRegistrationService.Models
+namespace VehicleRegistrationService.Models;
+
+public record struct VehicleInfo
 {
-    public class VehicleInfo
-    {
-        public string VehicleId { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string OwnerName { get; set; }
-        public string OwnerEmail { get; set; }
-    }
+    public string VehicleId { get; init; }
+    public string Brand { get; init; }
+    public string Model { get; init; }
+    public string OwnerName { get; init; }
+    public string OwnerEmail { get; init; }
 }
