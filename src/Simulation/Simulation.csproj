@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Net.Mqtt" Version="0.6.7-beta" />
+    <PackageReference Include="System.Net.Mqtt" Version="0.6.16-beta" />
   </ItemGroup>
 
 </Project>
