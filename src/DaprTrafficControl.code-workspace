@@ -23,7 +23,10 @@
 		},
 		{
 			"path": "./k8s"
-		}		
+		},
+		{
+			"path": "Observability"
+		}
 	],
 	"settings": {},
 	"launch": {
