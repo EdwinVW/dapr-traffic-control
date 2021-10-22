@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: dapr-trafficcontrol
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: dtc-redis:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: state.redisPassword
+      key: state.redisPassword
+  - name: actorStateStore
+    value: "true"
+auth:
+  secretStore: trafficcontrol-secrets
+scopes:
+  - trafficcontrolservice

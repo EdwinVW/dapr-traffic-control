@@ -203,6 +203,44 @@ Now you can restart the application just as before. The behavior is exactly the 
 
 ![](img/logging-trafficcontrolservice-actors.png)
 
+## Run the application with Docker Compose
+
+Execute the following steps to run the sample application on Docker:
+
+1. Make sure you have Docker and `docker-compose` installed on your machine
+
+1. Open a new command-shell
+
+1. Change the current folder to the `src` folder of this repo
+
+1. Run the `docker-compose up -d` command to build the images (if not already built) and start the containers
+
+1. To start the [visual simulation](#visual-camera-simulation), open a browser and browse to [http://localhost:5000](http://localhost:5000)
+
+1. To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:4000](http://localhost:4000)
+
+1. To explore the Zipkin trace logs, open a browser and browse to [http://localhost:9411/zipkin/](http://localhost:9411/zipkin/)
+
+To stop the application and remove everything from the Docker, execute the `docker-compose down` command.
+
+### Debugging with Visual Studio
+
+The docker compose hosting scenario can also be used to debug the application using Visual Studio:
+
+1. Ensure none of the application containers are already running in Docker (to avoid network port conflicts)
+
+1. Ensure your Visual Studio installation has the 'Container development tools' feature enabled (available under the 'Azure development' workload in the Visual Studio Installer)
+
+1. Open the solution file `src/DaprTrafficControl.sln` in Visual Studio 2019 or later
+
+1. Wait for the containers to be setup by monitoring the 'Container Tools' output window
+
+1. Ensure 'docker-compose' is selected as the start-up project
+
+1. Press `F5` to begin debugging
+
+1. The visual simulation will be launched in a browser
+
 ## Run the application on Kubernetes
 
 Execute the following steps to run the sample application on Kubernetes:

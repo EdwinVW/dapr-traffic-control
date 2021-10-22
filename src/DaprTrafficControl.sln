@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{44A5045C-0B95-4EF1-BFAC-42DE0E4DBD8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FineCollectionService", "FineCollectionService\FineCollectionService.csproj", "{6D0CB6C8-26B9-4071-89B7-7AFBA1427567}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulation", "Simulation\Simulation.csproj", "{DCF6FE00-91AF-472E-9031-E048BB0DFCC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrafficControlService", "TrafficControlService\TrafficControlService.csproj", "{11FC085B-46DD-48FB-B86E-FDEF60DF9B71}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleRegistrationService", "VehicleRegistrationService\VehicleRegistrationService.csproj", "{AE0B36CB-C5DE-4BB3-97D4-54D2164B5A4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualSimulation", "VisualSimulation\VisualSimulation.csproj", "{F2C2731E-57B1-4C32-9D77-4640D4D7BCC0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44A5045C-0B95-4EF1-BFAC-42DE0E4DBD8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A5045C-0B95-4EF1-BFAC-42DE0E4DBD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A5045C-0B95-4EF1-BFAC-42DE0E4DBD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A5045C-0B95-4EF1-BFAC-42DE0E4DBD8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D0CB6C8-26B9-4071-89B7-7AFBA1427567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0CB6C8-26B9-4071-89B7-7AFBA1427567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0CB6C8-26B9-4071-89B7-7AFBA1427567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0CB6C8-26B9-4071-89B7-7AFBA1427567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCF6FE00-91AF-472E-9031-E048BB0DFCC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCF6FE00-91AF-472E-9031-E048BB0DFCC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCF6FE00-91AF-472E-9031-E048BB0DFCC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCF6FE00-91AF-472E-9031-E048BB0DFCC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11FC085B-46DD-48FB-B86E-FDEF60DF9B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FC085B-46DD-48FB-B86E-FDEF60DF9B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FC085B-46DD-48FB-B86E-FDEF60DF9B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FC085B-46DD-48FB-B86E-FDEF60DF9B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE0B36CB-C5DE-4BB3-97D4-54D2164B5A4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE0B36CB-C5DE-4BB3-97D4-54D2164B5A4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE0B36CB-C5DE-4BB3-97D4-54D2164B5A4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE0B36CB-C5DE-4BB3-97D4-54D2164B5A4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C2731E-57B1-4C32-9D77-4640D4D7BCC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C2731E-57B1-4C32-9D77-4640D4D7BCC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C2731E-57B1-4C32-9D77-4640D4D7BCC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C2731E-57B1-4C32-9D77-4640D4D7BCC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E691E9C4-BC86-4733-A26C-22C1ED46A97B}
+	EndGlobalSection
+EndGlobal

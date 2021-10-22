@@ -1,0 +1,181 @@
+version: "3.9"
+services:
+
+#region Infrastructure services
+  dtc-redis:
+    image: redis:6-alpine
+    networks:
+      - traffic_net
+    ports:
+      - "6379:6379"
+
+  dtc-maildev:
+    image: maildev/maildev:latest
+    networks:
+      - traffic_net
+    ports:
+      - "4000:80"
+      - "4025:25"
+
+  dtc-mosquitto:
+    build:
+      context: ./Infrastructure/mosquitto
+    networks:
+      - traffic_net
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  dtc-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    networks:
+      - traffic_net
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  dtc-zipkin:
+    image: openzipkin/zipkin-slim
+    networks:
+      - traffic_net
+    ports:
+      - "9411:9411"
+#endregion
+
+
+#region shared dapr components
+  dapr-placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50000"]
+    networks:
+      - traffic_net
+
+  # This container exposes volumes that serve the components & config
+  # required by the DAPR sidecars, which consume them using the 
+  # 'volumes_from' functionality
+  dapr-config:
+    build:
+      context: ./dapr-compose
+    networks:
+      - traffic_net
+#endregion
+
+
+#region Traffic Control Service
+  trafficcontrolservice:
+    build:
+      context: ./TrafficControlService
+    ports:
+      - "6000:6000"
+    depends_on:
+      - dtc-redis
+      - dtc-maildev
+      - dtc-mosquitto
+      - dtc-rabbitmq
+      - dtc-zipkin
+      - dapr-placement
+    networks:
+      - traffic_net
+  
+  trafficcontrolservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "trafficcontrolservice",
+      "-app-port", "6000",
+      "-placement-host-address", "dapr-placement:50000", # Dapr's placement service can be reached via the docker DNS entry
+      "-dapr-http-port", "3600",
+      "-dapr-grpc-port", "60000",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - trafficcontrolservice
+    network_mode: "service:trafficcontrolservice" # Attach the trafficcontrolservice-dapr service to the trafficcontrolservice network namespace
+#endregion
+
+#region Vehicle Registration Service
+  vehicleregistrationservice:
+    build:
+      context: ./VehicleRegistrationService
+    ports:
+      - "6002:6002"
+    depends_on:
+      - dtc-redis
+      - dtc-maildev
+      - dtc-mosquitto
+      - dtc-rabbitmq
+      - dtc-zipkin
+      - dapr-placement
+    networks:
+      - traffic_net
+  
+  vehicleregistrationservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "vehicleregistrationservice",
+      "-app-port", "6002",
+      "-placement-host-address", "dapr-placement:50000", # Dapr's placement service can be reached via the docker DNS entry
+      "-dapr-http-port", "3602",
+      "-dapr-grpc-port", "60002",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - vehicleregistrationservice
+    network_mode: "service:vehicleregistrationservice" # Attach the vehicleregistrationservice-dapr service to the vehicleregistrationservice network namespace
+#endregion
+
+#region Fine Collection Service
+  finecollectionservice:
+    build:
+      context: ./FineCollectionService
+    ports:
+      - "6001:6001"
+    depends_on:
+      - dtc-redis
+      - dtc-maildev
+      - dtc-mosquitto
+      - dtc-rabbitmq
+      - dtc-zipkin
+      - dapr-placement
+    networks:
+      - traffic_net
+  
+  finecollectionservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "finecollectionservice",
+      "-app-port", "6001",
+      "-placement-host-address", "dapr-placement:50000", # Dapr's placement service can be reached via the docker DNS entry
+      "-dapr-http-port", "3601",
+      "-dapr-grpc-port", "60001",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - finecollectionservice
+    network_mode: "service:finecollectionservice" # Attach the finecollectionservice-dapr service to the finecollectionservice network namespace
+#endregion
+
+  visualsimulation:
+    build:
+      context: ./VisualSimulation
+    image: visualsimulation
+    ports:
+      - "5000:5000"
+    depends_on:
+      - dtc-mosquitto
+    networks:
+      - traffic_net
+
+networks:
+  traffic_net:
