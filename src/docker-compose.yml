@@ -166,16 +166,28 @@ services:
     network_mode: "service:finecollectionservice" # Attach the finecollectionservice-dapr service to the finecollectionservice network namespace
 #endregion
 
-  visualsimulation:
+  simulation:
     build:
-      context: ./VisualSimulation
-    image: visualsimulation
-    ports:
-      - "5000:5000"
+      context: ./Simulation
+    image: simulation
+    environment:
+      - MQTT_HOST=dtc-mosquitto
     depends_on:
       - dtc-mosquitto
     networks:
       - traffic_net
+
+  # Optionally uncomment the service below to enable the visual simulation
+  # visualsimulation:
+  #   build:
+  #     context: ./VisualSimulation
+  #   image: visualsimulation
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - dtc-mosquitto
+  #   networks:
+  #     - traffic_net
 
 networks:
   traffic_net:

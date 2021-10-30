@@ -215,8 +215,6 @@ Execute the following steps to run the sample application on Docker:
 
 1. Run the `docker-compose up -d` command to build the images (if not already built) and start the containers
 
-1. To start the [visual simulation](#visual-camera-simulation), open a browser and browse to [http://localhost:5000](http://localhost:5000)
-
 1. To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:4000](http://localhost:4000)
 
 1. To explore the Zipkin trace logs, open a browser and browse to [http://localhost:19411/zipkin/](http://localhost:19411/zipkin/)
@@ -239,7 +237,9 @@ The docker compose hosting scenario can also be used to debug the application us
 
 1. Press `F5` to begin debugging
 
-1. The visual simulation will be launched in a browser
+1. The email service web interface should be launched in a browser and you should start to see the emails that are sent by the FineCollectionService - if it does not open, manually browse to [http://localhost:4000](http://localhost:4000)
+
+1. As above, to explore the Zipkin trace logs, open a browser and browse to [http://localhost:19411/zipkin/](http://localhost:19411/zipkin/)
 
 ## Run the application on Kubernetes
 

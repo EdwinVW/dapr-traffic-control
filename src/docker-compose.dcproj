@@ -5,8 +5,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>44a5045c-0b95-4ef1-bfac-42de0e4dbd8f</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>visualsimulation</DockerServiceName>
+    <DockerServiceUrl>http://localhost:4000</DockerServiceUrl>
+    <DockerServiceName>simulation</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />
