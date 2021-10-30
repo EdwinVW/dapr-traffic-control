@@ -219,7 +219,7 @@ Execute the following steps to run the sample application on Docker:
 
 1. To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:4000](http://localhost:4000)
 
-1. To explore the Zipkin trace logs, open a browser and browse to [http://localhost:9411/zipkin/](http://localhost:9411/zipkin/)
+1. To explore the Zipkin trace logs, open a browser and browse to [http://localhost:19411/zipkin/](http://localhost:19411/zipkin/)
 
 To stop the application and remove everything from the Docker, execute the `docker-compose down` command.
 

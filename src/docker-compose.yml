@@ -7,7 +7,7 @@ services:
     networks:
       - traffic_net
     ports:
-      - "6379:6379"
+      - "16379:6379"
 
   dtc-maildev:
     image: maildev/maildev:latest
@@ -39,7 +39,7 @@ services:
     networks:
       - traffic_net
     ports:
-      - "9411:9411"
+      - "19411:9411"
 #endregion
 
 
