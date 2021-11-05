@@ -56,11 +56,11 @@ namespace Simulation
                         vehicleRegistered.Lane = _rnd.Next(1, 4);
                         await _trafficControlService.SendVehicleExitAsync(vehicleRegistered);
                         Console.WriteLine($"Simulated EXIT of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
-                    });
+                    }).Wait();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine($"Camera {_camNumber} error: {ex.Message}");
                 }
             }
         }
