@@ -1,4 +1,4 @@
-﻿#define USE_ACTORMODEL
+﻿//#define USE_ACTORMODEL
 
 /* 
 This controller contains 2 implementations of the TrafficControl functionality: a basic 
