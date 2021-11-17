@@ -42,6 +42,7 @@ public class CameraSimulation
                     await _trafficControlService.SendVehicleEntryAsync(vehicleRegistered);
                     Console.WriteLine($"Simulated ENTRY of vehicle with license-number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
 
+
                     // simulate exit
                     TimeSpan exitDelay = TimeSpan.FromSeconds(_rnd.Next(_minExitDelayInS, _maxExitDelayInS) + _rnd.NextDouble());
                     Task.Delay(exitDelay).Wait();
