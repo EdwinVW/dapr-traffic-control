@@ -1,19 +1,11 @@
-﻿namespace Simulation;
-
-class Program
+﻿int lanes = 3;
+CameraSimulation[] cameras = new CameraSimulation[lanes];
+for (var i = 0; i < lanes; i++)
 {
-    static void Main(string[] args)
-    {
-        int lanes = 3;
-        CameraSimulation[] cameras = new CameraSimulation[lanes];
-        for (var i = 0; i < lanes; i++)
-        {
-            int camNumber = i + 1;
-            var trafficControlService = new MqttTrafficControlService(camNumber);
-            cameras[i] = new CameraSimulation(camNumber, trafficControlService);
-        }
-        Parallel.ForEach(cameras, cam => cam.Start());
-
-        Task.Run(() => Thread.Sleep(Timeout.Infinite)).Wait();
-    }
+    int camNumber = i + 1;
+    var trafficControlService = new MqttTrafficControlService(camNumber);
+    cameras[i] = new CameraSimulation(camNumber, trafficControlService);
 }
+Parallel.ForEach(cameras, cam => cam.Start());
+
+Task.Run(() => Thread.Sleep(Timeout.Infinite)).Wait();
