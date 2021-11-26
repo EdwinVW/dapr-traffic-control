@@ -100,7 +100,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the VehicleRegistrationService:
 
     ```console
-    dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 3702 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     >  Alternatively you can also run the `start-selfhosted.ps1` script.
@@ -112,7 +112,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the FineCollectionService:
 
     ```console
-    dapr run --app-id finecollectionservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id finecollectionservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 3701 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.
@@ -124,7 +124,7 @@ Start the services:
 1. Execute the following command (using the Dapr cli) to run the TrafficControlService:
 
     ```console
-    dapr run --app-id trafficcontrolservice --app-port 6000 --dapr-http-port 3600 --dapr-grpc-port 60000 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
+    dapr run --app-id trafficcontrolservice --app-port 6000 --dapr-http-port 3600 --dapr-grpc-port 3700 --config ../dapr/config/config.yaml --components-path ../dapr/components dotnet run
     ```
 
     > Alternatively you can also run the `start-selfhosted.ps1` script.
