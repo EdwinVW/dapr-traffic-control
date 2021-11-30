@@ -69,7 +69,7 @@ public class VehicleActor : Actor, IVehicleActor, IRemindable
                 };
 
                 // publish speedingviolation (Dapr publish / subscribe)
-                await _daprClient.PublishEventAsync("pubsub", "collectfine", speedingViolation);
+                await _daprClient.PublishEventAsync("pubsub", "speedingviolations", speedingViolation);
             }
         }
         catch (Exception ex)
