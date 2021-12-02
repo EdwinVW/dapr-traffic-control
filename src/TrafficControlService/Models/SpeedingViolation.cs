@@ -1,12 +1,3 @@
-using System;
+namespace TrafficControlService.Models;
 
-namespace TrafficControlService.Models
-{
-    public class SpeedingViolation
-    {
-        public string VehicleId { get; set; }
-        public string RoadId { get; set; }
-        public int ViolationInKmh { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
-}
+public record struct SpeedingViolation(string VehicleId, string RoadId, int ViolationInKmh, DateTime Timestamp);

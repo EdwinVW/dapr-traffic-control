@@ -1,28 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+// create web-app
+var builder = WebApplication.CreateBuilder(args);
 
-namespace FineCollectionService
+builder.Services.AddSingleton<IFineCalculator, HardCodedFineCalculator>();
+
+var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3601";
+var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60001";
+builder.Services.AddDaprClient(builder => builder
+    .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+    .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
+
+builder.Services.AddSingleton<VehicleRegistrationService>(_ =>
+    new VehicleRegistrationService(DaprClient.CreateInvokeHttpClient(
+        "vehicleregistrationservice", $"http://localhost:{daprHttpPort}")));
+
+builder.Services.AddControllers().AddDapr();
+
+var app = builder.Build();
+
+// configure web-app
+if (app.Environment.IsDevelopment())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseUrls("http://localhost:6001")
-                        .UseStartup<Startup>();
-                });
-    }
+    app.UseDeveloperExceptionPage();
 }
+app.UseCloudEvents();
+
+// configure routing
+app.MapControllers();
+
+app.MapSubscribeHandler();
+
+// let's go!
+app.Run("http://localhost:6001");

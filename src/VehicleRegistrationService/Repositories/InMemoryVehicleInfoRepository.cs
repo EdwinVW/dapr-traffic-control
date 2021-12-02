@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using RandomNameGeneratorLibrary;
-using VehicleRegistrationService.Models;
+namespace VehicleRegistrationService.Repositories;
 
-namespace VehicleRegistrationService.Repositories
+public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
 {
-    public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
-    {
-        private Random _rnd;
+    private Random _rnd;
 
-        private PersonNameGenerator _nameGenerator;
+    private PersonNameGenerator _nameGenerator;
 
-        private readonly string[] _vehicleBrands = new string[] {
-            "Mercedes", "Toyota", "Audi", "Volkswagen", "Seat", "Renault", "Skoda", 
+    private readonly string[] _vehicleBrands = new string[] {
+            "Mercedes", "Toyota", "Audi", "Volkswagen", "Seat", "Renault", "Skoda",
             "Kia", "Citroën", "Suzuki", "Mitsubishi", "Fiat", "Opel" };
 
-        private Dictionary<string, string[]> _models = new Dictionary<string, string[]>
+    private Dictionary<string, string[]> _models = new Dictionary<string, string[]>
         {
             { "Mercedes", new string[] { "A Class", "B Class", "C Class", "E Class", "SLS", "SLK" } },
             { "Toyota", new string[] { "Yaris", "Avensis", "Rav 4", "Prius", "Celica" } },
@@ -35,45 +29,44 @@ namespace VehicleRegistrationService.Repositories
             { "Opel", new string[] { "Karl", "Corsa", "Astra", "Crossland X", "Insignia" } }
         };
 
-        public InMemoryVehicleInfoRepository()
+    public InMemoryVehicleInfoRepository()
+    {
+        _rnd = new Random();
+        _nameGenerator = new PersonNameGenerator(_rnd);
+    }
+
+    public VehicleInfo GetVehicleInfo(string licenseNumber)
+    {
+        // simulate slow IO
+        Thread.Sleep(_rnd.Next(5, 200));
+
+        // get random vehicle info
+        string brand = GetRandomBrand();
+        string model = GetRandomModel(brand);
+
+        // get random owner info
+        var ownerName = _nameGenerator.GenerateRandomFirstAndLastName();
+        var ownerEmail = $"{ownerName.ToLowerInvariant().Replace(' ', '.')}@outlook.com";
+
+        // return info
+        return new VehicleInfo
         {
-            _rnd = new Random();
-            _nameGenerator = new PersonNameGenerator(_rnd);
-        }
+            VehicleId = licenseNumber,
+            Brand = brand,
+            Model = model,
+            OwnerName = ownerName,
+            OwnerEmail = ownerEmail
+        };
+    }
 
-        public VehicleInfo GetVehicleInfo(string licenseNumber)
-        {
-            // simulate slow IO
-            Thread.Sleep(_rnd.Next(5, 200));
+    private string GetRandomBrand()
+    {
+        return _vehicleBrands[_rnd.Next(_vehicleBrands.Length)];
+    }
 
-            // get random vehicle info
-            string brand = GetRandomBrand();
-            string model = GetRandomModel(brand);
-            
-            // get random owner info
-            var ownerName = _nameGenerator.GenerateRandomFirstAndLastName();
-            var ownerEmail = $"{ownerName.ToLowerInvariant().Replace(' ', '.')}@outlook.com";
-
-            // return info
-            return new VehicleInfo
-            {
-                VehicleId = licenseNumber,
-                Brand = brand,
-                Model = model,
-                OwnerName = ownerName,
-                OwnerEmail = ownerEmail
-            };
-        }
-
-        private string GetRandomBrand()
-        {
-            return _vehicleBrands[_rnd.Next(_vehicleBrands.Length)];
-        }
-
-        private string GetRandomModel(string brand)
-        {
-            string[] models = _models[brand];
-            return models[_rnd.Next(models.Length)];
-        }
+    private string GetRandomModel(string brand)
+    {
+        string[] models = _models[brand];
+        return models[_rnd.Next(models.Length)];
     }
 }
