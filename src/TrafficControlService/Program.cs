@@ -7,7 +7,7 @@ builder.Services.AddSingleton<ISpeedingViolationCalculator>(
 builder.Services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
 
 var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
-var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60000";
+var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "3700";
 builder.Services.AddDaprClient(builder => builder
     .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
     .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));

@@ -72,9 +72,9 @@ In self-hosted mode everything will run on your local machine. To prevent port-c
 
 | Service                    | Application Port | Dapr sidecar HTTP port | Dapr sidecar gRPC port |
 | -------------------------- | ---------------- | ---------------------- | ---------------------- |
-| TrafficControlService      | 6000             | 3600                   | 60000                  |
-| FineCollectionService      | 6001             | 3601                   | 60001                  |
-| VehicleRegistrationService | 6002             | 3602                   | 60002                  |
+| TrafficControlService      | 6000             | 3600                   | 3700                   |
+| FineCollectionService      | 6001             | 3601                   | 3701                   |
+| VehicleRegistrationService | 6002             | 3602                   | 3702                   |
 
 The ports can be specified on the command-line when starting a service with the Dapr CLI. The following command-line flags can be used:
 
