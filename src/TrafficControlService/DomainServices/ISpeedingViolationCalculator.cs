@@ -1,10 +1,7 @@
-using System;
+namespace TrafficControlService.DomainServices;
 
-namespace TrafficControlService.DomainServices
+public interface ISpeedingViolationCalculator
 {
-    public interface ISpeedingViolationCalculator
-    {
-        int DetermineSpeedingViolationInKmh(DateTime entryTimestamp, DateTime exitTimestamp);
-        string GetRoadId();
-    }
+    int DetermineSpeedingViolationInKmh(DateTime entryTimestamp, DateTime exitTimestamp);
+    string GetRoadId();
 }

@@ -2,11 +2,11 @@
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
-| Dapr runtime version | v1.4.0                    |
-| Dapr.NET SDK version | v1.4.0                    |
-| Dapr CLI version     | v1.4.0                    |
+| Dapr runtime version | v1.5.0                    |
+| Dapr.NET SDK version | v1.5.0                    |
+| Dapr CLI version     | v1.5.0                    |
 | Language             | C#                        |
-| Platform             | .NET 5                    |
+| Platform             | .NET 6                    |
 | Environment          | Self hosted or Kubernetes |
 
 This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. A set of cameras are placed at the beginning and the end of a stretch of highway. Using data from these cameras, the average speed of a vehicle is measured. If this average speed is above the speeding limit on this highway, the driver of the vehicle receives a fine.
@@ -236,6 +236,27 @@ You can check whether everything is running correctly by examining the container
 To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:30000](http://localhost:30000).
 
 To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` script.
+
+### Troubleshooting
+
+If you get any errors while trying to run the application on Kubernetes, please double check whether you have installed Dapr into your Kubernetes cluster. You can check this by executing the command `dapr status -k` in a command-shell. You should see something like this:
+
+```console
+  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED
+  dapr-placement-server  dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.01
+  dapr-operator          dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-sentry            dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-dashboard         dapr-system  True     Running  1         0.9.0    14d  2021-11-17 20:40.00
+```
+
+If Dapr is not installed correctly in your cluster, you will see this message:
+
+```console
+No status returned. Is Dapr initialized in your cluster?
+```
+
+In that case, install Dapr by executing the command `dapr init -k` in a command-shell.
 
 ## Dapr for .NET Developers
 

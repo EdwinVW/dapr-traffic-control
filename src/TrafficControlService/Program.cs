@@ -1,22 +1,36 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+// create web-app
+var builder = WebApplication.CreateBuilder(args);
 
-namespace TrafficControlService
+builder.Services.AddSingleton<ISpeedingViolationCalculator>(
+    new DefaultSpeedingViolationCalculator("A12", 10, 100, 5));
+
+builder.Services.AddSingleton<IVehicleStateRepository, DaprVehicleStateRepository>();
+
+var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3600";
+var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60000";
+builder.Services.AddDaprClient(builder => builder
+    .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+    .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
+
+builder.Services.AddControllers();
+
+builder.Services.AddActors(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    options.Actors.RegisterActor<VehicleActor>();
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseUrls("http://localhost:6000")
-                        .UseStartup<Startup>();
-                });
-    }
+var app = builder.Build();
+
+// configure web-app
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+app.UseCloudEvents();
+
+// configure routing
+app.MapControllers();
+app.MapActorsHandlers();
+
+// let's go!
+app.Run("http://localhost:6000");
