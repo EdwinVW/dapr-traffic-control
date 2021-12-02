@@ -237,6 +237,27 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` script.
 
+### Troubleshooting
+
+If you get any errors while trying to run the application on Kubernetes, please double check whether you have installed Dapr into your Kubernetes cluster. You can check this by executing the command `dapr status -k` in a command-shell. You should see something like this:
+
+```console
+  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED
+  dapr-placement-server  dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.01
+  dapr-operator          dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-sentry            dapr-system  True     Running  1         1.5.0    14d  2021-11-17 20:40.00
+  dapr-dashboard         dapr-system  True     Running  1         0.9.0    14d  2021-11-17 20:40.00
+```
+
+If Dapr is not installed correctly in your cluster, you will see this message:
+
+```console
+No status returned. Is Dapr initialized in your cluster?
+```
+
+In that case, install Dapr by executing the command `dapr init -k` in a command-shell.
+
 ## Dapr for .NET Developers
 
 If you want to learn more about Dapr, read this book that was co-authored by the creator of this sample application:
