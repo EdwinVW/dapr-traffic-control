@@ -161,6 +161,24 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 ![Mailbox](img/mailbox.png)
 
+### Reserved ports issue
+
+If you're on Windows with Hyper-V enabled, you might run into an issue that you're not able to use one (or more) of these ports. This could have something to do with aggressive port reservations by Hyper-V. You can check whether or not this is the case by executing this command:
+
+```powershell
+netsh int ipv4 show excludedportrange protocol=tcp
+```
+
+If you see one (or more) of the ports shown as reserved in the output, fix it by executing the following commands in an administrative terminal:
+
+```powershell
+dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
+netsh int ipv4 add excludedportrange protocol=tcp startport=6000 numberofports=3
+netsh int ipv4 add excludedportrange protocol=tcp startport=3600 numberofports=3
+netsh int ipv4 add excludedportrange protocol=tcp startport=3700 numberofports=3
+dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+```
+
 ## Visual Camera Simulation
 
 This repository also contains a graphical version of the Camera Simulation:
@@ -187,9 +205,9 @@ The simulation runs in a web-browser. In order to start the web-application host
 
 ## Run the application with Dapr actors
 
-The TrafficControlService has an alternative implementation based on Dapr actors. 
+The TrafficControlService has an alternative implementation based on Dapr actors.
 
-The `TrafficController` in the TrafficControlService has 2 implementations of the `VehicleEntry` and `VehicleExit` methods. The top two methods contain all the code for handling vehicle registrations and storing vehicle state using the state management building block. The bottom two methods use a `VehicleActor` that does all the work. A new instance of the `VehicleActor` is created for each registered vehicle. In stead of using the state management building block, the actor uses its built-in `StateManager `.
+The `TrafficController` in the TrafficControlService has 2 implementations of the `VehicleEntry` and `VehicleExit` methods. The top two methods contain all the code for handling vehicle registrations and storing vehicle state using the state management building block. The bottom two methods use a `VehicleActor` that does all the work. A new instance of the `VehicleActor` is created for each registered vehicle. In stead of using the state management building block, the actor uses its built-in `StateManager`.
 
 You can find the code of the actor in the file `src/TrafficControlService/Actors/VehicleActor.cs`.
 
