@@ -163,7 +163,7 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 ### Reserved ports issue
 
-If you're on Windows with Hyper-V enabled, you might run into an issue that you're not able to use one (or more) of these ports. This could have something to do with aggressive port reservations by Hyper-V. You can check whether or not this is the case by executing this command:
+If you're on Windows with Hyper-V enabled, you might run into an issue that you're not able to use one (or more) of the ports used by the services. This could have something to do with aggressive port reservations by Hyper-V. You can check whether or not this is the case by executing this command:
 
 ```powershell
 netsh int ipv4 show excludedportrange protocol=tcp
