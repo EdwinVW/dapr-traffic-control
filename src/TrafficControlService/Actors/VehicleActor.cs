@@ -50,7 +50,7 @@ public class VehicleActor : Actor, IVehicleActor, IRemindable
             // get vehicle state
             var vehicleState = await this.StateManager.GetStateAsync<VehicleState>("VehicleState");
             vehicleState = vehicleState with { ExitTimestamp = msg.Timestamp };
-            await this.StateManager.SaveStateAsync();
+            await this.StateManager.SetStateAsync("VehicleState", vehicleState);
 
             // handle possible speeding violation
             int violation = _speedingViolationCalculator.DetermineSpeedingViolationInKmh(
