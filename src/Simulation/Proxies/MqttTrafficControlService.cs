@@ -2,28 +2,45 @@ namespace Simulation.Proxies;
 
 public class MqttTrafficControlService : ITrafficControlService
 {
-    private readonly IMqttClient _client;
+    private IMqttClient _client;
 
-    public MqttTrafficControlService(int camNumber)
+    private MqttTrafficControlService(IMqttClient mqttClient)
     {
-        // connect to mqtt broker
+        _client = mqttClient;
+    }
+
+    public static async Task<MqttTrafficControlService> CreateAsync(int camNumber)
+    {
         var mqttHost = Environment.GetEnvironmentVariable("MQTT_HOST") ?? "localhost";
-        _client = MqttClient.CreateAsync(mqttHost, 1883).Result;
-        var sessionState = _client.ConnectAsync(
-            new MqttClientCredentials(clientId: $"camerasim{camNumber}")).Result;
+        var factory = new MqttFactory();
+        var client = factory.CreateMqttClient();
+        var mqttOptions = new MqttClientOptionsBuilder()
+            .WithTcpServer(mqttHost, 1883)
+            .WithClientId($"camerasim{camNumber}")
+            .Build();
+        await client.ConnectAsync(mqttOptions, CancellationToken.None);
+        return new MqttTrafficControlService(client);
     }
 
     public async Task SendVehicleEntryAsync(VehicleRegistered vehicleRegistered)
     {
         var eventJson = JsonSerializer.Serialize(vehicleRegistered);
-        var message = new MqttApplicationMessage("trafficcontrol/entrycam", Encoding.UTF8.GetBytes(eventJson));
-        await _client.PublishAsync(message, MqttQualityOfService.AtMostOnce);
+        var message = new MqttApplicationMessageBuilder()
+            .WithTopic("trafficcontrol/entrycam")
+            .WithPayload(Encoding.UTF8.GetBytes(eventJson))
+            .WithAtMostOnceQoS()
+            .Build();
+        await _client.PublishAsync(message, CancellationToken.None);
     }
 
     public async Task SendVehicleExitAsync(VehicleRegistered vehicleRegistered)
     {
         var eventJson = JsonSerializer.Serialize(vehicleRegistered);
-        var message = new MqttApplicationMessage("trafficcontrol/exitcam", Encoding.UTF8.GetBytes(eventJson));
-        await _client.PublishAsync(message, MqttQualityOfService.AtMostOnce);
+        var message = new MqttApplicationMessageBuilder()
+            .WithTopic("trafficcontrol/exitcam")
+            .WithPayload(Encoding.UTF8.GetBytes(eventJson))
+            .WithAtMostOnceQoS()
+            .Build();
+        await _client.PublishAsync(message, CancellationToken.None);
     }
 }
