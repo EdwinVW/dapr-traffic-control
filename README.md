@@ -282,7 +282,7 @@ If you want to learn more about Dapr, read this book that was co-authored by the
 
 ![Dapr for .NET Developers](img/dapr-for-net-devs-cover-thumb.png)
 
-[Dowload the PDF](https://aka.ms/dapr-ebook)  |  [Read it online](https://docs.microsoft.com/dotnet/architecture/dapr-for-net-developers/)
+[Dowload the PDF](https://aka.ms/dapr-ebook)  |  [Read it online](https://docs.microsoft.com/dotnet/architecture/dapr-for-net-developers/?WT.mc_id=DT-MVP-5001823)
 
 Although the book is targeted at .NET developers, it covers all the concepts and generic APIs of Dapr. So it should also be useful for developers that use a different technology stack.
 
