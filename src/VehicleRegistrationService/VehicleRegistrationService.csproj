@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="1.6.0" />
-    <PackageReference Include="RandomNameGeneratorLibrary" Version="1.2.2" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
+    <PackageReference Include="RandomNamegeneratorLibrary" Version="1.2.2" />
   </ItemGroup>
 
 
