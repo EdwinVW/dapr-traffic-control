@@ -19,7 +19,9 @@ spec:
         version: v1
     spec:
       containers:
-      - image: maildev/maildev:1.1.0
+        # using older version of maildev 
+        # (newer version does not render HTML mail correctly)
+      - image: maildev/maildev:1.1.0 
         imagePullPolicy: IfNotPresent
         name: mailserver
         ports:
