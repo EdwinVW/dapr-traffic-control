@@ -1,2 +1,1 @@
-# using older version of maildev (newer version did not render HTML mail correctly)
-docker run -d -p 4000:80 -p 4025:25 --name dtc-maildev maildev/maildev:1.1.0
+docker run -d -p 4000:1080 -p 4025:1025 --name dtc-maildev maildev/maildev:2.0.5

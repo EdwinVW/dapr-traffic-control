@@ -19,14 +19,12 @@ spec:
         version: v1
     spec:
       containers:
-        # using older version of maildev 
-        # (newer version does not render HTML mail correctly)
-      - image: maildev/maildev:1.1.0 
+      - image: maildev/maildev:2.0.5 
         imagePullPolicy: IfNotPresent
         name: mailserver
         ports:
-        - containerPort: 25
-        - containerPort: 80
+        - containerPort: 1025
+        - containerPort: 1080
       restartPolicy: Always
 
 ---
@@ -44,10 +42,10 @@ spec:
   ports:
   - name: "smtp"
     port: 25
-    targetPort: 25
+    targetPort: 1025
   - name: "web"
     port: 4000
-    targetPort: 80
+    targetPort: 1080
     nodePort: 30000
   selector:
     app: mailserver
