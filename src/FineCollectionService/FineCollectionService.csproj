@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
-    <PackageReference Include="Dapr.Extensions.Configuration" Version="1.7.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.8.0" />
+    <PackageReference Include="Dapr.Extensions.Configuration" Version="1.8.0" />
     
   </ItemGroup>
 

@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
-    <PackageReference Include="Dapr.Actors" Version="1.7.0" />
-    <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.7.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.8.0" />
+    <PackageReference Include="Dapr.Actors" Version="1.8.0" />
+    <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.8.0" />
   </ItemGroup>
 
 </Project>
