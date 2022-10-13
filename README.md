@@ -225,7 +225,7 @@ Now you can restart the application just as before. The behavior is exactly the 
 
 Execute the following steps to run the sample application on Kubernetes:
 
-1. Make sure you have installed Dapr on your machine on a Kubernetes cluster as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
+1. Make sure you have installed Dapr on your machine on a Kubernetes cluster as described in the [Dapr documentation](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
 1. Open a new command-shell.
 
