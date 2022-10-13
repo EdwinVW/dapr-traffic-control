@@ -25,4 +25,7 @@ spec:
         image: dapr-trafficcontrol/finecollectionservice:1.0
         ports:
         - containerPort: 6001
+        env:
+          - name: USE_KUBERNETES_SECRETS
+            value: "true"
 

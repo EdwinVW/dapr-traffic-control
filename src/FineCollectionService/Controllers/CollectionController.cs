@@ -1,4 +1,4 @@
-﻿namespace FineCollectionService.Controllers;
+namespace FineCollectionService.Controllers;
 
 [ApiController]
 [Route("")]
@@ -20,7 +20,7 @@ public class CollectionController : ControllerBase
         // set finecalculator component license-key
         if (_fineCalculatorLicenseKey == null)
         {
-            bool runningInK8s = Convert.ToBoolean(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false");
+            bool runningInK8s = Convert.ToBoolean(Environment.GetEnvironmentVariable("USE_KUBERNETES_SECRETS") ?? "false");
             var metadata = new Dictionary<string, string> { { "namespace", "dapr-trafficcontrol" } };
             if (runningInK8s)
             {
