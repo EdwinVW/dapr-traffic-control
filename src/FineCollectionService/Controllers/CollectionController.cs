@@ -23,8 +23,7 @@ public class CollectionController : ControllerBase
             bool useKubernetesSecrets = Convert.ToBoolean(Environment.GetEnvironmentVariable("USE_KUBERNETES_SECRETS") ?? "false");
             string secretName = Environment.GetEnvironmentVariable("FINE_CALCULATOR_LICENSE_SECRET_NAME") ?? "finecalculator.licensekey";
             var metadata = new Dictionary<string, string> { { "namespace", "dapr-trafficcontrol" } };
-            if (useKubernetesSecrets
-            )
+            if (useKubernetesSecrets)
             {
                 var k8sSecrets = daprClient.GetSecretAsync(
                     "kubernetes", "trafficcontrol-secrets", metadata).Result;
