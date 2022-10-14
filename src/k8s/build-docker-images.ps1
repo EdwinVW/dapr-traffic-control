@@ -1,5 +1,7 @@
-docker build -t dapr-trafficcontrol/mosquitto:1.0 ./mosquitto
-docker build -t dapr-trafficcontrol/trafficcontrolservice:1.0 ../trafficcontrolservice
-docker build -t dapr-trafficcontrol/finecollectionservice:1.0 ../finecollectionservice
-docker build -t dapr-trafficcontrol/vehicleregistrationservice:1.0 ../vehicleregistrationservice
-docker build -t dapr-trafficcontrol/simulation:1.0 ../simulation
+$path = $MyInvocation.MyCommand.Path | Split-Path
+
+& docker build --tag dapr-trafficcontrol/mosquitto:1.0 "$path/mosquitto"
+& docker build --tag dapr-trafficcontrol/trafficcontrolservice:1.0 "$path/../trafficcontrolservice"
+& docker build --tag dapr-trafficcontrol/finecollectionservice:1.0 "$path/../finecollectionservice"
+& docker build --tag dapr-trafficcontrol/vehicleregistrationservice:1.0 "$path/../vehicleregistrationservice"
+& docker build --tag dapr-trafficcontrol/simulation:1.0 "$path/../simulation"
