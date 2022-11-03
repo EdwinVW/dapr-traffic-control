@@ -77,9 +77,18 @@ public class CollectionController : ControllerBase
     [HttpPost()]
     public ActionResult HandleDeadLetter(object message)
     {
-        _logger.LogCritical("The service was not able to handle a CollectFine message.");
-        var messageJson = JsonSerializer.Serialize<object>(message);
-        _logger.LogInformation(messageJson);
+        _logger.LogError("The service was not able to handle a CollectFine message.");
+
+        try
+        {
+            var messageJson = JsonSerializer.Serialize<object>(message);
+            _logger.LogInformation($"Unhandled message content: {messageJson}");
+        }
+        catch 
+        {
+            _logger.LogError("Unhandled message's payload could not be deserialized.");
+        }
+
         return Ok();
     }
 }
