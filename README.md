@@ -2,7 +2,7 @@
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
-| Dapr runtime version | v1.9.2                    |
+| Dapr runtime version | v1.9.3                    |
 | Dapr.NET SDK version | v1.9.0                    |
 | Dapr CLI version     | v1.9.1                    |
 | Language             | C#                        |
