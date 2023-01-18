@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build-env
 WORKDIR /app
 
 # Copy necessary files and restore as distinct layer
@@ -10,7 +10,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out Simulation.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim
+FROM mcr.microsoft.com/dotnet/runtime:7.0-bullseye-slim
 COPY --from=build-env /app/out .
 
 # Start
