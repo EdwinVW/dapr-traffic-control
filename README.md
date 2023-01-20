@@ -6,7 +6,7 @@
 | Dapr.NET SDK version | v1.9.0                    |
 | Dapr CLI version     | v1.9.1                    |
 | Language             | C#                        |
-| Platform             | .NET 6 (SDK 6.0.402)      |
+| Platform             | .NET 7 (SDK 7.0.102)      |
 | Environment          | Self hosted or Kubernetes |
 
 This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. A set of cameras are placed at the beginning and the end of a stretch of highway. Using data from these cameras, the average speed of a vehicle is measured. If this average speed is above the speeding limit on this highway, the driver of the vehicle receives a fine.
@@ -86,7 +86,7 @@ Execute the following steps to run the sample application in self hosted mode:
 
 Start infrastructure components:
 
-1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
+1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr-cli/).
 1. Open a new command-shell.
 1. Change the current folder to the `src/infrastructure` folder of this repo.
 1. Start the infrastructure services by executing `start-all.ps1` script. This script will start Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually send out emails (by default). Instead, it offers a web frontend that will act as an email in-box showing the emails that were sent to the SMTP server. This is very convenient for demos of testscenarios.
