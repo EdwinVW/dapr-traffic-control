@@ -4,5 +4,5 @@ dapr run `
     --dapr-http-port 3600 `
     --dapr-grpc-port 60000 `
     --config ../dapr/config/config.yaml `
-    --components-path ../dapr/components `
+    --resources-path ../dapr/components `
     dotnet run
