@@ -1,14 +1,14 @@
 ﻿//#define USE_ACTORMODEL
 
-/* 
-This controller contains 2 implementations of the TrafficControl functionality: a basic 
+/*
+This controller contains 2 implementations of the TrafficControl functionality: a basic
 implementation and an actor-model based implementation.
 
-The code for the basic implementation is in this controller. The actor-model implementation 
+The code for the basic implementation is in this controller. The actor-model implementation
 resides in the Vehicle actor (./Actors/VehicleActor.cs).
 
 To switch between the two implementations, you need to use the USE_ACTORMODEL symbol at
-the top of this file. If you comment the #define USE_ACTORMODEL statement, the basic 
+the top of this file. If you comment the #define USE_ACTORMODEL statement, the basic
 implementation is used. Uncomment this statement to use the Actormodel implementation.
 */
 
@@ -42,8 +42,7 @@ public class TrafficController : ControllerBase
         try
         {
             // log entry
-            _logger.LogInformation($"ENTRY detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")} " +
-                $"of vehicle with license-number {msg.LicenseNumber}.");
+            _logger.LogInformation("Entry detected in lane {Lane} at {Timestamp} of vehicle with license-number {LicenseNumber}.", msg.Lane, msg.Timestamp, msg.LicenseNumber);
 
             // store vehicle state
             var vehicleState = new VehicleState(msg.LicenseNumber, msg.Timestamp, null);
@@ -53,8 +52,8 @@ public class TrafficController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while processing ENTRY");
-            return StatusCode(500);
+            _logger.LogError(ex, "Error occurred while processing entry");
+            throw;
         }
     }
 
@@ -71,8 +70,7 @@ public class TrafficController : ControllerBase
             }
 
             // log exit
-            _logger.LogInformation($"EXIT detected in lane {msg.Lane} at {msg.Timestamp.ToString("hh:mm:ss")} " +
-                $"of vehicle with license-number {msg.LicenseNumber}.");
+            _logger.LogInformation("Exit detected in lane {Lane} at {Timestamp} of vehicle with license-number {LicenseNumber}.", msg.Lane, msg.Timestamp, msg.LicenseNumber);
 
             // update state
             var exitState = state.Value with { ExitTimestamp = msg.Timestamp };
@@ -82,8 +80,7 @@ public class TrafficController : ControllerBase
             int violation = _speedingViolationCalculator.DetermineSpeedingViolationInKmh(exitState.EntryTimestamp, exitState.ExitTimestamp.Value);
             if (violation > 0)
             {
-                _logger.LogInformation($"Speeding violation detected ({violation} KMh) of vehicle" +
-                    $"with license-number {state.Value.LicenseNumber}.");
+                _logger.LogInformation("Speeding violation detected ({Violation} km/h) of vehicle with license-number {LicenseNumber}.", violation, state.Value.LicenseNumber);
 
                 var speedingViolation = new SpeedingViolation
                 {
@@ -101,8 +98,8 @@ public class TrafficController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while processing EXIT");
-            return StatusCode(500);
+            _logger.LogError(ex, "Error occurred while processing exit");
+            throw;
         }
     }
 
@@ -111,33 +108,19 @@ public class TrafficController : ControllerBase
         [HttpPost("entrycam")]
         public async Task<ActionResult> VehicleEntryAsync(VehicleRegistered msg)
         {
-            try
-            {
-                var actorId = new ActorId(msg.LicenseNumber);
-                var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
-                await proxy.RegisterEntryAsync(msg);
-                return Ok();
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            var actorId = new ActorId(msg.LicenseNumber);
+            var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
+            await proxy.RegisterEntryAsync(msg);
+            return Ok();
         }
 
         [HttpPost("exitcam")]
         public async Task<ActionResult> VehicleExitAsync(VehicleRegistered msg)
         {
-            try
-            {
-                var actorId = new ActorId(msg.LicenseNumber);
-                var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
-                await proxy.RegisterExitAsync(msg);
-                return Ok();
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            var actorId = new ActorId(msg.LicenseNumber);
+            var proxy = ActorProxy.Create<IVehicleActor>(actorId, nameof(VehicleActor));
+            await proxy.RegisterExitAsync(msg);
+            return Ok();
         }
 
 #endif

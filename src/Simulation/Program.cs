@@ -6,6 +6,6 @@ for (var i = 0; i < lanes; i++)
     var trafficControlService = await MqttTrafficControlService.CreateAsync(camNumber);
     cameras[i] = new CameraSimulation(camNumber, trafficControlService);
 }
-Parallel.ForEach(cameras, cam => cam.Start());
+Parallel.ForEach(cameras, async cam => await cam.Start());
 
 Task.Run(() => Thread.Sleep(Timeout.Infinite)).Wait();

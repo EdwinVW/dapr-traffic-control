@@ -41,7 +41,7 @@ The way the simulation works is depicted in the sequence diagram below:
 1. After some random interval, the Camera Simulation sends a *VehicleRegistered* message to the `/exitcam` endpoint of the TrafficControlService (containing the license-number generated in step 1, a random exit-lane (1-3) and the exit timestamp).
 1. The TrafficControlService retrieves the VehicleState that was stored at vehicle entry.
 1. The TrafficControlService calculates the average speed of the vehicle using the entry- and exit-timestamp. It also stores the VehicleState with the exit timestamp for audit purposes, but this is left out of the sequence diagram for clarity.
-1. If the average speed is above the speed-limit, the TrafficControlService calls the `/collectfine` endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in KMh and the timestamp of the violation.
+1. If the average speed is above the speed-limit, the TrafficControlService calls the `/collectfine` endpoint of the FineCollectionService. The request payload will be a *SpeedingViolation* containing the license-number of the vehicle, the identifier of the road, the speeding-violation in km/h and the timestamp of the violation.
 1. The FineCollectionService calculates the fine for the speeding-violation.
 1. The FineCollectionSerivice calls the `/vehicleinfo/{license-number}` endpoint of the VehicleRegistrationService with the license-number of the speeding vehicle to retrieve its vehicle- and owner-information.
 1. The FineCollectionService sends a fine to the owner of the vehicle by email.
@@ -141,19 +141,19 @@ Start the services:
 
 You should now see logging in each of the shells, similar to the logging shown below:
 
-**Camera Simulation:**  
+**Camera Simulation:**
 
 ![Simulation logging](img/logging-simulation.png)
 
-**TrafficControlService:**  
+**TrafficControlService:**
 
 ![TrafficControlService loggin](img/logging-trafficcontrolservice.png)
 
-**FineCollectionService:**  
+**FineCollectionService:**
 
 ![FineCollectionService logging](img/logging-finecollectionservice.png)
 
-**VehicleRegistrationService:**  
+**VehicleRegistrationService:**
 
 ![VehicleRegistrationService logging](img/logging-vehicleregistrationservice.png)
 
@@ -217,9 +217,9 @@ To use the actor based implementation, uncomment the statement that defines the 
 #define USE_ACTORMODEL
 ```
 
-Now you can restart the application just as before. The behavior is exactly the same, but you will see that the logging of the TrafficControlService will be emitted by the `VehicleActor`:  
+Now you can restart the application just as before. The behavior is exactly the same, but you will see that the logging of the TrafficControlService will be emitted by the `VehicleActor`:
 
-![](img/logging-trafficcontrolservice-actors.png)
+![Logging traffic control service actors](img/logging-trafficcontrolservice-actors.png)
 
 ## Run the application on Kubernetes
 

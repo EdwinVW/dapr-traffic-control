@@ -1,7 +1,5 @@
-import { Utils } from './utils.js';
-
 export class CarPainter {
-    
+
     constructor(scene)
     {
         this.scene = scene;
@@ -26,12 +24,12 @@ export class CarPainter {
             var x, y;
             var pixel, palette;
             var paletteImage = this.scene.game.textures.get(sourceImage.paintKey).getSourceImage();
-            
+
             // Go through each pixel in the palette image and add it to the color lookup.
             for (y = 0; y < paletteImage.height; y++) {
 
                 colorLookup[y] = [];
-        
+
                 for (x = 0; x < paletteImage.width; x++) {
                     pixel = this.scene.game.textures.getPixel(x, y, sourceImage.paintKey);
                     colorLookup[y].push(pixel);
@@ -55,7 +53,7 @@ export class CarPainter {
                 // Get image data from the new sheet.
                 var imageData = context.getImageData(0, 0, sheet.width, sheet.height);
                 var pixelArray = imageData.data;
-            
+
                 // Iterate through every pixel in the image.
                 for (var p = 0; p < pixelArray.length / 4; p++) {
                     var index = 4 * p;
@@ -95,7 +93,7 @@ export class CarPainter {
 
                 // Destroy temp texture.
                 this.scene.game.textures.get(sourceImage.key + '-temp').destroy();
-                
+
                 imageKeys.push(sourceImage.key + '-' + y);//sourceImage.key);
             }
         }

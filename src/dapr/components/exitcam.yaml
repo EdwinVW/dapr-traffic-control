@@ -1,3 +1,4 @@
+---
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -7,11 +8,11 @@ spec:
   type: bindings.mqtt
   version: v1
   metadata:
-  - name: url
-    value: mqtt://localhost:1883
-  - name: topic
-    value: trafficcontrol/exitcam
-  - name: consumerID
-    value: "{uuid}"
+    - name: url
+      value: mqtt://localhost:1883
+    - name: topic
+      value: trafficcontrol/exitcam
+    - name: consumerID
+      value: "{uuid}"
 scopes:
   - trafficcontrolservice

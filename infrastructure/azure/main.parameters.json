@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerRegistryName": {
+      "value": "chirpregistry"
+    },
+    "logAnalyticsWorkspaceName": {
+      "value": "chirplogs"
+    },
+    "applicationInsightsName": {
+      "value": "chirpinsights"
+    },
+    "containerAppsEnvironmentName": {
+      "value": "chirp"
+    },
+    "cosmosDbAccountName": {
+      "value": "chirpdb"
+    },
+    "cosmosDbDatabaseName": {
+      "value": "chirp"
+    },
+    "cosmosDbContainerName": {
+      "value": "cheeps"
+    },
+    "keyVaultName": {
+      "value": "chirpvault"
+    },
+    "managedIdentityName": {
+      "value": "chirpidentity"
+    }
+  }
+}

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <LangVersion>11</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -11,6 +10,5 @@
     <PackageReference Include="Dapr.AspNetCore" Version="1.10.0" />
     <PackageReference Include="RandomNamegeneratorLibrary" Version="1.2.2" />
   </ItemGroup>
-
 
 </Project>

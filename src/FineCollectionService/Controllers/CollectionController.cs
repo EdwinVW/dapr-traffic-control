@@ -1,12 +1,10 @@
-﻿using System.Text.Json;
-
-namespace FineCollectionService.Controllers;
+﻿namespace FineCollectionService.Controllers;
 
 [ApiController]
 [Route("")]
 public class CollectionController : ControllerBase
 {
-    private static string? _fineCalculatorLicenseKey = null;
+    private static string? _fineCalculatorLicenseKey;
     private readonly ILogger<CollectionController> _logger;
     private readonly IFineCalculator _fineCalculator;
     private readonly VehicleRegistrationService _vehicleRegistrationService;
@@ -19,8 +17,8 @@ public class CollectionController : ControllerBase
         _fineCalculator = fineCalculator;
         _vehicleRegistrationService = vehicleRegistrationService;
 
-        // set finecalculator component license-key
-        if (_fineCalculatorLicenseKey == null)
+        // set fine calculator component license-key
+        if (_fineCalculatorLicenseKey is null)
         {
             bool useKubernetesSecrets = Convert.ToBoolean(Environment.GetEnvironmentVariable("USE_KUBERNETES_SECRETS") ?? "false");
             string secretName = Environment.GetEnvironmentVariable("FINE_CALCULATOR_LICENSE_SECRET_NAME") ?? "finecalculator.licensekey";
@@ -42,7 +40,7 @@ public class CollectionController : ControllerBase
 
     [Topic("pubsub", "speedingviolations", "deadletters", false)]
     [Route("collectfine")]
-    [HttpPost()]
+    [HttpPost]
     public async Task<ActionResult> CollectFine(SpeedingViolation speedingViolation, [FromServices] DaprClient daprClient)
     {
         decimal fine = _fineCalculator.CalculateFine(_fineCalculatorLicenseKey!, speedingViolation.ViolationInKmh);
@@ -51,13 +49,8 @@ public class CollectionController : ControllerBase
         var vehicleInfo = _vehicleRegistrationService.GetVehicleInfo(speedingViolation.VehicleId).Result;
 
         // log fine
-        string fineString = fine == 0 ? "tbd by the prosecutor" : $"{fine} Euro";
-        _logger.LogInformation($"Sent speeding ticket to {vehicleInfo.OwnerName}. " +
-            $"Road: {speedingViolation.RoadId}, Licensenumber: {speedingViolation.VehicleId}, " +
-            $"Vehicle: {vehicleInfo.Brand} {vehicleInfo.Model}, " +
-            $"Violation: {speedingViolation.ViolationInKmh} Km/h, Fine: {fineString}, " +
-            $"On: {speedingViolation.Timestamp.ToString("dd-MM-yyyy")} " +
-            $"at {speedingViolation.Timestamp.ToString("hh:mm:ss")}.");
+        string fineString = fine == 0 ? "TBD by the prosecutor" : $"{fine} Euro";
+        _logger.LogInformation("Sent speeding ticket to {Owner}. Road: {Road}, License number: {LicenceNumber}, Vehicle: {Make} {Model}, Violation: {ViolationInKmh} Km/h, Fine: {Fine}, On: {Timestamp}.", vehicleInfo.OwnerName, speedingViolation.RoadId, speedingViolation.VehicleId, vehicleInfo.Make, vehicleInfo.Model, speedingViolation.ViolationInKmh, fineString, speedingViolation.Timestamp);
 
         // send fine by email (Dapr output binding)
         var body = EmailUtils.CreateEmailBody(speedingViolation, vehicleInfo, fineString);
@@ -74,7 +67,7 @@ public class CollectionController : ControllerBase
 
     [Topic("pubsub", "deadletters")]
     [Route("deadletters")]
-    [HttpPost()]
+    [HttpPost]
     public ActionResult HandleDeadLetter(object message)
     {
         _logger.LogError("The service was not able to handle a CollectFine message.");
@@ -82,9 +75,9 @@ public class CollectionController : ControllerBase
         try
         {
             var messageJson = JsonSerializer.Serialize<object>(message);
-            _logger.LogInformation($"Unhandled message content: {messageJson}");
+            _logger.LogInformation("Unhandled message content: {Message}", messageJson);
         }
-        catch 
+        catch
         {
             _logger.LogError("Unhandled message's payload could not be deserialized.");
         }
