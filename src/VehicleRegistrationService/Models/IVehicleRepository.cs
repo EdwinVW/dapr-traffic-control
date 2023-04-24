@@ -2,5 +2,5 @@ namespace VehicleRegistrationService.Models;
 
 public interface IVehicleInfoRepository
 {
-    VehicleInfo GetVehicleInfo(string licenseNumber);
+    Task<VehicleInfo> GetVehicleInfo(string licenseNumber);
 }

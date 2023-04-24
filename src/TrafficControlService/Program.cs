@@ -13,6 +13,7 @@ builder.Services.AddDaprClient(builder => builder
     .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}"));
 
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddActors(options =>
 {
@@ -30,6 +31,7 @@ app.UseCloudEvents();
 
 // configure routing
 app.MapControllers();
+app.MapHealthChecks("/healthz");
 app.MapActorsHandlers();
 
 // let's go!

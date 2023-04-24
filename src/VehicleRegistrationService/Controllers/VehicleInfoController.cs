@@ -14,10 +14,10 @@ public class VehicleInfoController : ControllerBase
     }
 
     [HttpGet("{licenseNumber}")]
-    public ActionResult<VehicleInfo> GetVehicleInfo(string licenseNumber)
+    public async Task<ActionResult<VehicleInfo>> GetVehicleInfo(string licenseNumber)
     {
         _logger.LogInformation("Retrieving vehicle-info for license number {licenseNumber}", licenseNumber);
-        var info = _vehicleInfoRepository.GetVehicleInfo(licenseNumber);
-        return info;
+
+        return await _vehicleInfoRepository.GetVehicleInfo(licenseNumber);
     }
 }

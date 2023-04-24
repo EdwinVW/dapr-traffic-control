@@ -2,9 +2,11 @@ param location string = resourceGroup().location
 param logAnalyticsWorkspaceName string
 param applicationInsightsName string
 param storageAccountName string
+param communicationServicesName string
+param communicationServicesDataLocation string
 param containerAppsEnvironmentName string
 param keyVaultName string
-param managedIdentityName string
+param serviceBusNamespaceName string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
@@ -40,13 +42,22 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     supportsHttpsTrafficOnly: true
     accessTier: 'Hot'
     allowBlobPublicAccess: false
-    allowSharedKeyAccess: true
+    allowSharedKeyAccess: false
+    defaultToOAuthAuthentication: true
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Allow'
       ipRules: []
       virtualNetworkRules: []
     }
+  }
+}
+
+resource communicationServices 'Microsoft.Communication/communicationServices@2023-03-01-preview' = {
+  name: communicationServicesName
+  location: location
+  properties: {
+    dataLocation: communicationServicesDataLocation
   }
 }
 
@@ -63,30 +74,6 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01'
       }
     }
   }
-
-  resource stateStore 'daprComponents' = {
-    name: 'statestore'
-    properties: {
-      componentType: 'state.azure.tablestorage'
-      version: 'v1'
-      metadata: [
-        {
-          name: 'accountName'
-          value: storageAccount.name
-        }
-        {
-          name: 'accountKey'
-          value: storageAccount.listKeys().keys[0].value
-        }
-        {
-          name: 'tableName'
-          value: 'vehicles'
-        }
-      ]
-      scopes: []
-    }
-    dependsOn: []
-  }
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
@@ -99,5 +86,21 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
     }
     tenantId: tenant().tenantId
     enableRbacAuthorization: true
+  }
+}
+
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
+  name: serviceBusNamespaceName
+  location: location
+  sku: {
+    name: 'Basic'
+    tier: 'Basic'
+    capacity: 1
+  }
+  properties: {
+    zoneRedundant: false
+    minimumTlsVersion: '1.2'
+    disableLocalAuth: true
+    publicNetworkAccess: 'Enabled'
   }
 }

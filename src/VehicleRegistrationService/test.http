@@ -3,4 +3,12 @@ GET http://127.0.0.1:6002/vehicleinfo/KZ-49-VX
 
 ###
 
-GET http://127.0.0.1:3602/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/XS-51-BG
+GET http://127.0.0.1:46627/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/XS-51-BG
+
+###
+
+GET https://vehicleregistrationservice.blueriver-684a7b9e.swedencentral.azurecontainerapps.io/vehicleinfo/KZ-49-VX
+
+###
+
+GET https://vehicleregistrationservice.blueriver-684a7b9e.swedencentral.azurecontainerapps.io/v1.0/invoke/vehicleregistrationservice/method/vehicleinfo/XS-51-BG

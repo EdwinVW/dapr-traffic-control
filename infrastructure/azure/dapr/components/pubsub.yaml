@@ -1,0 +1,9 @@
+---
+componentType: pubsub.azure.servicebus.queues
+version: v1
+metadata:
+  - name: namespaceName
+    value: trafficcontrolpubsub.servicebus.windows.net
+scopes:
+  - trafficcontrolservice
+  - finecollectionservice

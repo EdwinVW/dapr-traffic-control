@@ -47,10 +47,10 @@ public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
         _nameGenerator = new PersonNameGenerator(_rnd);
     }
 
-    public VehicleInfo GetVehicleInfo(string licenseNumber)
+    public async Task<VehicleInfo> GetVehicleInfo(string licenseNumber)
     {
         // simulate slow IO
-        Thread.Sleep(_rnd.Next(5, 200));
+        await Task.Delay(TimeSpan.FromMilliseconds(_rnd.Next(5, 200)));
 
         // get random vehicle info
         var make = GetRandomMake();
@@ -60,7 +60,6 @@ public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
         var ownerName = _nameGenerator.GenerateRandomFirstAndLastName();
         var ownerEmail = $"{ownerName.ToLowerInvariant().Replace(' ', '.')}@outlook.com";
 
-        // return info
         return new VehicleInfo
         {
             VehicleId = licenseNumber,
@@ -71,14 +70,12 @@ public class InMemoryVehicleInfoRepository : IVehicleInfoRepository
         };
     }
 
-    private string GetRandomMake()
-    {
-        return _vehicleBrands[_rnd.Next(_vehicleBrands.Length)];
-    }
+    private string GetRandomMake() => _vehicleBrands[_rnd.Next(_vehicleBrands.Length)];
 
     private string GetRandomModel(string brand)
     {
         var models = _models[brand];
+
         return models[_rnd.Next(models.Length)];
     }
 }

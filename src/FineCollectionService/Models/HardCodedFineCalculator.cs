@@ -9,43 +9,37 @@ public class HardCodedFineCalculator : IFineCalculator
             throw new InvalidOperationException("Invalid license-key specified.");
         }
 
-        int fine = 9; // default administration fee
-        if (violationInKmh < 5)
+        var fine = 9; // default administration fee
+        
+        switch (violationInKmh)
         {
-            fine += 18;
-        }
-        else if (violationInKmh >= 5 && violationInKmh < 10)
-        {
-            fine += 31;
-        }
-        else if (violationInKmh >= 10 && violationInKmh < 15)
-        {
-            fine += 64;
-        }
-        else if (violationInKmh >= 15 && violationInKmh < 20)
-        {
-            fine += 121;
-        }
-        else if (violationInKmh >= 20 && violationInKmh < 25)
-        {
-            fine += 174;
-        }
-        else if (violationInKmh >= 25 && violationInKmh < 30)
-        {
-            fine += 232;
-        }
-        else if (violationInKmh >= 25 && violationInKmh < 35)
-        {
-            fine += 297;
-        }
-        else if (violationInKmh == 35)
-        {
-            fine += 372;
-        }
-        else
-        {
-            // violation above 35 km/h will be determined by the prosecutor
-            return 0;
+            case < 5:
+                fine += 18;
+                break;
+            case >= 5 and < 10:
+                fine += 31;
+                break;
+            case >= 10 and < 15:
+                fine += 64;
+                break;
+            case >= 15 and < 20:
+                fine += 121;
+                break;
+            case >= 20 and < 25:
+                fine += 174;
+                break;
+            case >= 25 and < 30:
+                fine += 232;
+                break;
+            case >= 25 and < 35:
+                fine += 297;
+                break;
+            case 35:
+                fine += 372;
+                break;
+            default:
+                // violation above 35 km/h will be determined by the prosecutor
+                return 0;
         }
 
         return fine;

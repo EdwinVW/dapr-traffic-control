@@ -1,8 +1,10 @@
 {
     "recommendations": [
         "davidanson.vscode-markdownlint",
+        "humao.rest-client",
         "msazurermtools.azurerm-vscode-tools",
         "ms-azuretools.vscode-bicep",
+        "ms-azuretools.vscode-dapr",
         "streetsidesoftware.code-spell-checker"
     ]
 }

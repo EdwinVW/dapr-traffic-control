@@ -1,0 +1,12 @@
+---
+componentType: secretstores.azure.keyvault
+version: v1
+metadata:
+  - name: accountName
+    value: trafficcontrolstorage
+  - name: tableName
+    value: vehicles
+  - name: skipCreateTable
+    value: "true"
+scopes:
+  - trafficcontrolservice

@@ -4,4 +4,4 @@ var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.Run("http://localhost:5000");
+app.Run();

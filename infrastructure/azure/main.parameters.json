@@ -2,32 +2,23 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "containerRegistryName": {
-      "value": "chirpregistry"
-    },
     "logAnalyticsWorkspaceName": {
-      "value": "chirplogs"
+      "value": "trafficcontrollogs"
     },
     "applicationInsightsName": {
-      "value": "chirpinsights"
+      "value": "trafficcontrolinsights"
     },
     "containerAppsEnvironmentName": {
-      "value": "chirp"
+      "value": "trafficcontrolenvironment"
     },
-    "cosmosDbAccountName": {
-      "value": "chirpdb"
-    },
-    "cosmosDbDatabaseName": {
-      "value": "chirp"
-    },
-    "cosmosDbContainerName": {
-      "value": "cheeps"
+    "storageAccountName": {
+      "value": "trafficcontrolstorage"
     },
     "keyVaultName": {
-      "value": "chirpvault"
+      "value": "trafficcontrolvault"
     },
-    "managedIdentityName": {
-      "value": "chirpidentity"
+    "serviceBusNamespaceName": {
+      "value": "trafficcontrolpubsub"
     }
   }
 }
