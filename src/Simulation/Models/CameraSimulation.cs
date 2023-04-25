@@ -2,7 +2,7 @@ namespace Simulation.Models;
 
 public class CameraSimulation
 {
-    private readonly ITrafficControlService _trafficControlService;
+    private readonly HttpClient _client;
     private Random _random;
     private int _cameraNumber;
     private int _minEntryDelayInMilliseconds = 50;
@@ -10,11 +10,11 @@ public class CameraSimulation
     private int _minExitDelayInSeconds = 4;
     private int _maxExitDelayInSeconds = 10;
 
-    public CameraSimulation(int camNumber, ITrafficControlService trafficControlService)
+    public CameraSimulation(int cameraNumber, HttpClient client)
     {
         _random = new Random();
-        _cameraNumber = camNumber;
-        _trafficControlService = trafficControlService;
+        _cameraNumber = cameraNumber;
+        _client = client;
     }
 
     public async Task Start()
@@ -32,23 +32,22 @@ public class CameraSimulation
                 await Task.Run(async () =>
                 {
                     // simulate entry
-                    DateTime entryTimestamp = DateTime.Now;
+                    var entryTimestamp = DateTime.Now;
                     var vehicleRegistered = new VehicleRegistered
                     {
                         Lane = _cameraNumber,
                         LicenseNumber = GenerateRandomLicenseNumber(),
                         Timestamp = entryTimestamp
                     };
-                    await _trafficControlService.SendVehicleEntryAsync(vehicleRegistered);
+                    await _client.PostAsJsonAsync("entrycam", vehicleRegistered);
                     Console.WriteLine($"Simulated ENTRY of vehicle with license number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
-
 
                     // simulate exit
                     var exitDelay = TimeSpan.FromSeconds(_random.Next(_minExitDelayInSeconds, _maxExitDelayInSeconds) + _random.NextDouble());
                     await Task.Delay(exitDelay);
                     vehicleRegistered.Timestamp = DateTime.Now;
                     vehicleRegistered.Lane = _random.Next(1, 4);
-                    await _trafficControlService.SendVehicleExitAsync(vehicleRegistered);
+                    await _client.PostAsJsonAsync("exitcam", vehicleRegistered);
                     Console.WriteLine($"Simulated EXIT of vehicle with license number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
                 });
             }

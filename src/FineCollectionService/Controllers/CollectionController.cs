@@ -7,11 +7,6 @@ public class CollectionController : ControllerBase
     private const string SECRET_STORE = "secretstore";
     private static string? _fineCalculatorLicenseKey;
 
-    private static Task<string> GetLicenseKey()
-    {
-        throw new NotImplementedException();
-    }
-
     private readonly ILogger<CollectionController> _logger;
     private readonly IFineCalculator _fineCalculator;
     private readonly VehicleRegistrationService _vehicleRegistrationService;

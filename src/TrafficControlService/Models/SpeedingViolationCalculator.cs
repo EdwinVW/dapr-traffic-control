@@ -1,13 +1,13 @@
 namespace TrafficControlService.Models;
 
-public class DefaultSpeedingViolationCalculator : ISpeedingViolationCalculator
+public class SpeedingViolationCalculator : ISpeedingViolationCalculator
 {
     private readonly string _roadId;
     private readonly int _sectionLengthInKm;
     private readonly int _maxAllowedSpeedInKmh;
     private readonly int _legalCorrectionInKmh;
 
-    public DefaultSpeedingViolationCalculator(string roadId, int sectionLengthInKm, int maxAllowedSpeedInKmh, int legalCorrectionInKmh)
+    public SpeedingViolationCalculator(string roadId, int sectionLengthInKm, int maxAllowedSpeedInKmh, int legalCorrectionInKmh)
     {
         _roadId = roadId;
         _sectionLengthInKm = sectionLengthInKm;

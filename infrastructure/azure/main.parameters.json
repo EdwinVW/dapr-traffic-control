@@ -19,6 +19,12 @@
     },
     "serviceBusNamespaceName": {
       "value": "trafficcontrolpubsub"
+    },
+    "iotHubName": {
+      "value": "trafficcontroliot"
+    },
+    "iotHubLocation": {
+      "value": "germanynorth"
     }
   }
 }

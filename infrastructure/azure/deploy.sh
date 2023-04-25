@@ -19,6 +19,12 @@ done
 # Create resource group
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
+# Deploy resources
+az deployment group create \
+  --resource-group $RESOURCE_GROUP \
+  --template-file $TEMPLATE_FILE_PATH \
+  --parameters @$PARAMETERS_FILE_PATH
+
 # Create service bus queue
 az servicebus queue create \
   --name $SERVICE_BUS_QUEUE_NAME \
@@ -39,24 +45,31 @@ TABLE_ID=$(az storage table show --name $TABLE_NAME --account-name $STORAGE_ACCO
 
 # Configure secretstore component
 az containerapp env dapr-component set \
-    --name $CONTAINER_APPS_ENVIRONMENT \
+    --name $CONTAINER_APPS_ENVIRONMENT_NAME \
     --resource-group $RESOURCE_GROUP \
     --dapr-component-name secretstore \
     --yaml ./dapr/components/secretstore.yaml
 
 # Configure statestore component
 az containerapp env dapr-component set \
-    --name $CONTAINER_APPS_ENVIRONMENT \
+    --name $CONTAINER_APPS_ENVIRONMENT_NAME \
     --resource-group $RESOURCE_GROUP \
     --dapr-component-name statestore \
     --yaml ./dapr/components/statestore.yaml
 
 # Configure pubsub component
 az containerapp env dapr-component set \
-    --name $CONTAINER_APPS_ENVIRONMENT \
+    --name $CONTAINER_APPS_ENVIRONMENT_NAME \
     --resource-group $RESOURCE_GROUP \
     --dapr-component-name pubsub \
     --yaml ./dapr/components/pubsub.yaml
+
+# Configure sendmail component
+az containerapp env dapr-component set \
+    --name $CONTAINER_APPS_ENVIRONMENT_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --dapr-component-name sendmail \
+    --yaml ./dapr/components/sendmail.yaml
 
 # Get key vault id
 KEY_VAULT_ID=$(az keyvault show --name $KEY_VAULT_NAME --query id -o tsv)
@@ -131,3 +144,37 @@ az role assignment create \
   --assignee $TRAFFIC_CONTROL_SERVICE_PRINCIPAL_ID \
   --role "Azure Service Bus Data Sender" \
   --scope $SERVICE_BUS_QUEUE_ID
+
+# Create maildev container instance
+az container create \
+    --name maildev \
+    --resource-group $RESOURCE_GROUP \
+    --image maildev/maildev:latest \
+    --dns-name-label maildev \
+    --ports 1080 1025
+
+# Create fine-collection-service container app
+az containerapp create \
+    --name themailservice \
+    --environment $CONTAINER_APPS_ENVIRONMENT_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --image ghcr.io/ondfisk/the-mail-service:latest \
+    --enable-dapr \
+    --dapr-enable-api-logging \
+    --dapr-app-id themailservice \
+    --dapr-app-protocol http \
+    --cpu '0.25' \
+    --memory '0.5Gi' \
+    --system-assigned \
+    --ingress external \
+    --target-port 6014 \
+    --min-replicas 1 \
+    --max-replicas 1
+
+# Register cameras 0-3 on IoT hub
+# bash for loop 0-3
+for i in {0..3}; do
+  az iot hub device-identity create \
+    --hub-name $IOT_HUB_NAME \
+    --device-id camerasim$i
+done

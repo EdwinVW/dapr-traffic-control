@@ -1,0 +1,17 @@
+---
+componentType: bindings.smtp
+version: v1
+metadata:
+  - name: host
+    value: maildev.swedencentral.azurecontainer.io
+  - name: port
+    value: 1025
+  - name: user
+    value: _username
+  - name: password
+    value: _password
+  - name: skipTLSVerify
+    value: true
+scopes:
+  - finecollectionservice
+  - themailservice

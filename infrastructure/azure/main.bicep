@@ -2,8 +2,6 @@ param location string = resourceGroup().location
 param logAnalyticsWorkspaceName string
 param applicationInsightsName string
 param storageAccountName string
-param communicationServicesName string
-param communicationServicesDataLocation string
 param containerAppsEnvironmentName string
 param keyVaultName string
 param serviceBusNamespaceName string
@@ -50,14 +48,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
       ipRules: []
       virtualNetworkRules: []
     }
-  }
-}
-
-resource communicationServices 'Microsoft.Communication/communicationServices@2023-03-01-preview' = {
-  name: communicationServicesName
-  location: location
-  properties: {
-    dataLocation: communicationServicesDataLocation
   }
 }
 
