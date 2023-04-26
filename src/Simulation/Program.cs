@@ -3,7 +3,7 @@
 
 var config = configuration.Build();
 var trafficControlEndpoint = config["TrafficControlEndpoint"];
-if (trafficControlEndpoint is null)
+if (string.IsNullOrWhiteSpace(trafficControlEndpoint))
 {
     throw new InvalidOperationException("Traffic control endpoint is not configured");
 }

@@ -2,9 +2,11 @@ param location string = resourceGroup().location
 param logAnalyticsWorkspaceName string
 param applicationInsightsName string
 param storageAccountName string
+param tableName string
 param containerAppsEnvironmentName string
 param keyVaultName string
 param serviceBusNamespaceName string
+param queueName string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
@@ -51,6 +53,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
+resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2022-09-01' = {
+  parent: storageAccount
+  name: 'default'
+}
+
+resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2022-09-01' = {
+  parent: tableService
+  name: tableName
+}
+
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   name: containerAppsEnvironmentName
   location: location
@@ -93,4 +105,9 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview
     disableLocalAuth: true
     publicNetworkAccess: 'Enabled'
   }
+}
+
+resource queue 'Microsoft.ServiceBus/namespaces/queues@2022-10-01-preview' = {
+  parent: serviceBusNamespace
+  name: queueName
 }

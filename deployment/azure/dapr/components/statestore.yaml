@@ -1,5 +1,5 @@
 ---
-componentType: secretstores.azure.keyvault
+componentType: state.azure.tablestorage
 version: v1
 metadata:
   - name: accountName
@@ -7,6 +7,6 @@ metadata:
   - name: tableName
     value: vehicles
   - name: skipCreateTable
-    value: "true"
+    value: true
 scopes:
   - trafficcontrolservice

@@ -9,15 +9,15 @@ spec:
   version: v1
   metadata:
     - name: host
-      value: "amqp://localhost:5672"
+      value: amqp://localhost:5672
     - name: durable
-      value: "false"
+      value: false
     - name: deletedWhenUnused
-      value: "false"
+      value: false
     - name: autoAck
-      value: "false"
+      value: false
     - name: reconnectWait
-      value: "0"
+      value: 0
     - name: concurrency
       value: parallel
 scopes:

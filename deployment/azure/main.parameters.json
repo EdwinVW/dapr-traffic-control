@@ -14,17 +14,17 @@
     "storageAccountName": {
       "value": "trafficcontrolstorage"
     },
+    "tableName": {
+      "value": "vehicles"
+    },
     "keyVaultName": {
       "value": "trafficcontrolvault"
     },
     "serviceBusNamespaceName": {
       "value": "trafficcontrolpubsub"
     },
-    "iotHubName": {
-      "value": "trafficcontroliot"
-    },
-    "iotHubLocation": {
-      "value": "germanynorth"
+    "queueName": {
+      "value": "speedingviolations"
     }
   }
 }

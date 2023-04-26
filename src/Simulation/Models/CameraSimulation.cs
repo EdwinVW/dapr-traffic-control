@@ -39,7 +39,9 @@ public class CameraSimulation
                         LicenseNumber = GenerateRandomLicenseNumber(),
                         Timestamp = entryTimestamp
                     };
-                    await _client.PostAsJsonAsync("entrycam", vehicleRegistered);
+                    var entry = await _client.PostAsJsonAsync("entrycam", vehicleRegistered);
+                    entry.EnsureSuccessStatusCode();
+
                     Console.WriteLine($"Simulated ENTRY of vehicle with license number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
 
                     // simulate exit
@@ -47,7 +49,9 @@ public class CameraSimulation
                     await Task.Delay(exitDelay);
                     vehicleRegistered.Timestamp = DateTime.Now;
                     vehicleRegistered.Lane = _random.Next(1, 4);
-                    await _client.PostAsJsonAsync("exitcam", vehicleRegistered);
+                    var exit = await _client.PostAsJsonAsync("exitcam", vehicleRegistered);
+                    exit.EnsureSuccessStatusCode();
+
                     Console.WriteLine($"Simulated EXIT of vehicle with license number {vehicleRegistered.LicenseNumber} in lane {vehicleRegistered.Lane}");
                 });
             }

@@ -11,7 +11,7 @@ spec:
     - name: host
       value: localhost
     - name: port
-      value: 4025
+      value: 1025
     - name: user
       secretKeyRef:
         name: smtp.user

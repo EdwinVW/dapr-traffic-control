@@ -6,6 +6,8 @@ builder.Services.AddControllers().AddDapr();
 builder.Services.AddHealthChecks();
 builder.Services.AddDaprClient();
 
+builder.Logging.AddConsole();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

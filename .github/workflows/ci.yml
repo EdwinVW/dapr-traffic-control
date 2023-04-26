@@ -30,10 +30,8 @@ jobs:
       matrix:
         service:
           - FineCollectionService
-          - Simulation
           - TrafficControlService
           - VehicleRegistrationService
-          - VisualSimulation
 
     runs-on: ubuntu-latest
     steps:
