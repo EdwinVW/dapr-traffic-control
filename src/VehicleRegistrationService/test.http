@@ -1,5 +1,5 @@
 // Get vehicle info by license-number
-GET http://127.0.0.1:6002/vehicleinfo/KZ-49-VX
+GET http://127.0.0.1:6003/vehicleinfo/KZ-49-VX
 
 ###
 

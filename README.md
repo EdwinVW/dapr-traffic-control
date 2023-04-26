@@ -69,11 +69,11 @@ Here is the sequence diagram again, but now with all the Dapr building blocks an
 
 In self-hosted mode everything will run on your local machine. To prevent port-collisions, all services listen on a different HTTP port. When running the services with Dapr, you need additional ports voor HTTP and gRPC communication with the sidecars. By default these ports are `3500` and `50001`. But to prevent confusion, you'll use totally different port numbers in the assignments. The services will use the following ports:
 
-| Service                    | Application Port | Dapr sidecar HTTP port | Dapr sidecar gRPC port |
-| -------------------------- | ---------------- | ---------------------- | ---------------------- |
-| TrafficControlService      | 6000             | 3600                   | 60000                  |
-| FineCollectionService      | 6001             | 3601                   | 60001                  |
-| VehicleRegistrationService | 6002             | 3602                   | 60002                  |
+| Service                    | Application Port |
+| -------------------------- | ---------------- |
+| TrafficControlService      | 6001             |
+| FineCollectionService      | 6002             |
+| VehicleRegistrationService | 6003             |
 
 The ports can be specified on the command-line when starting a service with the Dapr CLI. The following command-line flags can be used:
 

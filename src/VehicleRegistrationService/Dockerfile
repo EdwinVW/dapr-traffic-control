@@ -14,8 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0
 COPY --from=build-env /app/out .
 
 # Expose ports
-EXPOSE 6002/tcp
-ENV ASPNETCORE_URLS http://*:6002
+EXPOSE 6003/tcp
+ENV ASPNETCORE_URLS http://*:6003
 
 # Start
 ENTRYPOINT ["dotnet", "VehicleRegistrationService.dll"]

@@ -8,7 +8,7 @@ spec:
   type: pubsub.rabbitmq
   version: v1
   metadata:
-    - name: host
+    - name: connectionString
       value: amqp://localhost:5672
     - name: durable
       value: false

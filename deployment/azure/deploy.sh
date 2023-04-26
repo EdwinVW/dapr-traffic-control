@@ -78,7 +78,7 @@ az containerapp create \
     --memory '0.5Gi' \
     --system-assigned \
     --ingress external \
-    --target-port 6000 \
+    --target-port 6001 \
     --min-replicas 1 \
     --max-replicas 1 \
     --env-vars "FINE_CALCULATOR_LICENSE_SECRET_NAME=fine-calculator-license-key"
@@ -97,7 +97,7 @@ az containerapp create \
     --memory '0.5Gi' \
     --system-assigned \
     --ingress external \
-    --target-port 6001 \
+    --target-port 6002 \
     --min-replicas 1 \
     --max-replicas 1 \
     --env-vars "FINE_CALCULATOR_LICENSE_SECRET_NAME=fine-calculator-license-key"
@@ -116,7 +116,7 @@ az containerapp create \
     --memory '0.5Gi' \
     --system-assigned \
     --ingress external \
-    --target-port 6002 \
+    --target-port 6003 \
     --min-replicas 1 \
     --max-replicas 1
 

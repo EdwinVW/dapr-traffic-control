@@ -23,6 +23,6 @@ spec:
     - name: skipTLSVerify
       value: true
 auth:
-  secretStore: trafficcontrol-secrets
+  secretStore: secretstore
 scopes:
   - finecollectionservice

@@ -14,8 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0
 COPY --from=build-env /app/out .
 
 # Expose ports
-EXPOSE 6000/tcp
-ENV ASPNETCORE_URLS http://*:6000
+EXPOSE 6001/tcp
+ENV ASPNETCORE_URLS http://*:6001
 
 # Start
 ENTRYPOINT ["dotnet", "TrafficControlService.dll"]

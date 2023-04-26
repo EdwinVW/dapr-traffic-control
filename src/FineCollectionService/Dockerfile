@@ -14,8 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0
 COPY --from=build-env /app/out .
 
 # Expose ports
-EXPOSE 6001/tcp
-ENV ASPNETCORE_URLS http://*:6001
+EXPOSE 6002/tcp
+ENV ASPNETCORE_URLS http://*:6002
 
 # Start
 ENTRYPOINT ["dotnet", "FineCollectionService.dll"]
