@@ -255,7 +255,9 @@ To see the emails that are sent by the FineCollectionService, open a browser and
 
 To stop the application and remove everything from the Kubernetes cluster, execute the `stop.ps1` script.
 
-### Troubleshooting
+## Troubleshooting
+
+### Running in Kubernetes
 
 If you get any errors while trying to run the application on Kubernetes, please double check whether you have installed Dapr into your Kubernetes cluster. You can check this by executing the command `dapr status -k` in a command-shell. You should see something like this:
 
@@ -275,6 +277,24 @@ No status returned. Is Dapr initialized in your cluster?
 ```
 
 In that case, install Dapr by executing the command `dapr init -k` in a command-shell.
+
+### Running self-hosted on MacOS with Antivirus software
+
+Some antivirus software blocks mDNS which is used for name-resolution by Dapr when running in self-hosted mode. When you encounter any errors with service-invocation, use Consul as an alternative for mDNS: 
+
+- Specify `consul` as command-line argument for `start-all.ps1` or `start-all.sh` when starting the Infrastructure components. This will start a local Consul service (running on port 8500).
+- When starting the services, use the `dapr/config/consul-config.yaml` config file. This config file configures Dapr to use Consul for name resolution. You can find a line in the Dapr logging that indicates the naming service used:
+
+```bash
+❯ ./start-selfhosted.sh consul
+ℹ️  Starting Dapr with id vehicleregistrationservice. HTTP Port: 3602. gRPC Port: 60002
+...
+INFO[0000] service:vehicleregistrationservice registered on consul agent  app_id=vehicleregistrationservice component="consul (nameResolution/v1)" instance=192.168.2.16 scope=dapr.contrib type=log ver=1.11.1
+INFO[0000] Initialized name resolution to consul         app_id=vehicleregistrationservice instance=192.168.2.16 scope=dapr.runtime type=log ver=1.11.1
+...
+```
+
+If you use the `start-self-hosted.ps1` or `start-self-hosted.sh` scripts, specify `consul` as command-line argument.
 
 ## Dapr for .NET Developers
 
