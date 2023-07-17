@@ -286,7 +286,8 @@ Some antivirus software blocks mDNS which is used for name-resolution by Dapr wh
 - When starting the services, use the `dapr/config/consul-config.yaml` config file. This config file configures Dapr to use Consul for name resolution. You can find a line in the Dapr logging that indicates the naming service used:
 
 ```bash
-❯ ./start-selfhosted.sh consul
+❯ dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --config ../dapr/config/consul-config.yaml --resources-path ../dapr/components dotnet run
+
 ℹ️  Starting Dapr with id vehicleregistrationservice. HTTP Port: 3602. gRPC Port: 60002
 ...
 INFO[0000] service:vehicleregistrationservice registered on consul agent  app_id=vehicleregistrationservice component="consul (nameResolution/v1)" instance=192.168.2.16 scope=dapr.contrib type=log ver=1.11.1
@@ -294,7 +295,7 @@ INFO[0000] Initialized name resolution to consul         app_id=vehicleregistrat
 ...
 ```
 
-If you use the `start-self-hosted.ps1` or `start-self-hosted.sh` scripts, specify `consul` as command-line argument.
+If you use the `start-self-hosted.ps1` or `start-self-hosted.sh` scripts, specify `consul` as command-line argument. This will start the service with the `consul-config.yaml` config file.
 
 ## Dapr for .NET Developers
 
