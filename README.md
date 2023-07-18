@@ -290,8 +290,7 @@ Some antivirus software blocks mDNS (we've actually encountered this with Sophos
 
 ℹ️  Starting Dapr with id vehicleregistrationservice. HTTP Port: 3602. gRPC Port: 60002
 ...
-INFO[0000] service:vehicleregistrationservice registered on consul agent  app_id=vehicleregistrationservice component="consul (nameResolution/v1)" instance=192.168.2.16 scope=dapr.contrib type=log ver=1.11.1
-INFO[0000] Initialized name resolution to consul         app_id=vehicleregistrationservice instance=192.168.2.16 scope=dapr.runtime type=log ver=1.11.1
+INFO[0000] Initialized name resolution to consul app_id=vehicleregistrationservice instance=192.168.2.16 scope=dapr.runtime type=log ver=1.11.1
 ...
 ```
 
