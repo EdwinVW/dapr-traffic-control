@@ -84,14 +84,14 @@ The ports can be specified on the command-line when starting a service with the 
 
 Execute the following steps to run the sample application in self hosted mode:
 
-Start infrastructure components:
+### Start the infrastructure components
 
 1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
 1. Open a new command-shell.
 1. Change the current folder to the `src/infrastructure` folder of this repo.
 1. Start the infrastructure services by executing `start-all.ps1` or `start-all.sh` script. This script will start Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually send out emails (by default). Instead, it offers a web frontend that will act as an email in-box showing the emails that were sent to the SMTP server. This is very convenient for demos of testscenarios.
 
-Start the services:
+### Start the services
 
 1. Open a new command-shell.
 
@@ -160,24 +160,6 @@ You should now see logging in each of the shells, similar to the logging shown b
 To see the emails that are sent by the FineCollectionService, open a browser and browse to [http://localhost:4000](http://localhost:4000). You should see the emails coming in:
 
 ![Mailbox](img/mailbox.png)
-
-### Reserved ports issue
-
-If you're on Windows with Hyper-V enabled, you might run into an issue that you're not able to use one (or more) of the ports used by the services. This could have something to do with aggressive port reservations by Hyper-V. You can check whether or not this is the case by executing this command:
-
-```powershell
-netsh int ipv4 show excludedportrange protocol=tcp
-```
-
-If you see one (or more) of the ports shown as reserved in the output, fix it by executing the following commands in an administrative terminal:
-
-```powershell
-dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
-netsh int ipv4 add excludedportrange protocol=tcp startport=6000 numberofports=3
-netsh int ipv4 add excludedportrange protocol=tcp startport=3600 numberofports=3
-netsh int ipv4 add excludedportrange protocol=tcp startport=3700 numberofports=3
-dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
-```
 
 ## Visual Camera Simulation
 
@@ -257,6 +239,24 @@ To stop the application and remove everything from the Kubernetes cluster, execu
 
 ## Troubleshooting
 
+### Reserved ports issue
+
+If you're on Windows with Hyper-V enabled, you might run into an issue that you're not able to use one (or more) of the ports used by the services. This could have something to do with aggressive port reservations by Hyper-V. You can check whether or not this is the case by executing this command:
+
+```powershell
+netsh int ipv4 show excludedportrange protocol=tcp
+```
+
+If you see one (or more) of the ports shown as reserved in the output, fix it by executing the following commands in an administrative terminal:
+
+```powershell
+dism.exe /Online /Disable-Feature:Microsoft-Hyper-V
+netsh int ipv4 add excludedportrange protocol=tcp startport=6000 numberofports=3
+netsh int ipv4 add excludedportrange protocol=tcp startport=3600 numberofports=3
+netsh int ipv4 add excludedportrange protocol=tcp startport=3700 numberofports=3
+dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+```
+
 ### Running in Kubernetes
 
 If you get any errors while trying to run the application on Kubernetes, please double check whether you have installed Dapr into your Kubernetes cluster. You can check this by executing the command `dapr status -k` in a command-shell. You should see something like this:
@@ -280,10 +280,10 @@ In that case, install Dapr by executing the command `dapr init -k` in a command-
 
 ### Running self-hosted on MacOS with Antivirus software
 
-Some antivirus software blocks mDNS which is used for name-resolution by Dapr when running in self-hosted mode. When you encounter any errors with service-invocation, use Consul as an alternative for mDNS: 
+Some antivirus software blocks mDNS (we've actually encountered this with Sophos). mDNS is used for name-resolution by Dapr when running in self-hosted mode. Blocking mDNS will cause issues with service invocation. When you encounter any errors when invoking services using service invocation, use Consul as an alternative name resolution service: 
 
-- Specify `consul` as command-line argument for `start-all.ps1` or `start-all.sh` when starting the Infrastructure components. This will start a local Consul service (running on port 8500).
-- When starting the services, use the `dapr/config/consul-config.yaml` config file. This config file configures Dapr to use Consul for name resolution. You can find a line in the Dapr logging that indicates the naming service used:
+- Specify `consul` as command-line argument for `start-all.ps1` or `start-all.sh` when [starting the Infrastructure services](#start-the-infrastructure-components). This will start a local Consul service (running on port 8500).
+- When [starting the services](#start-the-services), use the `dapr/config/consul-config.yaml` config file. This config file configures Dapr to use Consul for name resolution. You can find a line in the Dapr logging that indicates the naming service used:
 
 ```bash
 ❯ dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --config ../dapr/config/consul-config.yaml --resources-path ../dapr/components dotnet run
