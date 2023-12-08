@@ -1,5 +1,5 @@
 # specify 'consul' as the first argument to use consul for name resolution
-$configFile = if ($Args[0] -eq "consul") 
+if ($Args[0] -eq "consul") 
 {  
     Push-Location -Path consul
     & ./start-consul.ps1

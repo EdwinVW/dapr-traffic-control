@@ -2,11 +2,11 @@
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
-| Dapr runtime version | v1.11.0                   |
-| Dapr.NET SDK version | v1.11.0                   |
-| Dapr CLI version     | v1.11.0                   |
+| Dapr runtime version | v1.12.0                   |
+| Dapr.NET SDK version | v1.12.0                   |
+| Dapr CLI version     | v1.12.0                   |
 | Language             | C#                        |
-| Platform             | .NET 7 (SDK 7.0.202)      |
+| Platform             | .NET 8                    |
 | Environment          | Self hosted or Kubernetes |
 
 This repository contains a sample application that simulates a traffic-control system using Dapr. For this sample I've used a speeding-camera setup as can be found on several Dutch highways. A set of cameras are placed at the beginning and the end of a stretch of highway. Using data from these cameras, the average speed of a vehicle is measured. If this average speed is above the speeding limit on this highway, the driver of the vehicle receives a fine.
