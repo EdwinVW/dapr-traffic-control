@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-amd64 AS build-env
 WORKDIR /app
 
 # Copy necessary files and restore as distinct layer
