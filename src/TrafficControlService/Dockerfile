@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build-env
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /build
 
 # Copy necessary files and restore as distinct layer
 COPY TrafficControlService.csproj ./
@@ -10,8 +10,9 @@ COPY . ./
 RUN dotnet publish -c Release -o out TrafficControlService.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim
-COPY --from=build-env /app/out .
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build-env /build/out .
 
 # Expose ports
 EXPOSE 6000/tcp
