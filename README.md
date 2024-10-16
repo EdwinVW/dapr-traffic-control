@@ -82,6 +82,16 @@ The ports can be specified on the command-line when starting a service with the 
 - `--dapr-http-port`
 - `--dapr-grpc-port`
 
+Some antivirus software blocks mDNS (we've actually encountered this with Sophos). mDNS is used for name-resolution by Dapr when running in self-hosted mode. Blocking mDNS will cause issues with service invocation. Dapr can also use Consul for name-resolution. This is used by default in this sample application.
+
+You configure Dapr to use Consul by specifying this in a Dapr config file. The  `src/dapr/config`  folder contains a config file that configures Dapr to use Consul. You use the `--config` command-line argument to specify the config file to use (this is included in the instructions below). You can verify whether Dapr uses Consul for name-resolution by inspecting the logging. You should find a line in the Dapr logging that indicates the naming service used:
+
+```bash
+...
+INFO[0000] Initialized name resolution to consul app_id=vehicleregistrationservice instance=192.168.2.16 scope=dapr.runtime type=log ...
+...
+```
+
 Execute the following steps to run the sample application in self hosted mode:
 
 ### Start the infrastructure components
@@ -89,7 +99,7 @@ Execute the following steps to run the sample application in self hosted mode:
 1. Make sure you have installed Dapr on your machine in self-hosted mode as described in the [Dapr documentation](https://docs.dapr.io/getting-started/install-dapr/).
 1. Open a new command-shell.
 1. Change the current folder to the `src/infrastructure` folder of this repo.
-1. Start the infrastructure services by executing `start-all.ps1` or `start-all.sh` script. This script will start Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually send out emails (by default). Instead, it offers a web frontend that will act as an email in-box showing the emails that were sent to the SMTP server. This is very convenient for demos of testscenarios.
+1. Start the infrastructure services by executing `start-all.ps1` or `start-all.sh` script. This script will start Consul, Mosquitto (MQTT broker), RabbitMQ (pub/sub broker) and Maildev. Maildev is a development SMTP server that does not actually send out emails (by default). Instead, it offers a web frontend that will act as an email in-box showing the emails that were sent to the SMTP server. This is very convenient for demos of testscenarios.
 1. You can stop the infrastructure services by executing `stop-all.ps1` or `stop-all.sh` script.
 
 ### Start the services
@@ -278,28 +288,6 @@ No status returned. Is Dapr initialized in your cluster?
 ```
 
 In that case, install Dapr by executing the command `dapr init -k` in a command-shell.
-
-### Running self-hosted on MacOS with Antivirus software
-
-Some antivirus software blocks mDNS (we've actually encountered this with Sophos). mDNS is used for name-resolution by Dapr when running in self-hosted mode. Blocking mDNS will cause issues with service invocation. When you encounter any errors when invoking services using service invocation, use Consul as an alternative name resolution service: 
-
-- Specify `consul` as command-line argument for `start-all.ps1` or `start-all.sh` and `stop-all.ps1` or `stop-all.sh` when [starting the Infrastructure services](#start-the-infrastructure-components). This will start a local Consul service (running on port 8500).
-- When starting the services, use the `dapr/config/consul-config.yaml` config file. This config file configures Dapr to use Consul for name resolution. You can use the `--config` command-line argument to specify the config file to use:
-
-  ```bash
-  ❯ dapr run --app-id vehicleregistrationservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --config ../dapr/config/consul-config.yaml dotnet run
-  ```
-
-  You can find a line in the Dapr logging that indicates the naming service used:
-
-  ```bash
-  ℹ️  Starting Dapr with id vehicleregistrationservice. HTTP Port: 3602. gRPC Port: 60002
-  ...
-  INFO[0000] Initialized name resolution to consul app_id=vehicleregistrationservice instance=192.168.2.16 scope=dapr.runtime type=log ...
-  ...
-  ```
-
-- If you use the `start-self-hosted.ps1` or `start-self-hosted.sh` scripts, specify `consul` as command-line argument. This will start the service with the `consul-config.yaml` config file.
 
 ## Dapr for .NET Developers
 

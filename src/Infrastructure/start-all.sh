@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# specify 'consul' as the first argument to use consul for name resolution
-if [ $1 == "consul" ]
-then
-    pushd consul
-    ./start-consul.sh
-    popd
-fi 
+pushd consul
+./start-consul.sh
+popd
 
 pushd mosquitto
 ./start-mosquitto.sh
