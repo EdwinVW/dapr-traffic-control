@@ -82,7 +82,7 @@ public class TrafficController : ControllerBase
             int violation = _speedingViolationCalculator.DetermineSpeedingViolationInKmh(exitState.EntryTimestamp, exitState.ExitTimestamp.Value);
             if (violation > 0)
             {
-                _logger.LogInformation($"Speeding violation detected ({violation} KMh) of vehicle" +
+                _logger.LogWarning($"Speeding violation detected ({violation} KMh) of vehicle" +
                     $"with license-number {state.Value.LicenseNumber}.");
 
                 var speedingViolation = new SpeedingViolation

@@ -10,7 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Dapr.AspNetCore" Version="1.14.0" />
     <PackageReference Include="Dapr.Extensions.Configuration" Version="1.14.0" />
-    
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Update="EmailTemplate.html">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
   </ItemGroup>
 
 </Project>
