@@ -2,9 +2,9 @@
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
-| Dapr runtime version | v1.14.4                   |
-| Dapr.NET SDK version | v1.14.0                   |
-| Dapr CLI version     | v1.14.1                   |
+| Dapr runtime version | v1.15.5                   |
+| Dapr.NET SDK version | v1.15.4                   |
+| Dapr CLI version     | v1.15.1                   |
 | Language             | C#                        |
 | Platform             | .NET 8                    |
 | Environment          | Self hosted or Kubernetes |
