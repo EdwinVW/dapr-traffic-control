@@ -16,7 +16,7 @@ COPY --from=build-env /build/out .
 
 # Expose ports
 EXPOSE 6000/tcp
-ENV ASPNETCORE_URLS http://*:6000
+ENV ASPNETCORE_URLS=http://*:6000
 
 # Start
 ENTRYPOINT ["dotnet", "TrafficControlService.dll"]

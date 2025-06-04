@@ -16,7 +16,7 @@ COPY --from=build-env /build/out .
 
 # Expose ports
 EXPOSE 6001/tcp
-ENV ASPNETCORE_URLS http://*:6001
+ENV ASPNETCORE_URLS=http://*:6001
 
 # Start
 ENTRYPOINT ["dotnet", "FineCollectionService.dll"]

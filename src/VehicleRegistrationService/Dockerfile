@@ -16,7 +16,7 @@ COPY --from=build-env /build/out .
 
 # Expose ports
 EXPOSE 6002/tcp
-ENV ASPNETCORE_URLS http://*:6002
+ENV ASPNETCORE_URLS=http://*:6002
 
 # Start
 ENTRYPOINT ["dotnet", "VehicleRegistrationService.dll"]
