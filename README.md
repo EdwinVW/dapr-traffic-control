@@ -1,5 +1,7 @@
 # Dapr Traffic Control Sample
 
+⚠️ **This repository is not actively maintained anymore and will not be updated to the latest Dapr version!** ⚠️
+
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
 | Dapr runtime version | v1.15.5                   |
