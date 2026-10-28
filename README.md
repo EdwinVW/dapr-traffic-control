@@ -1,6 +1,6 @@
 # Dapr Traffic Control Sample
 
-⚠️ **This repository is not actively maintained anymore and will not be updated to the latest Dapr version!** ⚠️
+⚠️ **This repository is not actively maintained anymore and will not be updated to the latest Dapr and .NET version!** ⚠️
 
 | Attribute            | Details                   |
 | -------------------- | ------------------------- |
